@@ -1,10 +1,26 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import StyleTotal from "./cssLoginForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
+import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserAction";
 
 const LoginForm = () => {
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    dispatch(
+      REGIS_USER_SAGA({
+        userRegister: {
+          userName: "Admintck52",
+          passWord: "Admintck",
+        }
+      })
+    );
+  };
+
   return (
     <StyleTotal>
       <div className="loginForm">
@@ -16,7 +32,7 @@ const LoginForm = () => {
         </div>
 
         {/* Form Input */}
-        <form className="container-fluid form">
+        <form className="container-fluid form" onSubmit={handleSubmit}>
           <div className="form-group w-full">
             <input
               className="form-control w-full h-9 mb-5 p-5"
