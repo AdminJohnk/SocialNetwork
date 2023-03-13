@@ -23,15 +23,14 @@ const LoginForm = () => {
   
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // dispatch(
-    //   REGIS_USER_SAGA({
-    //     userRegister: {
-    //       userName: username,
-    //       passWord: password,
-    //     }
-    //   })
-    // );
-    console.log(username, password);
+    dispatch(
+      REGIS_USER_SAGA({
+        userRegister: {
+          userName: "ok",
+          passWord: "Admintck",
+        },
+      })
+    );
   };
 
   return (
