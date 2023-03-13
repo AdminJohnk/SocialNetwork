@@ -14,9 +14,9 @@ const LoginForm = () => {
     dispatch(
       REGIS_USER_SAGA({
         userRegister: {
-          userName: "Admintck57",
+          userName: "ok",
           passWord: "Admintck",
-        }
+        },
       })
     );
   };
