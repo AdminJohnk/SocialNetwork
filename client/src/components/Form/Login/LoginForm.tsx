@@ -20,14 +20,13 @@ const LoginForm = () => {
   const handlePassword = (e: any) => {
     setPassword(e.target.value);
   };
-  
   const handleSubmit = (e: any) => {
     e.preventDefault();
     dispatch(
       REGIS_USER_SAGA({
         userRegister: {
-          userName: "ok",
-          passWord: "Admintck",
+          userName: username,
+          passWord: password,
         },
       })
     );
@@ -51,14 +50,22 @@ const LoginForm = () => {
               name="userName"
               type="text"
               placeholder="Username"
-              onChange={handleUsername}
+
+              onChange={(e) => {
+                handleUsername(e);
+              }}
+
             />
             <input
               className="form-control w-full h-9 mb-5 p-5"
               name="passWord"
               type="password"
               placeholder="Password"
-              onChange={handlePassword}
+
+              onChange={(e) => {
+                handlePassword(e);
+              }}
+
             />
             <button
               type="submit"
