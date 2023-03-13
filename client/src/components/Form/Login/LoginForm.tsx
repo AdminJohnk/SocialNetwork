@@ -9,29 +9,6 @@ import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
 const LoginForm = () => {
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("");
-
-  const [password, setPassword] = useState("");
-
-  const handleUsername = (e: any) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePassword = (e: any) => {
-    setPassword(e.target.value);
-  };
-  
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    dispatch(
-      REGIS_USER_SAGA({
-        userRegister: {
-          userName: "ok",
-          passWord: "Admintck",
-        },
-      })
-    );
-  };
 
   return (
     <StyleTotal>
@@ -44,21 +21,19 @@ const LoginForm = () => {
         </div>
 
         {/* Form Input */}
-        <form className="container-fluid form" onSubmit={handleSubmit}>
+        <form className="container-fluid form">
           <div className="form-group w-full">
             <input
               className="form-control w-full h-9 mb-5 p-5"
               name="userName"
               type="text"
               placeholder="Username"
-              onChange={handleUsername}
             />
             <input
               className="form-control w-full h-9 mb-5 p-5"
               name="passWord"
               type="password"
               placeholder="Password"
-              onChange={handlePassword}
             />
             <button
               type="submit"
