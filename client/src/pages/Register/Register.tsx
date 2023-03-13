@@ -30,7 +30,6 @@ const Register = () => {
               <ConfigProvider
                 theme={{
                   token: {
-                    // colorPrimary: "green",
                     colorTextBase: "#d4d4d4",
                     colorBgBase: "#333345",
                     lineWidth: 0,

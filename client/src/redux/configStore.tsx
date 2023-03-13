@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./Slice/UserSlice";
+import authReducer from "./Slice/AuthSlice"
 
 import createSagaMiddleware from "redux-saga";
 import { rootSaga } from "./saga/rootSaga";
@@ -9,7 +10,7 @@ const middleware = [sagaMiddleware];
 
 export default configureStore({
   reducer: {
-    userReducer,
+    userReducer, authReducer
   },
   middleware,
 });

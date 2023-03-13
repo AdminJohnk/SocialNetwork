@@ -4,7 +4,7 @@ import StyleTotal from "./cssLoginForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
-import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserAction";
+import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ const LoginForm = () => {
   const handlePassword = (e: any) => {
     setPassword(e.target.value);
   };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     dispatch(
@@ -51,18 +50,22 @@ const LoginForm = () => {
               name="userName"
               type="text"
               placeholder="Username"
+
               onChange={(e) => {
                 handleUsername(e);
               }}
+
             />
             <input
               className="form-control w-full h-9 mb-5 p-5"
               name="passWord"
               type="password"
               placeholder="Password"
+
               onChange={(e) => {
                 handlePassword(e);
               }}
+
             />
             <button
               type="submit"
