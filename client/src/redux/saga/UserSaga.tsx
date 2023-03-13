@@ -1,7 +1,7 @@
 import { put, select, takeLatest } from "redux-saga/effects";
 import { userService } from "../../services/UserService";
 import { STATUS_CODE, TOKEN } from "../../util/constants/SettingSystem";
-import { REGIS_USER_SAGA } from "../actionSaga/UserAction";
+import { REGIS_USER_SAGA } from "../actionSaga/UserActionSaga";
 
 
 // registerUser Saga
