@@ -7,31 +7,7 @@ import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
 import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
 
 const LoginForm = () => {
-  const dispatch = useDispatch();
-
-  const [username, setUsername] = useState("");
-
-  const [password, setPassword] = useState("");
-
-  const handleUsername = (e: any) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePassword = (e: any) => {
-    setPassword(e.target.value);
-  };
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    dispatch(
-      REGIS_USER_SAGA({
-        userRegister: {
-          userName: username,
-          passWord: password,
-        },
-      })
-    );
-  };
-
+  
   return (
     <StyleTotal>
       <div className="loginForm">
@@ -50,22 +26,12 @@ const LoginForm = () => {
               name="userName"
               type="text"
               placeholder="Username"
-
-              onChange={(e) => {
-                handleUsername(e);
-              }}
-
             />
             <input
               className="form-control w-full h-9 mb-5 p-5"
               name="passWord"
               type="password"
               placeholder="Password"
-
-              onChange={(e) => {
-                handlePassword(e);
-              }}
-
             />
             <button
               type="submit"
