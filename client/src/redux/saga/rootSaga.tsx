@@ -4,10 +4,11 @@ import * as authSaga from "./AuthSaga";
 
 export function* rootSaga() {
   yield all([
+    //userSaga
     userSaga.theoDoiRegisterUserSaga(),
-    authSaga.theoDoicheckLoginSaga(),
 
+    //authSaga
+    authSaga.theoDoicheckLoginSaga(),
+    authSaga.theoDoiLoginSaga(),
   ]);
 }
-
-

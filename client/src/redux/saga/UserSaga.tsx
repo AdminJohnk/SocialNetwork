@@ -6,12 +6,14 @@ import { REGIS_USER_SAGA } from "../actionSaga/UserActionSaga";
 
 // registerUser Saga
 
-function* registerUserSaga(action: any) {
+function* registerUserSaga({ payload }: any) {
     try {
-        const { data, status } = yield userService.registerUser(action.payload.userRegister);
+        const { data, status } = yield userService.registerUser(payload.userRegister);
 
         if (status === STATUS_CODE.CREATED) {
             localStorage.setItem(TOKEN, JSON.stringify(data.content.accessToken));
+        } else {
+            localStorage.removeItem(TOKEN);
         }
 
     } catch (err : any) {

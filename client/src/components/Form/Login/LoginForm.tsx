@@ -1,13 +1,33 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import StyleTotal from "./cssLoginForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
-import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
+import { ConfigProvider, Form, Input } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { LOGIN_SAGA } from "../../../redux/actionSaga/AuthActionSaga";
 
 const LoginForm = () => {
-  
+
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        LOGIN_SAGA({
+          userLogin: values
+        })
+      );
+    },
+  });
+
   return (
     <StyleTotal>
       <div className="loginForm">
@@ -18,31 +38,60 @@ const LoginForm = () => {
           <h2 className="title">Welcome back!</h2>
         </div>
 
-        {/* Form Input */}
-        <form className="container-fluid form">
-          <div className="form-group w-full">
-            <input
-              className="form-control w-full h-9 mb-5 p-5"
-              name="userName"
-              type="text"
-              placeholder="Username"
-            />
-            <input
-              className="form-control w-full h-9 mb-5 p-5"
-              name="passWord"
-              type="password"
-              placeholder="Password"
-            />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorTextBase: "#d4d4d4",
+              colorBgBase: "#202021",
+              lineWidth: 0,
+              controlHeight: 40,
+              borderRadius: 0,
+            },
+          }}
+        >
+          <Form className="w-full" style={{ width: "70%" }} onFinish={formik.handleSubmit}>
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your E-mail!"
+                 
+                },
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!"
+                },
+              ]}
+            >
+              <Input
+                placeholder="Email"
+                allowClear
+                prefix={<MailOutlined />}
+                onChange={formik.handleChange}
+              ></Input>
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <Input.Password
+                placeholder="Password"
+                onChange={formik.handleChange}
+              ></Input.Password>
+            </Form.Item>
             <button
               type="submit"
-              className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold"
-            >
-              Login
+              className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold">
+                Login
             </button>
-          </div>
-          <div className="forgotPass">Forgotten Password ?</div>
-        </form>
-
+          </Form>
+        </ConfigProvider>
         <div className="anotherLogin mt-10">
           <div className="title relative">
             <span className="absolute" style={{ color: "#d4d4d4" }}>
@@ -68,7 +117,9 @@ const LoginForm = () => {
 
         <div className="noAccount text-center mt-8">
           <span>Don't you have an account yet? </span>
-          <span className="signUp ml-1">Sign up</span>
+          <span className="signUp ml-1">
+            <NavLink className={navData => "" + (navData.isActive ? " activeControl" : " ")} to="/projectmanagement">Sign up</NavLink>
+          </span>
         </div>
       </div>
     </StyleTotal>

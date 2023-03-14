@@ -5,9 +5,12 @@ export class AuthService extends BaseService {
     super();
   }
 
-  checkLogin = (token: string) => {
+  checkLogin = (token: any) => {
     return this.post(`/checklogin`, token);
   };
+  login = (user: any) => {
+    return this.post(`/login`, user);
+  }
 }
 
 export const authService = new AuthService();
