@@ -13,3 +13,6 @@ export const STATUS_CODE = {
     CONFLICT: 409,
     SERVER_ERROR: 500,
 }
+
+export const DARK_THEME = 'dark';
+export const LIGHT_THEME = 'light';

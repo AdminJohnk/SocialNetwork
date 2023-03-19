@@ -10,6 +10,9 @@ export class AuthService extends BaseService {
   };
   login = (user: any) => {
     return this.post(`/login`, user);
+  };
+  logout = (token: any) => {
+    return this.post(`/logout`, token);
   }
 }
 

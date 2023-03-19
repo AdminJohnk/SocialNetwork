@@ -6,12 +6,13 @@ import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
 import { ConfigProvider, Form, Input } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGIN_SAGA } from "../../../redux/actionSaga/AuthActionSaga";
+import { setNavigate } from "../../../redux/Slice/FunctionSlice";
 
 const LoginForm = () => {
-
+  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -20,9 +21,10 @@ const LoginForm = () => {
       password: "",
     },
     onSubmit: (values) => {
+      dispatch(setNavigate({ navigate: navigate }));
       dispatch(
         LOGIN_SAGA({
-          userLogin: values
+          userLogin: values,
         })
       );
     },
@@ -49,18 +51,21 @@ const LoginForm = () => {
             },
           }}
         >
-          <Form className="w-full" style={{ width: "70%" }} onFinish={formik.handleSubmit}>
+          <Form
+            className="w-full"
+            style={{ width: "70%" }}
+            onFinish={formik.handleSubmit}
+          >
             <Form.Item
               name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your E-mail!"
-                 
+                  message: "Please input your E-mail!",
                 },
                 {
                   type: "email",
-                  message: "The input is not valid E-mail!"
+                  message: "The input is not valid E-mail!",
                 },
               ]}
             >
@@ -87,8 +92,9 @@ const LoginForm = () => {
             </Form.Item>
             <button
               type="submit"
-              className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold">
-                Login
+              className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold"
+            >
+              Login
             </button>
           </Form>
         </ConfigProvider>
@@ -118,7 +124,7 @@ const LoginForm = () => {
         <div className="noAccount text-center mt-8">
           <span>Don't you have an account yet? </span>
           <span className="signUp ml-1">
-            <NavLink className={navData => "" + (navData.isActive ? " activeControl" : " ")} to="/projectmanagement">Sign up</NavLink>
+            <NavLink to="/register">Sign up</NavLink>
           </span>
         </div>
       </div>

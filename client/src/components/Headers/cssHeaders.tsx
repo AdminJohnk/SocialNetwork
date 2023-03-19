@@ -4,6 +4,14 @@ import {
   flex_center_row,
 } from "../../util/cssVariable/cssVariable";
 
-const StyleTotal = styled.div``;
+const StyleTotal = styled.div`
+  .messageButton,
+  .notiButton,
+  .avatarButton {
+    &:hover {
+      background-color: ${(props) => props.theme.colorBg4};
+    }
+  }
+`;
 
 export default StyleTotal;

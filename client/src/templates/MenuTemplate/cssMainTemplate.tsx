@@ -4,6 +4,10 @@ import {
   flex_center_row,
 } from "../../util/cssVariable/cssVariable";
 
-const StyleTotal = styled.div``;
+
+const StyleTotal = styled.div`
+    
+
+`;
 
 export default StyleTotal;

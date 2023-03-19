@@ -10,5 +10,6 @@ export function* rootSaga() {
     //authSaga
     authSaga.theoDoicheckLoginSaga(),
     authSaga.theoDoiLoginSaga(),
+    authSaga.theoDoiLogoutSaga(),
   ]);
 }
