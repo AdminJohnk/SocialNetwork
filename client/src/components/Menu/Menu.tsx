@@ -70,31 +70,37 @@ const MenuMain = () => {
                 key: "1",
                 icon: <FontAwesomeIcon className="icon" icon={faHouse} />,
                 label: "Home",
+                title: "",
               },
               {
                 key: "2",
                 icon: <FontAwesomeIcon className="icon" icon={faMaximize} />,
                 label: "Explore",
+                title: "",
               },
               {
                 key: "3",
                 icon: <FontAwesomeIcon className="icon" icon={faGlobe} />,
                 label: "Collaborations",
+                title: "",
               },
               {
                 key: "4",
                 icon: <FontAwesomeIcon className="icon" icon={faBriefcase} />,
                 label: "Works",
+                title: "",
               },
               {
                 key: "5",
                 icon: <FontAwesomeIcon className="icon" icon={faBookmark} />,
                 label: "Bookmarks",
+                title: "",
               },
               {
                 key: "6",
                 icon: <FontAwesomeIcon className="icon" icon={faPeopleGroup} />,
                 label: "All Communities",
+                title: "",
               },
               {
                 type: "divider",
@@ -113,6 +119,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Javascript",
+                title: "",
               },
               {
                 key: "8",
@@ -124,6 +131,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "GraphQL",
+                title: "",
               },
               {
                 key: "9",
@@ -135,6 +143,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Git",
+                title: "",
               },
               {
                 key: "10",
@@ -146,6 +155,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Github",
+                title: "",
               },
 
               {
@@ -158,6 +168,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Python",
+                title: "",
               },
               {
                 key: "12",
@@ -169,6 +180,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "React",
+                title: "",
               },
               {
                 key: "13",
@@ -180,6 +192,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Python",
+                title: "",
               },
               {
                 key: "14",
@@ -191,6 +204,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "React",
+                title: "",
               },
               {
                 key: "15",
@@ -202,6 +216,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "Python",
+                title: "",
               },
               {
                 key: "16",
@@ -213,6 +228,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "React",
+                title: "",
               },
               {
                 key: "17",
@@ -224,6 +240,7 @@ const MenuMain = () => {
                   />
                 ),
                 label: "React",
+                title: "",
               },
             ]}
           />

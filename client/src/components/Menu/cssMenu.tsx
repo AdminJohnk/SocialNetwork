@@ -14,18 +14,6 @@ const StyleTotal = styled.div`
       /* color: red; */
     }
   }
-  .ant-menu-inline-collapsed-tooltip { display: none; }
-
-
-  // nondisplay tooltip menu
-  .ant-menu-submenu-title {
-    .ant-menu-submenu-arrow {
-      display: none;
-    }
-  }
-
-
-
 `;
 
 export default StyleTotal;
