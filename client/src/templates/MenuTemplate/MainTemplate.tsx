@@ -28,7 +28,7 @@ const MainTemplate = (props: any) => {
       <Headers />
       <Layout hasSider>
         <Menu />
-        <Content style={{ marginLeft: 240, marginTop: 76 }}>
+        <Content style={{ marginLeft: 80, marginTop: 76 }}>
           <Component />
         </Content>
       </Layout>

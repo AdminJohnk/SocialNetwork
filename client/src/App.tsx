@@ -14,7 +14,7 @@ const App = () => {
     <>
       <LoadingComponent />
       <Routes>
-        <Route path="/" element={<MainTemplate Component={NewFeed} />} />
+        <Route path="/" element={<MainTemplate Component={TimeLine} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/me" element={<TimeLine />} />

@@ -49,6 +49,7 @@ const MenuMain = () => {
           collapsible
           collapsed={collapsed}
           width={240}
+          // collapsedWidth={80} 
           className="sider"
           style={{
             overflow: "auto",
@@ -113,7 +114,7 @@ const MenuMain = () => {
                 key: "7",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/javascript.png"
+                    src="/images/MainTemplate/Sider/javascript.png"
                     shape="square"
                     size={20}
                   />
@@ -125,7 +126,7 @@ const MenuMain = () => {
                 key: "8",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/graphQL.png"
+                    src="/images/MainTemplate/Sider/graphQL.png"
                     shape="square"
                     size={20}
                   />
@@ -137,7 +138,7 @@ const MenuMain = () => {
                 key: "9",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/git.png"
+                    src="/images/MainTemplate/Sider/git.png"
                     shape="square"
                     size={20}
                   />
@@ -149,7 +150,7 @@ const MenuMain = () => {
                 key: "10",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/github.png"
+                    src="/images/MainTemplate/Sider/github.png"
                     shape="square"
                     size={20}
                   />
@@ -162,7 +163,7 @@ const MenuMain = () => {
                 key: "11",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/python.png"
+                    src="/images/MainTemplate/Sider/python.png"
                     shape="square"
                     size={20}
                   />
@@ -174,7 +175,7 @@ const MenuMain = () => {
                 key: "12",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/reactjs.png"
+                    src="/images/MainTemplate/Sider/reactjs.png"
                     shape="square"
                     size={20}
                   />
@@ -186,7 +187,7 @@ const MenuMain = () => {
                 key: "13",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/python.png"
+                    src="/images/MainTemplate/Sider/python.png"
                     shape="square"
                     size={20}
                   />
@@ -198,7 +199,7 @@ const MenuMain = () => {
                 key: "14",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/reactjs.png"
+                    src="/images/MainTemplate/Sider/reactjs.png"
                     shape="square"
                     size={20}
                   />
@@ -210,7 +211,7 @@ const MenuMain = () => {
                 key: "15",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/python.png"
+                    src="/images/MainTemplate/Sider/python.png"
                     shape="square"
                     size={20}
                   />
@@ -222,7 +223,7 @@ const MenuMain = () => {
                 key: "16",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/reactjs.png"
+                    src="/images/MainTemplate/Sider/reactjs.png"
                     shape="square"
                     size={20}
                   />
@@ -234,7 +235,7 @@ const MenuMain = () => {
                 key: "17",
                 icon: (
                   <Avatar
-                    src="/images/NewfeedPage/Community/reactjs.png"
+                    src="/images/MainTemplate/Sider/reactjs.png"
                     shape="square"
                     size={20}
                   />
