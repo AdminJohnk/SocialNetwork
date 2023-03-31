@@ -1,4 +1,3 @@
-import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from "styled-components";
 import {
   flex_center_column,
@@ -6,16 +5,16 @@ import {
   commonColor,
 } from "../../util/cssVariable/cssVariable";
 
-
 const StyleTotal = styled.div`
-  .createpost-body-editor {
-    width: 50px;
-    height: 200px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+  background-color: ${(props) => props.theme.colorBg1};
+  height: 200vh;
+  color: ${(props) => props.theme.colorText1};
+  .post {
+    padding-left: 180px;
+    padding-right: 180px;
+    padding-top: 20px;
   }
+
 `;
 
 export default StyleTotal;
