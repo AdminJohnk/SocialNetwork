@@ -10,16 +10,16 @@ import { Navigate } from "react-router-dom";
 
 const MainTemplate = (props: any) => {
   // Kiểm tra đã login hay chưa
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(CHECK_LOGIN_SAGA());
-  }, []);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(CHECK_LOGIN_SAGA());
+  // }, []);
 
-  const checkLogin = useSelector((state: any) => state.authReducer.login);
+  // const checkLogin = useSelector((state: any) => state.authReducer.login);
 
-  if (!checkLogin) {
-    return <Navigate to="/login" />;
-  }
+  // if (!checkLogin) {
+  //   return <Navigate to="/login" />;
+  // }
 
   const { Component } = props;
 

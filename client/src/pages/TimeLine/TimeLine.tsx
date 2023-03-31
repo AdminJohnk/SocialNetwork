@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { ThemeProvider } from "styled-components";
 import StyleTotal from "./cssTimeLine";
 import { getTheme } from "../../util/functions/ThemeFunction";
@@ -10,7 +10,10 @@ import {
   Row,
   Space,
   Switch,
+  Tabs,
+  Tag,
   theme,
+  Tooltip,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../../redux/Slice/ThemeSlice";
@@ -23,34 +26,92 @@ import {
   faLocationDot,
   faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFacebookF,
+  faTwitter,
+  faGithub,
+  faInstagram,
+  faLinkedin,
+} from "@fortawesome/free-brands-svg-icons";
 import { NavLink } from "react-router-dom";
+import { commonColor } from "../../util/cssVariable/cssVariable";
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import TabPane from "antd/es/tabs/TabPane";
 
 // A array include
 // Java, Back End, Data Analytics, Front End, Full Stack, Mobile, DevOps, Project Management, Design, Business, Career, Problem Solver, App Design
 
 const descArray = [
-  // "Java",
-  // "Back End",
-  // "Data Analytics",
-  // "Front End",
-  // "Full Stack",
-  // "DevOps",
-  // "Project Management",
-  // "Design",
-  // "Career",
-  // "Problem Solver",
-  // "App Design",
   {
     icon: faSnowflake,
     title: "Java",
-    color: "#ed0e0e",
-    Bghover: "#e13030",
+    color1: "#ed0e0e",
+    color: "magenta",
+  },
+  {
+    icon: faSnowflake,
+    title: "Back End",
+    color1: "#009B93",
+    color: "cyan",
+  },
+  {
+    icon: faSnowflake,
+    title: "Data Analytics",
+    color1: "#f5a623",
+    color: "lime",
+  },
+  {
+    icon: faSnowflake,
+    title: "Front End",
+    color1: "#7B00ED",
+    color: "volcano",
+  },
+  {
+    icon: faSnowflake,
+    title: "Full Stack",
+    color1: "#00B0F0",
+    color: "geekblue",
+  },
+  {
+    icon: faSnowflake,
+    title: "DevOps",
+    color1: "#7B00ED",
+    color: "purple",
+  },
+  {
+    icon: faSnowflake,
+    title: "Project Management",
+    color1: "#FE6700",
+    color: "gold",
+  },
+  {
+    icon: faSnowflake,
+    title: "Design",
+    color1: "#009B93",
+    color: "blue",
+  },
+  {
+    icon: faSnowflake,
+    title: "Career",
+    color1: "#00BCD4",
+    color: "orange",
+  },
+  {
+    icon: faSnowflake,
+    title: "Problem Solver",
+    color1: "#009B36",
+    color: "geekblue",
+  },
+  {
+    icon: faSnowflake,
+    title: "App Design",
+    color1: "#526D7B",
+    color: "lime",
   },
 ];
 
 const TimeLine = () => {
-
-  const [bgColorItem, setBgColorItem] = useState("transparent");
+  const [isHover, setIsHover] = useState(false);
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -106,9 +167,9 @@ const TimeLine = () => {
                 </div>
               </Col>
             </Row>
-            <Row className="id_address_join">
-              <span className="id mr-2">@tianrongliew</span>
-              <span className="address mr-2">
+            <div className="id_address_join">
+              <span className="id item mr-2">@tianrongliew</span>
+              <span className="address item mr-2">
                 <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
                 Global
               </span>
@@ -116,27 +177,105 @@ const TimeLine = () => {
                 <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
                 Joined Jun 2020
               </span>
-            </Row>
-            <Row className="mt-5">
-              <Col span={18}>
-                <div className="description flex flex-wrap">
-                  {descArray.map((item, index) => {
-                    return (
-                      <span
-                        className="item px-3 py-1 mx-2 my-1"
-                        key={index}
-                      >
-                        <FontAwesomeIcon
-                          className="icon mr-2"
-                          icon={item.icon}
-                        />
-                        {item.title}
-                      </span>
-                    );
-                  })}
-                </div>
-              </Col>
-            </Row>
+            </div>
+            <Col span={18} className="mt-5">
+              <div className="description flex flex-wrap">
+                {descArray.map((item, index) => {
+                  return (
+                    <Tag
+                      className="item mx-2 my-2"
+                      key={index}
+                      // style={{
+                      //   color: item.color1,
+                      // }}
+                      color={item.color}
+                    >
+                      <FontAwesomeIcon className="icon mr-2" icon={item.icon} />
+                      {item.title}
+                    </Tag>
+                  );
+                })}
+              </div>
+            </Col>
+            <div className="follow mt-5">
+              <span className="follower item mr-2">
+                <span className="mr-1">{2710}</span> Follower
+              </span>
+              <span className="following item mr-2">
+                <span className="mr-1">{78}</span> Following
+              </span>
+              <span className="post mr-2">
+                <span className="mr-1">{56}</span> Post
+              </span>
+            </div>
+            <div className="experience mt-5">
+              <div className="item mt-2">
+                <FontAwesomeIcon
+                  className="icon mr-2"
+                  icon={faBriefcase}
+                  style={{ color: commonColor.colorBlue1 }}
+                />
+                <span className="company mr-2">Rabiloo</span>
+                <span className="position mr-2">Java Developer |</span>
+                <span className="date">2019.10 ~ 2022.10</span>
+              </div>
+              <div className="item mt-2">
+                <FontAwesomeIcon
+                  className="icon mr-2"
+                  icon={faBriefcase}
+                  style={{ color: commonColor.colorBlue1 }}
+                />
+                <span className="company mr-2">Pan United</span>
+                <span className="position mr-2">Software Engineer |</span>
+                <span className="date">~ 2022.10</span>
+              </div>
+            </div>
+            <div className="contact mt-5">
+              <Space>
+                <Avatar
+                  className="item"
+                  icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                />
+                <Avatar
+                  className="item"
+                  icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                />
+                <Avatar
+                  className="item"
+                  icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                />
+                <Avatar
+                  className="item"
+                  icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                />
+                <Avatar
+                  className="item"
+                  icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                />
+              </Space>
+            </div>
+            <div className="mainContain mt-5">
+              <Tabs
+                defaultActiveKey="1"
+                // onChange={onChange}
+              >
+                <TabPane tab="Introduce" key="1">
+                  Introduce
+                </TabPane>
+                <TabPane tab="Post" key="2">
+                  Post
+                </TabPane>
+                <TabPane tab="Show" key="3">
+                  Show
+                </TabPane>
+                <TabPane tab="Seri" key="4">
+                  Seri
+                </TabPane>
+                <TabPane tab="Guest book" key="5">
+                  Guest book
+                </TabPane>
+              </Tabs>
+            </div>
           </Col>
         </Row>
       </StyleTotal>

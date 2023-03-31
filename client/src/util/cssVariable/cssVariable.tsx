@@ -27,13 +27,13 @@ export const lightTheme = {
   controlItemBgActive: "#4e4b4b",
 };
 export const lightThemeSet = {
-  colorText1: "#FFFFFFD9",
-  colorText2: "#d4d4d4",
-  colorText3: "#FFFFFF73",
-  colorBg1: "#101011",
+  colorText1: "#101011",
+  colorText2: "#1f1f23",
+  colorText3: "#27272c",
+  colorBg1: "#e8e8f1",
   colorBg2: "#527575",
-  colorBg3: "#4B4B4B",
-  colorBg4: "#3b3a3a",
+  colorBg3: "#4785cd",
+  colorBg4: "#2fc2b3",
 };
 
 //--------------------------------------------

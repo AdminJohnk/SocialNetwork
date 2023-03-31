@@ -6,25 +6,6 @@ import {
   commonColor,
 } from "../../util/cssVariable/cssVariable";
 
-const descArray = [
-  // "Java",
-  // "Back End",
-  // "Data Analytics",
-  // "Front End",
-  // "Full Stack",
-  // "DevOps",
-  // "Project Management",
-  // "Design",
-  // "Career",
-  // "Problem Solver",
-  // "App Design",
-  {
-    icon: faSnowflake,
-    title: "Java",
-    color: "#ed0e0e",
-    Bghover: "#e13030",
-  },
-];
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
@@ -56,6 +37,7 @@ const StyleTotal = styled.div`
     }
     .follow {
       border: 1px solid ${(props) => props.theme.colorText1};
+      color: ${(props) => props.theme.colorText1};
       :hover {
         color: ${commonColor.colorBlue2};
         border: 1px solid ${commonColor.colorBlue2};
@@ -66,14 +48,7 @@ const StyleTotal = styled.div`
   }
   .id_address_join {
     color: ${(props) => props.theme.colorText3};
-    .id {
-      display: inline-block;
-      ::after {
-        content: "•";
-        margin-left: 0.5rem;
-      }
-    }
-    .address {
+    .item {
       display: inline-block;
       ::after {
         content: "•";
@@ -87,6 +62,36 @@ const StyleTotal = styled.div`
       border-radius: 0.8rem;
       font-size: 0.8rem;
       font-weight: 500;
+      :hover {
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+    }
+  }
+  .follow{
+    color: ${(props) => props.theme.colorText3};
+    .item {
+      display: inline-block;
+      ::after {
+        content: "•";
+        margin-left: 0.5rem;
+      }
+    }
+  }
+  .experience{
+    font-size: 0.9rem;
+    .company{
+      font-weight: 600;
+    }
+  }
+  .contact{
+    .item{
+      background-color: ${(props) => props.theme.colorBg3};
+      :hover{
+        background-color: ${(props) => props.theme.colorBg4};
+        cursor: pointer;
+        transition: all 0.3s;
+      }
     }
   }
 `;
