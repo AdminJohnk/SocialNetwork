@@ -1,25 +1,34 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
 import StyleTotal from "./cssLoginForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
-import { REGIS_USER_SAGA } from "../../../redux/actionSaga/UserAction";
+import { ConfigProvider, Form, Input } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import { useNavigate, NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { LOGIN_SAGA } from "../../../redux/actionSaga/AuthActionSaga";
+import { setNavigate } from "../../../redux/Slice/FunctionSlice";
 
 const LoginForm = () => {
+  let navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    dispatch(
-      REGIS_USER_SAGA({
-        userRegister: {
-          userName: "Admintck57",
-          passWord: "Admintck",
-        }
-      })
-    );
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      dispatch(setNavigate({ navigate: navigate }));
+      dispatch(
+        LOGIN_SAGA({
+          userLogin: values,
+        })
+      );
+    },
+  });
 
   return (
     <StyleTotal>
@@ -31,31 +40,64 @@ const LoginForm = () => {
           <h2 className="title">Welcome back!</h2>
         </div>
 
-        {/* Form Input */}
-        <form className="container-fluid form" onSubmit={handleSubmit}>
-          <div className="form-group w-full">
-            <input
-              className="form-control w-full h-9 mb-5 p-5"
-              name="userName"
-              type="text"
-              placeholder="Username"
-            />
-            <input
-              className="form-control w-full h-9 mb-5 p-5"
-              name="passWord"
-              type="password"
-              placeholder="Password"
-            />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorTextBase: "#d4d4d4",
+              colorBgBase: "#202021",
+              lineWidth: 0,
+              controlHeight: 40,
+              borderRadius: 0,
+            },
+          }}
+        >
+          <Form
+            className="w-full"
+            style={{ width: "70%" }}
+            onFinish={formik.handleSubmit}
+          >
+            <Form.Item
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your E-mail!",
+                },
+                {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Email"
+                allowClear
+                prefix={<MailOutlined />}
+                onChange={formik.handleChange}
+              ></Input>
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your password!",
+                },
+              ]}
+            >
+              <Input.Password
+                placeholder="Password"
+                onChange={formik.handleChange}
+              ></Input.Password>
+            </Form.Item>
             <button
               type="submit"
               className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold"
             >
               Login
             </button>
-          </div>
-          <div className="forgotPass">Forgotten Password ?</div>
-        </form>
-
+          </Form>
+        </ConfigProvider>
         <div className="anotherLogin mt-10">
           <div className="title relative">
             <span className="absolute" style={{ color: "#d4d4d4" }}>
@@ -81,7 +123,9 @@ const LoginForm = () => {
 
         <div className="noAccount text-center mt-8">
           <span>Don't you have an account yet? </span>
-          <span className="signUp ml-1">Sign up</span>
+          <span className="signUp ml-1">
+            <NavLink to="/register">Sign up</NavLink>
+          </span>
         </div>
       </div>
     </StyleTotal>
