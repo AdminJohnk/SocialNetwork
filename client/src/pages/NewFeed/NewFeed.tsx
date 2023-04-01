@@ -28,13 +28,8 @@ const NewFeed = () => {
         <div className="newfeed">
           <div className="createpost">
             <div className="createpost-header">
-              Create A Post
             </div>
             <div className="createpost-body">
-              <Row>
-                <Avatar size={64} src="https://vcdn1-giaitri.vnecdn.net/2022/09/23/-2181-1663929656.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=apYgDs9tYQiwn7pcDOGbNg" />
-                <div>Lee Quang Baor</div>
-              </Row>
               <div className="createpost-body-editor">
 
                 <QuillEditor />
