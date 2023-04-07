@@ -9,7 +9,7 @@ import {
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
-  height: 200vh;
+  height: fit-content;
   color: ${(props) => props.theme.colorText1};
   .cover {
     background-image: url("./images/TimeLinePage/cover2.jpg");

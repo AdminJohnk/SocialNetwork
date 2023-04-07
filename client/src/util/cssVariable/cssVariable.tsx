@@ -41,6 +41,7 @@ export const lightThemeSet = {
 export const commonColor = {
   colorBlue1: "#1f67e3",
   colorBlue2: "#256adf",
+  colorBlue3: "#1f57b8",
   colorGreen1: "#00ae8c",
 };
 

@@ -7,6 +7,8 @@ import { ConfigProvider } from "antd";
 import StyleTotal from "./cssNewFeed";
 
 const NewFeed = () => {
+  const dispatch = useDispatch();
+
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();

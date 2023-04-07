@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import StyleTotal from "./cssTimeLine";
 import { getTheme } from "../../util/functions/ThemeFunction";
@@ -37,6 +37,9 @@ import { NavLink } from "react-router-dom";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import TabPane from "antd/es/tabs/TabPane";
+import Post from "../../components/Post/Post";
+import NewPost from "../../components/NewPost/NewPost";
+import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 
 // A array include
 // Java, Back End, Data Analytics, Front End, Full Stack, Mobile, DevOps, Project Management, Design, Business, Career, Problem Solver, App Design
@@ -111,12 +114,23 @@ const descArray = [
 ];
 
 const TimeLine = () => {
-  const [isHover, setIsHover] = useState(false);
+  const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
+  useEffect(() => {
+    dispatch(
+      GET_ALL_POST_BY_USERID_SAGA({
+        userId: "6413cbb234fb997a869e501a",
+      })
+    );
+  }, [dispatch]);
+
+  const postArray = useSelector((state: any) => state.postReducer.postArr);
+  const userInfo = useSelector((state: any) => state.postReducer.userInfo);
 
   return (
     <ConfigProvider
@@ -185,9 +199,6 @@ const TimeLine = () => {
                     <Tag
                       className="item mx-2 my-2"
                       key={index}
-                      // style={{
-                      //   color: item.color1,
-                      // }}
                       color={item.color}
                     >
                       <FontAwesomeIcon className="icon mr-2" icon={item.icon} />
@@ -256,22 +267,26 @@ const TimeLine = () => {
             </div>
             <div className="mainContain mt-5">
               <Tabs
-                defaultActiveKey="1"
+                defaultActiveKey="2"
                 // onChange={onChange}
               >
-                <TabPane tab="Introduce" key="1">
+                <TabPane tab="Introduce" key="1" className="mt-10">
                   Introduce
                 </TabPane>
-                <TabPane tab="Post" key="2">
-                  Post
+                <TabPane tab="Post" key="2" className="mt-10">
+                  <NewPost />
+                  {/* <Post /> */}
+                  {postArray.map((item: any, index: number) => {
+                    return <Post key={index} post={item} userInfo={userInfo} />;
+                  })}
                 </TabPane>
-                <TabPane tab="Show" key="3">
+                <TabPane tab="Show" key="3" className="mt-10">
                   Show
                 </TabPane>
-                <TabPane tab="Seri" key="4">
+                <TabPane tab="Seri" key="4" className="mt-10">
                   Seri
                 </TabPane>
-                <TabPane tab="Guest book" key="5">
+                <TabPane tab="Guest book" key="5" className="mt-10">
                   Guest book
                 </TabPane>
               </Tabs>

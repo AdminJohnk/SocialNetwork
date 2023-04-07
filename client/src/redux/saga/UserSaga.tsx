@@ -9,13 +9,11 @@ function* registerUserSaga({ payload }: any) {
     const { data, status } = yield userService.registerUser(
       payload.userRegister
     );
-
     if (status === STATUS_CODE.CREATED) {
       localStorage.setItem(TOKEN, JSON.stringify(data.content.accessToken));
-    } else {
-      localStorage.removeItem(TOKEN);
     }
   } catch (err: any) {
+    localStorage.removeItem(TOKEN);
     console.log(err.response.data);
   }
 }
