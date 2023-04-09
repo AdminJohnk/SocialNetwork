@@ -14,16 +14,16 @@ import "react-quill/dist/quill.snow.css";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getTheme } from "../../util/functions/ThemeFunction";
-import StyleTotal from "./cssNewPost";
+import { getTheme } from "../../../util/functions/ThemeFunction";
+import StyleTotal from "./cssEditPostForm";
 import ImageCompress from "quill-image-compress";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import { useFormik } from "formik";
-import { TOKEN } from "../../util/constants/SettingSystem";
-import { CREATE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
+import { TOKEN } from "../../../util/constants/SettingSystem";
+import { CREATE_POST_SAGA } from "../../../redux/actionSaga/PostActionSaga";
 import { UploadOutlined } from "@ant-design/icons";
 Quill.register("modules/imageCompress", ImageCompress);
 
@@ -34,7 +34,12 @@ var toolbarOptions = [
   ["link", "image"],
 ];
 
-const NewPost = () => {
+interface PostProps {
+  title: any;
+  content: any;
+}
+
+const EditPostForm = (PostProps: any) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -43,11 +48,14 @@ const NewPost = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  // Title
+  const [title, setTitle] = useState(PostProps.title);
+
   // Quill Editor
   let [quill, setQuill]: any = useState(null);
 
   useEffect(() => {
-    quill = new Quill("#editor", {
+    quill = new Quill("#editorDrawer", {
       modules: {
         toolbar: toolbarOptions,
       },
@@ -56,8 +64,16 @@ const NewPost = () => {
     quill.on("text-change", function () {
       handleQuillChange();
     });
-    setQuill(quill);
   }, []);
+
+  useEffect(() => {
+    // Hiển thị nội dung trong quill
+    quill.root.innerHTML = PostProps.content;
+    setQuill(quill);
+    setTitle(PostProps.title);
+    formik.setFieldValue("title", PostProps.title);
+    console.log(formik.values);
+  }, [PostProps, quill]);
 
   const handleQuillChange = () => {
     const text = quill.root.innerHTML;
@@ -110,21 +126,9 @@ const NewPost = () => {
       }}
     >
       {contextHolder}
-      <StyleTotal theme={themeColorSet} className="w-8/12 rounded-lg mb-4">
+      <StyleTotal theme={themeColorSet} className="rounded-lg mb-4">
         <div className="newPost px-4 py-3">
-          <div
-            className="newPostHeader text-center text-2xl font-bold"
-            style={{ color: themeColorSet.colorText1 }}
-          >
-            Create Post
-          </div>
           <div className="newPostBody">
-            <div className="name_avatar flex items-center">
-              <Avatar size={50} src="./images/TimeLinePage/avt.jpg" />
-              <div className="name font-bold ml-2">
-                <NavLink to="/profile">Kien Tran</NavLink>
-              </div>
-            </div>
             <div className="AddTitle mt-4 z-10">
               <Form.Item name="title">
                 <Input
@@ -133,11 +137,11 @@ const NewPost = () => {
                   style={{ borderColor: themeColorSet.colorText3 }}
                   maxLength={150}
                   onChange={formik.handleChange}
-                ></Input>
+                />
               </Form.Item>
             </div>
             <div className="AddContent mt-4">
-              <div id="editor" />
+              <div id="editorDrawer" />
             </div>
           </div>
           <div className="newPostFooter mt-3 flex justify-between items-center">
@@ -176,18 +180,8 @@ const NewPost = () => {
                 </Upload>
               </span>
             </div>
-            <div className="newPostFooter__right">
-              <button
-                type="submit"
-                className="createButton w-full font-bold px-4 py-2"
-                style={{ color: themeColorSet.colorText1 }}
-                onClick={() => {
-                  formik.handleSubmit();
-                }}
-              >
-                Create
-              </button>
-            </div>
+            {/* <div className="newPostFooter__right">
+            </div> */}
           </div>
         </div>
       </StyleTotal>
@@ -195,4 +189,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default EditPostForm;

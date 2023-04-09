@@ -38,8 +38,10 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 import { DELETE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import { NotificationPlacement } from "antd/es/notification/interface";
+import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
+import EditPostForm from "../Form/EditPostForm/EditPostForm";
 
-interface PostProps {
+interface PostProps { 
   post: any;
   userInfo: any;
 }
@@ -104,6 +106,15 @@ const Post = (PostProps: any) => {
           <span className="ml-2">Edit Post</span>
         </div>
       ),
+      onClick: () => {
+        dispatch(openDrawer({
+          title: "Edit Post",
+          component: <EditPostForm 
+          title={PostProps.post.title}
+          content={PostProps.post.content}
+          />
+        }))
+      },
     },
     {
       key: "3",
@@ -163,7 +174,6 @@ const Post = (PostProps: any) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      ;
       <StyleTotal theme={themeColorSet} className="w-8/12 rounded-lg mb-4">
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

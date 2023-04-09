@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoadingComponent from "./components/GlobalSetting/LoadingComponent/LoadingComponent";
+import DrawerHOC from "./HOC/Drawer/DrawerHOC";
 import Login from "./pages/Login/Login";
 import NewFeed from "./pages/NewFeed/NewFeed";
 import Register from "./pages/Register/Register";
@@ -13,6 +14,7 @@ const App = () => {
   return (
     <>
       <LoadingComponent />
+      <DrawerHOC/>
       <Routes>
         <Route path="/" element={<MainTemplate Component={TimeLine} />} />
         <Route path="/login" element={<Login />} />
