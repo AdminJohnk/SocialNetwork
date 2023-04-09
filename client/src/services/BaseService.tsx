@@ -15,7 +15,15 @@ export class BaseService {
       url: `${DOMAIN_NAME}${url}`,
       method: "POST",
       data: model,
-      headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) },
+      // headers: { Authorization: "Bearer " + localStorage.getItem(TOKEN) },
+      // send file through req file
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem(TOKEN),
+      },
+      
+      
+
     });
   }
   get(url: string) {

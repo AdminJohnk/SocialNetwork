@@ -1,4 +1,13 @@
-import { Avatar, ConfigProvider, Divider, Form, Input, Popover } from "antd";
+import {
+  Avatar,
+  Button,
+  ConfigProvider,
+  Divider,
+  Form,
+  Input,
+  Popover,
+  Upload,
+} from "antd";
 import Quill from "quill";
 import "react-quill/dist/quill.snow.css";
 import React, { useEffect, useState } from "react";
@@ -14,6 +23,7 @@ import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import { useFormik } from "formik";
 import { TOKEN } from "../../util/constants/SettingSystem";
 import { CREATE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
+import { UploadOutlined } from "@ant-design/icons";
 Quill.register("modules/imageCompress", ImageCompress);
 
 var toolbarOptions = [
@@ -32,7 +42,7 @@ const NewPost = () => {
   const { themeColorSet } = getTheme();
 
   // Quill Editor
-  let [quill, setQuill] : any = useState(null);
+  let [quill, setQuill]: any = useState(null);
 
   useEffect(() => {
     quill = new Quill("#editor", {
@@ -57,6 +67,7 @@ const NewPost = () => {
     initialValues: {
       title: "",
       content: "",
+      linkImage: null,
     },
     onSubmit: (values) => {
       dispatch(
@@ -66,6 +77,13 @@ const NewPost = () => {
       );
     },
   });
+
+
+  const [file, setFile] : any = useState([]);
+  const handleUpload = (info : any) => {
+    setFile(info.fileList[0].originFileObj);
+    formik.setFieldValue("linkImage", info.fileList[0].originFileObj);
+  };
 
   return (
     <ConfigProvider
@@ -129,7 +147,7 @@ const NewPost = () => {
               >
                 <span className="emoji">
                   <FontAwesomeIcon
-                    className="item mr-3 ml-3"
+                    className="item mr-3 ml-3" 
                     size="lg"
                     icon={faFaceSmile}
                   />
@@ -137,6 +155,14 @@ const NewPost = () => {
               </Popover>
               <span className="code">
                 <FontAwesomeIcon className="item" size="lg" icon={faCode} />
+              </span>
+              <span>
+                <Upload
+                  listType="picture"
+                  onChange={handleUpload}
+                >
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload>
               </span>
             </div>
             <div className="newPostFooter__right">

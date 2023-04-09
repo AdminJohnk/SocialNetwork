@@ -3,6 +3,7 @@ import { postService } from "../../services/PostService";
 import { ID_USER, STATUS_CODE } from "../../util/constants/SettingSystem";
 import {
   CREATE_POST_SAGA,
+  DELETE_POST_SAGA,
   GET_ALL_POST_BY_USERID_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
@@ -27,8 +28,40 @@ export function* theoDoiGetAllPostByUserIDSaga() {
 // createPostSaga Saga
 function* createPostSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.createPost(payload.postCreate);
+    const postCreate = {
+      title: payload.title,
+      content: payload.content,
+    };
+    const postImage = payload.linkImage;
+    const { data, status } = yield postService.createPost(
+      postCreate,
+      postImage
+    );
     if (status === STATUS_CODE.CREATED) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+    console.log(payload);
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiCreatePostSaga() {
+  yield takeLatest(CREATE_POST_SAGA, createPostSaga);
+}
+
+
+// Delete Post Saga
+
+
+export function* deletePostSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.deletePost(payload);
+    if (status === STATUS_CODE.SUCCESS) {
       yield put(
         GET_ALL_POST_BY_USERID_SAGA({
           userId: "me",
@@ -39,7 +72,18 @@ function* createPostSaga({ payload }: any) {
     console.log(err.response.data);
   }
 }
-
-export function* theoDoiCreatePostSaga() {
-  yield takeLatest(CREATE_POST_SAGA, createPostSaga);
+export function* theoDoiDeletePostSaga() {
+  yield takeLatest(DELETE_POST_SAGA, deletePostSaga);
 }
+
+
+
+
+
+
+
+
+
+
+
+

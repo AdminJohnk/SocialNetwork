@@ -124,7 +124,7 @@ const TimeLine = () => {
   useEffect(() => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
-        userId: "6413cbb234fb997a869e501a",
+        userId: "me",
       })
     );
   }, [dispatch]);
@@ -275,9 +275,8 @@ const TimeLine = () => {
                 </TabPane>
                 <TabPane tab="Post" key="2" className="mt-10">
                   <NewPost />
-                  {/* <Post /> */}
                   {postArray.map((item: any, index: number) => {
-                    return <Post key={index} post={item} userInfo={userInfo} />;
+                    return <Post key={index} post={item} userInfo={userInfo} />
                   })}
                 </TabPane>
                 <TabPane tab="Show" key="3" className="mt-10">
