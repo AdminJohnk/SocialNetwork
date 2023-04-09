@@ -3,11 +3,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssDrawerHOC";
-import { Button, Drawer, Space } from 'antd';
+import { Button, Drawer, Space } from "antd";
 import { closeDrawer } from "../../redux/Slice/DrawerHOCSlice";
 
 const DrawerHOC = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -18,7 +18,7 @@ const DrawerHOC = () => {
     useSelector((state: any) => state.drawerHOCReducer);
 
   const onClose = () => {
-    dispatch(closeDrawer({})); 
+    dispatch(closeDrawer({}));
   };
 
   return (
@@ -28,7 +28,7 @@ const DrawerHOC = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <>
+        <div>
           <Drawer
             title={title}
             width={720}
@@ -40,7 +40,16 @@ const DrawerHOC = () => {
             footer={
               <div style={{ textAlign: "right" }}>
                 <Space>
-                  <Button onClick={onClose}>Cancel</Button>
+                  <Button
+                    className="btnCancelDrawer"
+                    style={{
+                      borderColor: themeColorSet.colorText1,
+                      color: themeColorSet.colorText1,
+                    }}
+                    onClick={onClose}
+                  >
+                    Cancel
+                  </Button>
                   <Button onClick={callBackSubmit} type="primary">
                     Submit
                   </Button>
@@ -50,7 +59,7 @@ const DrawerHOC = () => {
           >
             {ComponentContentDrawer}
           </Drawer>
-        </>
+        </div>
       </StyleTotal>
     </ConfigProvider>
   );

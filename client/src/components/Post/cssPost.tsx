@@ -6,7 +6,6 @@ import {
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
-  
   .post {
     .postHeader {
       .postHeader__left {

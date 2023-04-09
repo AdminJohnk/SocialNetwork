@@ -48,8 +48,26 @@ const EditPostForm = (PostProps: any) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  // Title
-  const [title, setTitle] = useState(PostProps.title);
+  // Formik
+  const formik = useFormik({
+    initialValues: {
+      title: PostProps.title,
+      content: PostProps.content,
+      linkImage: null,
+    },
+    enableReinitialize: true,
+    onSubmit: (values) => {
+      if (quill.root.innerHTML === "<p><br></p>") {
+        error();
+      } else {
+        dispatch(
+          CREATE_POST_SAGA({
+            postCreate: values,
+          })
+        );
+      }
+    },
+  });
 
   // Quill Editor
   let [quill, setQuill]: any = useState(null);
@@ -60,6 +78,9 @@ const EditPostForm = (PostProps: any) => {
         toolbar: toolbarOptions,
       },
       theme: "snow",
+      scrollingContainer: "#scrolling-container",
+
+
     });
     quill.on("text-change", function () {
       handleQuillChange();
@@ -70,9 +91,6 @@ const EditPostForm = (PostProps: any) => {
     // Hiển thị nội dung trong quill
     quill.root.innerHTML = PostProps.content;
     setQuill(quill);
-    setTitle(PostProps.title);
-    formik.setFieldValue("title", PostProps.title);
-    console.log(formik.values);
   }, [PostProps, quill]);
 
   const handleQuillChange = () => {
@@ -87,26 +105,6 @@ const EditPostForm = (PostProps: any) => {
       content: "Please enter the content",
     });
   };
-
-  // Formik
-  const formik = useFormik({
-    initialValues: {
-      title: "",
-      content: "",
-      linkImage: null,
-    },
-    onSubmit: (values) => {
-      if (quill.root.innerHTML === "<p><br></p>") {
-        error();
-      } else {
-        dispatch(
-          CREATE_POST_SAGA({
-            postCreate: values,
-          })
-        );
-      }
-    },
-  });
 
   const [file, setFile]: any = useState([]);
   const handleUpload = (info: any) => {
@@ -130,15 +128,15 @@ const EditPostForm = (PostProps: any) => {
         <div className="newPost px-4 py-3">
           <div className="newPostBody">
             <div className="AddTitle mt-4 z-10">
-              <Form.Item name="title">
-                <Input
-                  placeholder="Add a Title"
-                  allowClear
-                  style={{ borderColor: themeColorSet.colorText3 }}
-                  maxLength={150}
-                  onChange={formik.handleChange}
-                />
-              </Form.Item>
+              <Input
+                name="title"
+                placeholder="Add a Title"
+                allowClear
+                value={formik.values.title}
+                style={{ borderColor: themeColorSet.colorText3 }}
+                maxLength={150}
+                onChange={formik.handleChange}
+              ></Input>
             </div>
             <div className="AddContent mt-4">
               <div id="editorDrawer" />

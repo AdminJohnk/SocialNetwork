@@ -36,12 +36,12 @@ import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { commonColor } from "../../util/cssVariable/cssVariable";
-import { DELETE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
+import { DELETE_POST_SAGA, LIKE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 
-interface PostProps { 
+interface PostProps {
   post: any;
   userInfo: any;
 }
@@ -80,7 +80,7 @@ const Post = (PostProps: any) => {
       })
     );
     setIsModalOpen(false);
-    openNotificationWithIcon('success');
+    openNotificationWithIcon("success");
   };
 
   const handleCancel = () => {
@@ -107,13 +107,17 @@ const Post = (PostProps: any) => {
         </div>
       ),
       onClick: () => {
-        dispatch(openDrawer({
-          title: "Edit Post",
-          component: <EditPostForm 
-          title={PostProps.post.title}
-          content={PostProps.post.content}
-          />
-        }))
+        dispatch(
+          openDrawer({
+            title: "Edit Post",
+            component: (
+              <EditPostForm
+                title={PostProps.post.title}
+                content={PostProps.post.content}
+              />
+            ),
+          })
+        );
       },
     },
     {
@@ -135,7 +139,7 @@ const Post = (PostProps: any) => {
   const openNotificationWithIcon = (type: NotificationType) => {
     api[type]({
       message: "Delete Successfully",
-        placement: "bottomRight",
+      placement: "bottomRight",
     });
   };
 
@@ -145,7 +149,7 @@ const Post = (PostProps: any) => {
         token: themeColor,
       }}
     >
-       {contextHolder}
+      {contextHolder}
       <Modal
         title={
           <>
@@ -231,6 +235,14 @@ const Post = (PostProps: any) => {
                   className="item"
                   style={{ backgroundColor: "transparent" }}
                   icon={<FontAwesomeIcon icon={faHeart} />}
+                  onClick={(e: any) => {
+                    dispatch(
+                      LIKE_POST_SAGA({
+                        id: PostProps.post._id
+                      })
+                    );
+                    
+                  }}
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">

@@ -17,5 +17,6 @@ export function* rootSaga() {
     postSaga.theoDoiCreatePostSaga(),
     postSaga.theoDoiGetAllPostByUserIDSaga(),
     postSaga.theoDoiDeletePostSaga(),
+    postSaga.theoDoiLikePostSaga(),
   ]);
 }
