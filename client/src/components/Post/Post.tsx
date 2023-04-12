@@ -36,7 +36,10 @@ import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { commonColor } from "../../util/cssVariable/cssVariable";
-import { DELETE_POST_SAGA, LIKE_POST_SAGA } from "../../redux/actionSaga/PostActionSaga";
+import {
+  DELETE_POST_SAGA,
+  LIKE_POST_SAGA,
+} from "../../redux/actionSaga/PostActionSaga";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
@@ -51,12 +54,18 @@ type NotificationType = "success" | "info" | "warning" | "error";
 // -----------------------------------------------------
 
 const Post = (PostProps: any) => {
+  console.log("PostProps", PostProps.post);
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
+  // Like
+  const [like, setLike] = useState(PostProps.post.likes.length);
+  
+
 
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
@@ -112,6 +121,7 @@ const Post = (PostProps: any) => {
             title: "Edit Post",
             component: (
               <EditPostForm
+                id={PostProps.post._id}
                 title={PostProps.post.title}
                 content={PostProps.post.content}
               />
@@ -238,10 +248,9 @@ const Post = (PostProps: any) => {
                   onClick={(e: any) => {
                     dispatch(
                       LIKE_POST_SAGA({
-                        id: PostProps.post._id
+                        id: PostProps.post._id,
                       })
                     );
-                    
                   }}
                 />
               </Space>

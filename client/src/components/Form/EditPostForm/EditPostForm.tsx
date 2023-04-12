@@ -23,8 +23,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import { useFormik } from "formik";
 import { TOKEN } from "../../../util/constants/SettingSystem";
-import { CREATE_POST_SAGA } from "../../../redux/actionSaga/PostActionSaga";
+import { UPDATE_POST_SAGA } from "../../../redux/actionSaga/PostActionSaga";
 import { UploadOutlined } from "@ant-design/icons";
+import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
 Quill.register("modules/imageCompress", ImageCompress);
 
 var toolbarOptions = [
@@ -35,6 +36,7 @@ var toolbarOptions = [
 ];
 
 interface PostProps {
+  id: any; 
   title: any;
   content: any;
 }
@@ -61,8 +63,9 @@ const EditPostForm = (PostProps: any) => {
         error();
       } else {
         dispatch(
-          CREATE_POST_SAGA({
-            postCreate: values,
+          UPDATE_POST_SAGA({
+            id: PostProps.id,
+            postUpdate: values
           })
         );
       }
@@ -73,24 +76,28 @@ const EditPostForm = (PostProps: any) => {
   let [quill, setQuill]: any = useState(null);
 
   useEffect(() => {
+    // Tạo quill
     quill = new Quill("#editorDrawer", {
       modules: {
         toolbar: toolbarOptions,
       },
       theme: "snow",
       scrollingContainer: "#scrolling-container",
-
-
     });
     quill.on("text-change", function () {
       handleQuillChange();
     });
+
+    // Dispatch callback submit lên cho DrawerHOC
+    dispatch(callBackSubmitDrawer(formik.handleSubmit))
   }, []);
 
   useEffect(() => {
     // Hiển thị nội dung trong quill
     quill.root.innerHTML = PostProps.content;
     setQuill(quill);
+    // Hiển thị lại title khi PostProps.title thay đổi
+    formik.setFieldValue("title", PostProps.title);
   }, [PostProps, quill]);
 
   const handleQuillChange = () => {

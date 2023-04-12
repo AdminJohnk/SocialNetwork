@@ -50,7 +50,13 @@ const DrawerHOC = () => {
                   >
                     Cancel
                   </Button>
-                  <Button onClick={callBackSubmit} type="primary">
+                  <Button
+                    onClick={() => {
+                      callBackSubmit();
+                      onClose();
+                    }}
+                    type="primary"
+                  >
                     Submit
                   </Button>
                 </Space>
