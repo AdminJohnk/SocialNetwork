@@ -6,6 +6,7 @@ import {
   DELETE_POST_SAGA,
   GET_ALL_POST_BY_USERID_SAGA,
   LIKE_POST_SAGA,
+  SHARE_POST_SAGA,
   UPDATE_POST_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
@@ -46,7 +47,6 @@ function* createPostSaga({ payload }: any) {
         })
       );
     }
-    console.log(payload);
   } catch (err: any) {
     console.log(err.response.data);
   }
@@ -116,6 +116,27 @@ export function* likePostSaga({ payload }: any) {
 export function* theoDoiLikePostSaga() {
   yield takeLatest(LIKE_POST_SAGA, likePostSaga);
 }
+
+// Share Post Saga
+export function* sharePostSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.sharePost(payload.id);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSharePostSaga() {
+  yield takeLatest(SHARE_POST_SAGA, sharePostSaga);
+}
+
 
 
 

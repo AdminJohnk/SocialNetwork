@@ -142,19 +142,18 @@ const TimeLine = () => {
         <Row>
           <Col offset={4} span={16}>
             <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"></div>
-            {/* <div className="avatar rounded-full overflow-hidden">
+            <div className="avatar rounded-full overflow-hidden">
               <img src="./images/TimeLinePage/avt.jpg" alt="avt" />
-            </div> */}
+            </div>
             <Row className="py-5">
               <Col offset={6} span={12}>
                 <div
                   className="text-2xl font-bold"
                   style={{ color: themeColorSet.colorText1 }}
                 >
-                  Tapas Adhikary
+                  Nguyễn Hoàng Hải
                 </div>
                 <div className="position mt-2">
-                  {/* <Avatar src="./images/TimeLinePage/position.jpg" size={25} /> */}
                   <FontAwesomeIcon className="icon" icon={faSnowflake} />
                   <span
                     style={{ color: themeColorSet.colorText3 }}

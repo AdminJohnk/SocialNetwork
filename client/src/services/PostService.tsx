@@ -18,8 +18,10 @@ export class PostService extends BaseService {
     return this.delete(`/posts/${id}`);
   }
   likePost = (id: string) => {
-    console.log("sdgseg");
     return this.post(`/posts/${id}/like`, "");
+  }
+  sharePost = (id: string) => {
+    return this.post(`/posts/${id}/share`, "");
   }
 }
 

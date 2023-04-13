@@ -19,5 +19,6 @@ export function* rootSaga() {
     postSaga.theoDoiDeletePostSaga(),
     postSaga.theoDoiLikePostSaga(),
     postSaga.theoDoiUpdatePostSaga(),
+    postSaga.theoDoiSharePostSaga(),
   ]);
 }

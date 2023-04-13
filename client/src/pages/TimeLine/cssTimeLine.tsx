@@ -6,7 +6,6 @@ import {
   commonColor,
 } from "../../util/cssVariable/cssVariable";
 
-
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
   height: fit-content;
@@ -21,8 +20,8 @@ const StyleTotal = styled.div`
     width: 170px;
     height: 170px;
     position: absolute;
-    top: 78%;
-    left: 4%;
+    top: 259px;
+    left: 27px;
     z-index: 1;
   }
   .chat_Follow {
@@ -68,7 +67,7 @@ const StyleTotal = styled.div`
       }
     }
   }
-  .follow{
+  .follow {
     color: ${(props) => props.theme.colorText3};
     .item {
       display: inline-block;
@@ -78,16 +77,16 @@ const StyleTotal = styled.div`
       }
     }
   }
-  .experience{
+  .experience {
     font-size: 0.9rem;
-    .company{
+    .company {
       font-weight: 600;
     }
   }
-  .contact{
-    .item{
+  .contact {
+    .item {
       background-color: ${(props) => props.theme.colorBg3};
-      :hover{
+      :hover {
         background-color: ${(props) => props.theme.colorBg4};
         cursor: pointer;
         transition: all 0.3s;

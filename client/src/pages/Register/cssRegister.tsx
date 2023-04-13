@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { flex_center_column, flex_center_row } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
-  background-color: #535362;
+  background-color: #1f1f23;
   ${flex_center_column};
   .register {
     width: 70%;
@@ -17,7 +17,7 @@ const StyleTotal = styled.div`
       color: #d4d4d4;
       background-image: linear-gradient(
         to right,
-        #282738,
+        #161618,
         #1e1d2bf4,
         rgba(0, 0, 0, 0.5)
       );

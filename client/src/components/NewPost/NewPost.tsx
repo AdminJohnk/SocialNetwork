@@ -122,7 +122,7 @@ const NewPost = () => {
             <div className="name_avatar flex items-center">
               <Avatar size={50} src="./images/TimeLinePage/avt.jpg" />
               <div className="name font-bold ml-2">
-                <NavLink to="/profile">Kien Tran</NavLink>
+                <NavLink to="/profile">Nguyễn Hoàng Hải</NavLink>
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">

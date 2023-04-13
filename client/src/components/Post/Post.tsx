@@ -29,7 +29,7 @@ import {
 import type { MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { type } from "os";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getTheme } from "../../util/functions/ThemeFunction";
@@ -39,6 +39,7 @@ import { commonColor } from "../../util/cssVariable/cssVariable";
 import {
   DELETE_POST_SAGA,
   LIKE_POST_SAGA,
+  SHARE_POST_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
@@ -54,7 +55,8 @@ type NotificationType = "success" | "info" | "warning" | "error";
 // -----------------------------------------------------
 
 const Post = (PostProps: any) => {
-  console.log("PostProps", PostProps.post);
+  console.log(PostProps.post);
+
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -62,10 +64,45 @@ const Post = (PostProps: any) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  // Like
-  const [like, setLike] = useState(PostProps.post.likes.length);
-  
+  // ------------------------ Like ------------------------
 
+  // Like Number
+  const [likeNumber, setLikeNumber] = useState(PostProps.post.likes.length);
+  useEffect(() => {
+    setLikeNumber(PostProps.post.likes.length);
+  }, [PostProps.post.likes.length]);
+
+  // Like color
+  const [likeColor, setLikeColor] = useState("white");
+  useEffect(() => {
+    PostProps.post.isLiked ? setLikeColor("red") : setLikeColor("white");
+  }, [PostProps.post.isLiked]);
+
+  // isLiked
+  const [isLiked, setIsLiked] = useState(true);
+  useEffect(() => {
+    setIsLiked(PostProps.post.isLiked);
+  }, [PostProps.post.isLiked]);
+
+  // ------------------------ Share ------------------------
+
+  // Share Number
+  const [shareNumber, setShareNumber] = useState(PostProps.post.shares.length);
+  useEffect(() => {
+    setShareNumber(PostProps.post.shares.length);
+  }, [PostProps.post.shares.length]);
+
+  // Share color
+  const [shareColor, setShareColor] = useState("white");
+  useEffect(() => {
+    PostProps.post.isShared ? setShareColor("blue") : setShareColor("white");
+  }, [PostProps.post.isShared]);
+
+  // isShared
+  const [isShared, setIsShared] = useState(true);
+  useEffect(() => {
+    setIsShared(PostProps.post.isShared);
+  }, [PostProps.post.isShared]);
 
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
@@ -240,12 +277,21 @@ const Post = (PostProps: any) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post.likes.length} Like</span>
+                <span>{likeNumber} Like</span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: "transparent" }}
-                  icon={<FontAwesomeIcon icon={faHeart} />}
+                  icon={<FontAwesomeIcon icon={faHeart} color={likeColor} />}
                   onClick={(e: any) => {
+                    if (isLiked) {
+                      setLikeNumber(likeNumber - 1);
+                      setLikeColor("white");
+                      setIsLiked(false);
+                    } else {
+                      setLikeNumber(likeNumber + 1);
+                      setLikeColor("red");
+                      setIsLiked(true);
+                    }
                     dispatch(
                       LIKE_POST_SAGA({
                         id: PostProps.post._id,
@@ -255,11 +301,27 @@ const Post = (PostProps: any) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>3 Share</span>
+                <span>{shareNumber} Share</span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: "transparent" }}
-                  icon={<FontAwesomeIcon icon={faShare} />}
+                  icon={<FontAwesomeIcon icon={faShare} color={shareColor} />}
+                  onClick={(e: any) => {
+                    if (isShared) {
+                      setShareNumber(shareNumber - 1);
+                      setShareColor("white");
+                      setIsShared(false);
+                    } else {
+                      setShareNumber(shareNumber + 1);
+                      setShareColor("blue");
+                      setIsShared(true);
+                    }
+                    dispatch(
+                      SHARE_POST_SAGA({
+                        id: PostProps.post._id,
+                      })
+                    );
+                  }}
                 />
               </Space>
             </div>
