@@ -1,17 +1,5 @@
 import styled, { css } from "styled-components";
-
-const flex_center_column = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const flex_center_row = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
+import { flex_center_column, flex_center_row } from "../../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   width: 32rem;
@@ -50,24 +38,9 @@ const StyleTotal = styled.div`
         font-weight: 500;
       }
     }
-    .form {
-      width: 70%;
-      ${flex_center_column};
-      .form-group {
-        ${flex_center_column};
-        .form-control {
-          border: none;
-          color: #d4d4d4;
-          font-size: 1rem;
-          background-color: #202021;
-          ::placeholder {
-            font-size: 0.95rem;
-          }
-          &:focus-visible {
-            outline: none;
-          }
-        }
-        .btn {
+
+    /* form */
+    .btn {
           background-image: linear-gradient(to right, #1f67e3, #00ae8c);
           color: #cfcaca;
           &:hover {
@@ -75,17 +48,8 @@ const StyleTotal = styled.div`
             transition: all 0.5s;
           }
         }
-      }
-      .forgotPass {
-        color: #d4d4d4;
-        font-size: 0.8rem;
-        &:hover {
-          color: white;
-          transition: all 0.5s;
-          cursor: pointer;
-        }
-      }
-    }
+
+
     .anotherLogin {
         width: 70%;
       .title {

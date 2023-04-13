@@ -1,12 +1,36 @@
+import React from "react";
+import { useFormik } from "formik";
 import { UserOutlined, MailOutlined } from "@ant-design/icons";
 import { Form } from "antd";
-import Button from "antd/es/button";
 import ConfigProvider from "antd/es/config-provider";
 import Input from "antd/es/input";
-import React from "react";
+
 import StyleTotal from "./cssRegister";
+import { useDispatch } from "react-redux";
+import { REGIS_USER_SAGA } from "../../redux/actionSaga/UserActionSaga";
 
 const Register = () => {
+
+  const dispatch = useDispatch();
+
+  const formik = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirm: "",
+    },
+    onSubmit: (values) => {
+      dispatch(
+        REGIS_USER_SAGA({
+          userRegister: values
+        })
+      );
+    },
+
+  });
+
   return (
     <StyleTotal className="w-screen h-screen">
       <div className="register relative">
@@ -37,7 +61,10 @@ const Register = () => {
                   },
                 }}
               >
-                <Form className="mt-5 formAccount">
+                <Form
+                  className="mt-5 formAccount"
+                  onFinish={formik.handleSubmit}
+                >
                   <Form.Item>
                     <Form.Item
                       style={{
@@ -57,6 +84,7 @@ const Register = () => {
                         placeholder="First name"
                         allowClear
                         prefix={<UserOutlined />}
+                        onChange={formik.handleChange}
                       ></Input>
                     </Form.Item>
                     <Form.Item
@@ -64,7 +92,7 @@ const Register = () => {
                         display: "inline-block",
                         width: "calc(50% - 8px)",
                       }}
-                      name="lasttname"
+                      name="lastname"
                       rules={[
                         {
                           required: true,
@@ -76,6 +104,7 @@ const Register = () => {
                         placeholder="Last name"
                         allowClear
                         prefix={<UserOutlined />}
+                        onChange={formik.handleChange}
                       ></Input>
                     </Form.Item>
                   </Form.Item>
@@ -84,11 +113,12 @@ const Register = () => {
                     rules={[
                       {
                         required: true,
-                        message: "The input is not valid E-mail!",
+                        message: "Please input your E-mail!"
+                       
                       },
                       {
                         type: "email",
-                        message: "Please input your E-mail!",
+                        message: "The input is not valid E-mail!"
                       },
                     ]}
                   >
@@ -96,6 +126,7 @@ const Register = () => {
                       placeholder="Email"
                       allowClear
                       prefix={<MailOutlined />}
+                      onChange={formik.handleChange}
                     ></Input>
                   </Form.Item>
                   <Form.Item
@@ -108,7 +139,10 @@ const Register = () => {
                     ]}
                     hasFeedback
                   >
-                    <Input.Password placeholder="Password"></Input.Password>
+                    <Input.Password 
+                    placeholder="Password"
+                    onChange={formik.handleChange}
+                    ></Input.Password>
                   </Form.Item>
                   <Form.Item
                     name="confirm"
@@ -133,7 +167,10 @@ const Register = () => {
                       }),
                     ]}
                   >
-                    <Input.Password placeholder="Confirm Password"></Input.Password>
+                    <Input.Password 
+                    placeholder="Confirm Password"
+                    onChange={formik.handleChange}
+                    ></Input.Password>
                   </Form.Item>
                   <button className="buttonCreate mt-3" type="submit">
                     Create account

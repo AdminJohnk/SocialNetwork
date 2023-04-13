@@ -2,6 +2,7 @@ export const DOMAIN_NAME = 'http://localhost:7000/api';
 
 export const TOKEN = 'access_token';
 export const USER_LOGIN = 'user_login';
+export const ID_USER = '_id';
 
 
 export const STATUS_CODE = {
@@ -13,3 +14,6 @@ export const STATUS_CODE = {
     CONFLICT: 409,
     SERVER_ERROR: 500,
 }
+
+export const DARK_THEME = 'dark';
+export const LIGHT_THEME = 'light';

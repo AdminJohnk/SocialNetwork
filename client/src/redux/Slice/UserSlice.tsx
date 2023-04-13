@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  userName: "Admintck1",
-  passWord: "Admintck1",
+  username: "Admintck1",
+  password: "Admintck1",
 };
 
 const userSlice = createSlice({
@@ -10,8 +10,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action) => {
-      state.userName = action.payload.userName;
-      state.passWord = action.payload.passWord;
+      return { ...state, username: action.payload.username, password: action.payload.password };
     },
   },
 });

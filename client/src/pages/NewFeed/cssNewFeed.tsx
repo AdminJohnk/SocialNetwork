@@ -1,20 +1,9 @@
 import styled, { css } from "styled-components";
+import {
+  flex_center_column,
+  flex_center_row,
+} from "../../util/cssVariable/cssVariable";
 
-const flex_center_column = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const flex_center_row = css`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyleTotal = styled.div`
-
-`;
+const StyleTotal = styled.div``;
 
 export default StyleTotal;
