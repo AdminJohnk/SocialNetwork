@@ -40,6 +40,7 @@ import {
   DELETE_POST_SAGA,
   LIKE_POST_SAGA,
   SHARE_POST_SAGA,
+  SAVE_POST_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
@@ -56,7 +57,6 @@ type NotificationType = "success" | "info" | "warning" | "error";
 
 const Post = (PostProps: any) => {
   console.log(PostProps.post);
-
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -103,6 +103,21 @@ const Post = (PostProps: any) => {
   useEffect(() => {
     setIsShared(PostProps.post.isShared);
   }, [PostProps.post.isShared]);
+
+
+  // ------------------------ Save ------------------------
+
+  // isSaved
+  const [isSaved, setIsSaved] = useState(true);
+  useEffect(() => {
+    setIsSaved(PostProps.post.isSaved);
+  }, [PostProps.post.isSaved]);
+
+  // Save color
+  const [saveColor, setSaveColor] = useState("white");
+  useEffect(() => {
+    PostProps.post.isSaved ? setSaveColor("yellow") : setSaveColor("white");
+  }, [PostProps.post.isSaved]);
 
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
@@ -340,7 +355,24 @@ const Post = (PostProps: any) => {
                   <Avatar
                     className="item"
                     style={{ backgroundColor: "transparent" }}
-                    icon={<FontAwesomeIcon icon={faBookmark} />}
+
+                    icon={
+                      <FontAwesomeIcon icon={faBookmark} color={saveColor} />
+                    }
+                    onClick={(e: any) => {
+                      if (isSaved) {
+                        setIsSaved(false);
+                        setSaveColor("white");
+                      } else {
+                        setIsSaved(true);
+                        setSaveColor("yellow");
+                      }
+                      dispatch(
+                        SAVE_POST_SAGA({
+                          id: PostProps.post._id,
+                        })
+                      );
+                    }}
                   />
                   <Avatar
                     className="item"

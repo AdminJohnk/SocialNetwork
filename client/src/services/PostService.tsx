@@ -13,16 +13,19 @@ export class PostService extends BaseService {
   };
   updatePost = (id: string, post: any) => {
     return this.put(`/posts/${id}`, post);
-  }
-  deletePost = ({id}:any) => {
+  };
+  deletePost = ({ id }: any) => {
     return this.delete(`/posts/${id}`);
-  }
+  };
   likePost = (id: string) => {
     return this.post(`/posts/${id}/like`, "");
-  }
+  };
   sharePost = (id: string) => {
     return this.post(`/posts/${id}/share`, "");
-  }
+  };
+  savePost = (id: string) => {
+    return this.post(`/posts/${id}/save`, "");
+  };
 }
 
 export const postService = new PostService();

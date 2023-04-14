@@ -8,6 +8,7 @@ import {
   LIKE_POST_SAGA,
   SHARE_POST_SAGA,
   UPDATE_POST_SAGA,
+  SAVE_POST_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
 
@@ -59,7 +60,11 @@ export function* theoDoiCreatePostSaga() {
 // Update Post Saga
 export function* updatePostSaga({ payload }: any) {
   try {
-    const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
+
+    const { data, status } = yield postService.updatePost(
+      payload.id,
+      payload.postUpdate
+    );
     if (status === STATUS_CODE.SUCCESS) {
       yield put(
         GET_ALL_POST_BY_USERID_SAGA({
@@ -138,13 +143,24 @@ export function* theoDoiSharePostSaga() {
 }
 
 
+// Save Post Saga
+export function* savePostSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.savePost(payload.id);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
 
-
-
-
-
-
-
-
+export function* theoDoiSavePostSaga() {
+  yield takeLatest(SAVE_POST_SAGA, savePostSaga);
+}
 
 
