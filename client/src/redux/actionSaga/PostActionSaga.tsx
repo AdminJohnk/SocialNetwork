@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 
+
 export const CREATE_POST_SAGA = createAction("CREATE_POST_SAGA", (data) => ({
   payload: data,
 }));

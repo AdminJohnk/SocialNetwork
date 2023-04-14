@@ -56,6 +56,7 @@ type NotificationType = "success" | "info" | "warning" | "error";
 // -----------------------------------------------------
 
 const Post = (PostProps: any) => {
+  console.log(PostProps.post);
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -102,6 +103,7 @@ const Post = (PostProps: any) => {
   useEffect(() => {
     setIsShared(PostProps.post.isShared);
   }, [PostProps.post.isShared]);
+
 
   // ------------------------ Save ------------------------
 
@@ -353,6 +355,7 @@ const Post = (PostProps: any) => {
                   <Avatar
                     className="item"
                     style={{ backgroundColor: "transparent" }}
+
                     icon={
                       <FontAwesomeIcon icon={faBookmark} color={saveColor} />
                     }

@@ -60,6 +60,7 @@ export function* theoDoiCreatePostSaga() {
 // Update Post Saga
 export function* updatePostSaga({ payload }: any) {
   try {
+
     const { data, status } = yield postService.updatePost(
       payload.id,
       payload.postUpdate
@@ -80,6 +81,7 @@ export function* theoDoiUpdatePostSaga() {
   yield takeLatest(UPDATE_POST_SAGA, updatePostSaga);
 }
 
+
 // Delete Post Saga
 export function* deletePostSaga({ payload }: any) {
   try {
@@ -98,6 +100,7 @@ export function* deletePostSaga({ payload }: any) {
 export function* theoDoiDeletePostSaga() {
   yield takeLatest(DELETE_POST_SAGA, deletePostSaga);
 }
+
 
 // Like Post Saga
 export function* likePostSaga({ payload }: any) {
@@ -139,6 +142,7 @@ export function* theoDoiSharePostSaga() {
   yield takeLatest(SHARE_POST_SAGA, sharePostSaga);
 }
 
+
 // Save Post Saga
 export function* savePostSaga({ payload }: any) {
   try {
@@ -158,3 +162,5 @@ export function* savePostSaga({ payload }: any) {
 export function* theoDoiSavePostSaga() {
   yield takeLatest(SAVE_POST_SAGA, savePostSaga);
 }
+
+
