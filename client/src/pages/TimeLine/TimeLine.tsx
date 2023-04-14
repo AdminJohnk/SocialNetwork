@@ -275,7 +275,11 @@ const TimeLine = () => {
                 <TabPane tab="Post" key="2" className="mt-10">
                   <NewPost />
                   {postArray.map((item: any, index: number) => {
-                    return <Post key={index} post={item} userInfo={userInfo} />
+                    return (
+                      <div className="w-8/12">
+                        <Post key={index} post={item} userInfo={userInfo} />
+                      </div>
+                    );
                   })}
                 </TabPane>
                 <TabPane tab="Show" key="3" className="mt-10">
