@@ -145,7 +145,7 @@ const NewPost = () => {
               <Popover
                 placement="top"
                 trigger="click"
-                title={"Members"}
+                title={"Emoji"}
                 content={
                   <Picker
                     data={data}

@@ -10,12 +10,10 @@ interface PostProps {
 }
 
 const PostDetail = (Props: PostProps) => {
-  console.log(Props.post);
   return (
     <div className="">
       <Post post={Props.post} userInfo={Props.userInfo} />
       {Props.post.comments.map((item: any, index: number) => {
-        console.log(item);
         return (
           <Comment
             key={index}

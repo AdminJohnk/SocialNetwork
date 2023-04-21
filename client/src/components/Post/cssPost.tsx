@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
@@ -33,6 +34,15 @@ const StyleTotal = styled.div`
       .item {
         :hover {
           cursor: pointer;
+        }
+      }
+      .comment_view {
+        .emoji {
+          :hover {
+            cursor: pointer;
+            color: ${commonColor.colorBlue2};
+            transition: all 0.5s;
+          }
         }
       }
     }

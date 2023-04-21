@@ -4,6 +4,7 @@ import {
   faComment,
   faCopy,
   faEllipsis,
+  faFaceSmile,
   faHeart,
   faPenToSquare,
   faShare,
@@ -25,6 +26,8 @@ import {
   Space,
   Modal,
   notification,
+  Form,
+  Input,
 } from "antd";
 import type { MenuProps } from "antd";
 import Sider from "antd/es/layout/Sider";
@@ -36,6 +39,7 @@ import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { commonColor } from "../../util/cssVariable/cssVariable";
+
 import {
   DELETE_POST_SAGA,
   LIKE_POST_SAGA,
@@ -47,11 +51,12 @@ import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import { openModal } from "../../redux/Slice/ModalHOCSlice";
 import PostDetail from "../Form/PostDetail/PostDetail";
+import { useFormik } from "formik";
+import OpenPostDetail from "../ActionComponent/OpenPostDetail/OpenPostDetail";
 
 interface PostProps {
   post: any;
   userInfo: any;
-  style?: any;
 }
 
 type NotificationType = "success" | "info" | "warning" | "error";
@@ -59,7 +64,7 @@ type NotificationType = "success" | "info" | "warning" | "error";
 // -----------------------------------------------------
 
 const Post = (PostProps: PostProps) => {
-  console.log(PostProps.post);
+  // console.log(PostProps.post);
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -207,6 +212,13 @@ const Post = (PostProps: PostProps) => {
     });
   };
 
+  // Open PostDetail
+  const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
+
+  useEffect(() => {
+    setIsOpenPostDetail(false);
+  }, [isOpenPostDetail]);
+
   return (
     <ConfigProvider
       theme={{
@@ -242,6 +254,9 @@ const Post = (PostProps: PostProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
+      {isOpenPostDetail ? (
+        <OpenPostDetail post={PostProps.post} userInfo={PostProps.userInfo} />
+      ) : null}
       <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
@@ -349,19 +364,9 @@ const Post = (PostProps: PostProps) => {
                   className="item"
                   style={{ backgroundColor: "transparent" }}
                   icon={<FontAwesomeIcon icon={faComment} />}
-                  onClick={() =>
-                    dispatch(
-                      openModal({
-                        title: "Bài viết của " + PostProps.userInfo.username,
-                        component: (
-                          <PostDetail
-                            post={PostProps.post}
-                            userInfo={PostProps.userInfo}
-                          />
-                        ),
-                      })
-                    )
-                  }
+                  onClick={() => {
+                    setIsOpenPostDetail(true);
+                  }}
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">

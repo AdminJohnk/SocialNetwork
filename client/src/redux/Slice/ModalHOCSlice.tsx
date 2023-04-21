@@ -4,7 +4,7 @@ const initialState = {
   title: "",
   visible: false,
   ComponentContentModal: <p>default</p>,
-  callBackSubmit: () => {},
+  footer: <p>default</p>,
 };
 
 const modalHOCSlide = createSlice({
@@ -12,11 +12,13 @@ const modalHOCSlide = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
+      console.log("abc");
       return {
         ...state,
         title: action.payload.title,
         visible: true,
         ComponentContentModal: action.payload.component,
+        footer: action.payload.footer,
       };
     },
     closeModal: (state, action) => {
