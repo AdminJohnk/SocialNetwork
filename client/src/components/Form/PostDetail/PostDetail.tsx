@@ -1,8 +1,5 @@
-import React from "react";
+import CommentDetail from "../../Comment/CommentDetail";
 import Post from "../../Post/Post";
-import StyleTotal from "./cssPostDetail";
-import { Comment } from "@ant-design/compatible";
-import { Avatar } from "antd";
 
 interface PostProps {
   post: any;
@@ -11,18 +8,29 @@ interface PostProps {
 
 const PostDetail = (Props: PostProps) => {
   return (
-    <div className="">
+    <div>
       <Post post={Props.post} userInfo={Props.userInfo} />
       {Props.post.comments.map((item: any, index: number) => {
         return (
-          <Comment
-            key={index}
-            author={item.user.username}
-            avatar={
-              <Avatar src={item.user.userImage} alt={item.user.username} />
-            }
-            content={item.content}
-          />
+          <div>
+            {item ? (
+              <CommentDetail
+                key={index}
+                comment={item}
+                userInfo={Props.userInfo}
+              >
+                {item.listReply.map((item: any, index: number) => {
+                  return (
+                    <CommentDetail
+                      key={index}
+                      comment={item}
+                      userInfo={Props.userInfo}
+                    />
+                  );
+                })}
+              </CommentDetail>
+            ) : null}
+          </div>
         );
       })}
     </div>
