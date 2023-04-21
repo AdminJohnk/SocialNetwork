@@ -62,7 +62,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
                       <Picker
                         data={data}
                         onEmojiSelect={(emoji: any) => {
-                          handleComment(commentContent + emoji.native);
+                          // handleComment(commentContent + emoji.native);
                         }}
                       />
                     }
