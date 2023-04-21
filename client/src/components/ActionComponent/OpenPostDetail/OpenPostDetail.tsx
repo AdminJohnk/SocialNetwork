@@ -24,7 +24,10 @@ const OpenPostDetail = (PostProps: PostProps) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState("");
-  
+
+  const handleComment = (content: any) => {
+    setCommentContent(content);
+  };
 
   useLayoutEffect(() => {
     dispatch(
@@ -46,8 +49,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
                 placeholder="Add a Comment"
                 allowClear
                 onChange={(e) => {
-                    setCommentContent(e.target.value);
-                    
+                  handleComment(e.target.value);
                 }}
                 style={{
                   borderColor: themeColorSet.colorText3,
@@ -87,7 +89,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
         ),
       })
     );
-  }, []);
+  }, [commentContent]);
 
   return (
     <ConfigProvider
