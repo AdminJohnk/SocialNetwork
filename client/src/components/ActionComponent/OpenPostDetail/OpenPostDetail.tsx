@@ -59,7 +59,12 @@ const OpenPostDetail = (PostProps: PostProps) => {
                     trigger="click"
                     title={"Emoji"}
                     content={
-                      <Picker data={data} onEmojiSelect={(emoji: any) => {}} />
+                      <Picker
+                        data={data}
+                        onEmojiSelect={(emoji: any) => {
+                          handleComment(commentContent + emoji.native);
+                        }}
+                      />
                     }
                   >
                     <span
