@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { CHECK_LOGIN_SAGA } from "../../redux/actionSaga/AuthActionSaga";
 import { getTheme } from "../../util/functions/ThemeFunction";

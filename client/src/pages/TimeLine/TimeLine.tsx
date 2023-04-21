@@ -41,8 +41,6 @@ import Post from "../../components/Post/Post";
 import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 
-// A array include
-// Java, Back End, Data Analytics, Front End, Full Stack, Mobile, DevOps, Project Management, Design, Business, Career, Problem Solver, App Design
 
 const descArray = [
   {
