@@ -214,9 +214,7 @@ const Post = (PostProps: PostProps) => {
   };
 
   // Open PostDetail
-  const isOpenPostDetail = useSelector(
-    (state: any) => state.postReducer.isOpenPostDetail
-  );
+  const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   const { visible } = useSelector((state: any) => state.modalHOCReducer);
 
@@ -372,7 +370,7 @@ const Post = (PostProps: PostProps) => {
                   style={{ backgroundColor: "transparent" }}
                   icon={<FontAwesomeIcon icon={faComment} />}
                   onClick={() => {
-                    dispatch(openPostDetail({}));
+                    setIsOpenPostDetail(true);
                   }}
                 />
               </Space>
