@@ -1,8 +1,5 @@
-import React from "react";
+import CommentDetail from "../../Comment/CommentDetail";
 import Post from "../../Post/Post";
-import StyleTotal from "./cssPostDetail";
-import { Comment } from "@ant-design/compatible";
-import { Avatar } from "antd";
 
 interface PostProps {
   post: any;
@@ -11,55 +8,27 @@ interface PostProps {
 
 const PostDetail = (Props: PostProps) => {
   return (
-    <div className="">
+    <div>
       <Post post={Props.post} userInfo={Props.userInfo} />
       {Props.post.comments.map((item: any, index: number) => {
         return (
           <div>
             {item ? (
-              <Comment
+              <CommentDetail
                 key={index}
-                author={item.user.username}
-                avatar={
-                  item.user.userImage ? (
-                    <Avatar
-                      src={item.user.userImage}
-                      alt={item.user.username}
-                    />
-                  ) : (
-                    <Avatar
-                      style={{ backgroundColor: "#87d068" }}
-                      icon="user"
-                      alt={item.user.username}
-                    />
-                  )
-                }
-                content={item.content}
+                comment={item}
+                userInfo={Props.userInfo}
               >
                 {item.listReply.map((item: any, index: number) => {
                   return (
-                    <Comment
+                    <CommentDetail
                       key={index}
-                      author={item.user.username}
-                      avatar={
-                        item.user.userImage ? (
-                          <Avatar
-                            src={item.user.userImage}
-                            alt={item.user.username}
-                          />
-                        ) : (
-                          <Avatar
-                            style={{ backgroundColor: "#87d068" }}
-                            icon="user"
-                            alt={item.user.username}
-                          />
-                        )
-                      }
-                      content={item.content}
+                      comment={item}
+                      userInfo={Props.userInfo}
                     />
                   );
                 })}
-              </Comment>
+              </CommentDetail>
             ) : null}
           </div>
         );
