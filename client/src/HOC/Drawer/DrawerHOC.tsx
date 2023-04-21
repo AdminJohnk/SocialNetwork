@@ -34,9 +34,6 @@ const DrawerHOC = () => {
             width={720}
             onClose={onClose}
             open={visible}
-            bodyStyle={{
-              paddingBottom: 80,
-            }}
             footer={
               <div style={{ textAlign: "right" }}>
                 <Space>

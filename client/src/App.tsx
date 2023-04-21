@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate, Route, Routes } from "react-router-dom";
 import LoadingComponent from "./components/GlobalSetting/LoadingComponent/LoadingComponent";
 import DrawerHOC from "./HOC/Drawer/DrawerHOC";
+import ModalHOC from "./HOC/Modal/ModalHOC";
 import GetStarted from "./pages/GetStarted/GetStarted";
 import Login from "./pages/Login/Login";
 import NewFeed from "./pages/NewFeed/NewFeed";
@@ -32,6 +33,7 @@ const App = () => {
     <>
       <LoadingComponent />
       <DrawerHOC />
+      <ModalHOC />
       <Routes>
         {/* <Route path="/" element={<SelectInterest/>} /> */}
         <Route path="/" element={<GetStarted/>} />

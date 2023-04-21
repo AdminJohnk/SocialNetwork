@@ -45,17 +45,20 @@ import {
 import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
+import { openModal } from "../../redux/Slice/ModalHOCSlice";
+import PostDetail from "../Form/PostDetail/PostDetail";
 
-// interface PostProps {
-//   post: any;
-//   userInfo: any;
-// }
+interface PostProps {
+  post: any;
+  userInfo: any;
+  style?: any;
+}
 
 type NotificationType = "success" | "info" | "warning" | "error";
 
 // -----------------------------------------------------
 
-const Post = (PostProps: any) => {
+const Post = (PostProps: PostProps) => {
   console.log(PostProps.post);
   const dispatch = useDispatch();
 
@@ -103,7 +106,6 @@ const Post = (PostProps: any) => {
   useEffect(() => {
     setIsShared(PostProps.post.isShared);
   }, [PostProps.post.isShared]);
-
 
   // ------------------------ Save ------------------------
 
@@ -240,7 +242,7 @@ const Post = (PostProps: any) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      <StyleTotal theme={themeColorSet} className="w-8/12 rounded-lg mb-4">
+      <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
@@ -347,6 +349,19 @@ const Post = (PostProps: any) => {
                   className="item"
                   style={{ backgroundColor: "transparent" }}
                   icon={<FontAwesomeIcon icon={faComment} />}
+                  onClick={() =>
+                    dispatch(
+                      openModal({
+                        title: "Bài viết của " + PostProps.userInfo.username,
+                        component: (
+                          <PostDetail
+                            post={PostProps.post}
+                            userInfo={PostProps.userInfo}
+                          />
+                        ),
+                      })
+                    )
+                  }
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
@@ -355,7 +370,6 @@ const Post = (PostProps: any) => {
                   <Avatar
                     className="item"
                     style={{ backgroundColor: "transparent" }}
-
                     icon={
                       <FontAwesomeIcon icon={faBookmark} color={saveColor} />
                     }
