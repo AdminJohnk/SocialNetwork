@@ -352,7 +352,7 @@ const Post = (PostProps: PostProps) => {
                   onClick={() =>
                     dispatch(
                       openModal({
-                        title: "Bài viết của " + PostProps.userInfo.username,
+                        title: PostProps.userInfo.username + "'s Post",
                         component: (
                           <PostDetail
                             post={PostProps.post}
