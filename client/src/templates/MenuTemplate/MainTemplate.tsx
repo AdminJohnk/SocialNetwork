@@ -6,7 +6,9 @@ import Headers from "../../components/Headers/Headers";
 import Menu from "../../components/Menu/Menu";
 import { Content } from "antd/es/layout/layout";
 import { CHECK_LOGIN_SAGA } from "../../redux/actionSaga/AuthActionSaga";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { DOMAIN_NAME, TOKEN } from "../../util/constants/SettingSystem";
+import axios from "axios";
 
 const MainTemplate = (props: any) => {
   // Kiểm tra đã login hay chưa

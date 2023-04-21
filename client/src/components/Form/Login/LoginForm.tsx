@@ -6,13 +6,12 @@ import {} from "@fortawesome/free-solid-svg-icons";
 import { faSnowflake } from "@fortawesome/free-regular-svg-icons";
 import { ConfigProvider, Form, Input } from "antd";
 import { MailOutlined } from "@ant-design/icons";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { LOGIN_SAGA } from "../../../redux/actionSaga/AuthActionSaga";
-import { setNavigate } from "../../../redux/Slice/FunctionSlice";
+
 
 const LoginForm = () => {
-  let navigate = useNavigate();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -21,7 +20,6 @@ const LoginForm = () => {
       password: "",
     },
     onSubmit: (values) => {
-      dispatch(setNavigate({ navigate: navigate }));
       dispatch(
         LOGIN_SAGA({
           userLogin: values,

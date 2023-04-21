@@ -46,10 +46,10 @@ import { NotificationPlacement } from "antd/es/notification/interface";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 
-interface PostProps {
-  post: any;
-  userInfo: any;
-}
+// interface PostProps {
+//   post: any;
+//   userInfo: any;
+// }
 
 type NotificationType = "success" | "info" | "warning" | "error";
 
