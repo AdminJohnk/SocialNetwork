@@ -1,6 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 
-
 export const CREATE_POST_SAGA = createAction("CREATE_POST_SAGA", (data) => ({
   payload: data,
 }));
@@ -21,5 +20,8 @@ export const SAVE_POST_SAGA = createAction("SAVE_POST_SAGA", (data) => ({
   payload: data,
 }));
 export const UPDATE_POST_SAGA = createAction("UPDATE_POST_SAGA", (data) => ({
+  payload: data,
+}));
+export const SAVE_COMMENT_SAGA = createAction("SAVE_COMMENT_SAGA", (data) => ({
   payload: data,
 }));

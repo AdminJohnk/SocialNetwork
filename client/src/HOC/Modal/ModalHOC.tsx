@@ -14,9 +14,8 @@ const ModalHOC = () => {
   const { themeColorSet } = getTheme();
 
   // Hàm xử lý Modal
-  const { visible, ComponentContentModal, footer, title } = useSelector(
-    (state: any) => state.modalHOCReducer
-  );
+  const { visible, ComponentContentModal, footer, title, handleSubmit } =
+    useSelector((state: any) => state.modalHOCReducer);
 
   const onClose = () => {
     dispatch(closeModal({}));
@@ -36,6 +35,7 @@ const ModalHOC = () => {
             onCancel={onClose}
             open={visible}
             footer={footer}
+            onOk={handleSubmit}
           >
             {ComponentContentModal}
           </Modal>

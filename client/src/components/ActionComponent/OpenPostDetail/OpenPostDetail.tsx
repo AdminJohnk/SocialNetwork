@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover } from "antd";
+import { Avatar, ConfigProvider, Input, Popover, Button } from "antd";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../../redux/Slice/ModalHOCSlice";
@@ -7,8 +7,10 @@ import PostDetail from "../../Form/PostDetail/PostDetail";
 import StyleTotal from "./cssOpenPostDetail";
 import data from "@emoji-mart/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Picker from "@emoji-mart/react";
+import { setHandleSubmit } from "../../../redux/Slice/ModalHOCSlice";
+import { SAVE_COMMENT_SAGA } from "../../../redux/actionSaga/PostActionSaga";
 
 interface PostProps {
   post: any;
@@ -25,8 +27,34 @@ const OpenPostDetail = (PostProps: PostProps) => {
 
   const [commentContent, setCommentContent] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const handleComment = (content: any) => {
     setCommentContent(content);
+  };
+
+  const handleSubmitComment = () => {
+    setLoading(true);
+    dispatch(
+      SAVE_COMMENT_SAGA({
+        comment: {
+          contentComment: commentContent,
+        },
+        id: PostProps.post._id,
+      })
+    );
+    setTimeout(() => {
+      setCommentContent("");
+      setLoading(false);
+    }, 1000);
+  };
+
+  const checkEmpty = () => {
+    if (commentContent === "") {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   useLayoutEffect(() => {
@@ -37,59 +65,79 @@ const OpenPostDetail = (PostProps: PostProps) => {
           <PostDetail post={PostProps.post} userInfo={PostProps.userInfo} />
         ),
         footer: (
-          <div className=" commentInput text-left flex items-center">
-            <Avatar
-              className="mr-2"
-              size={40}
-              src={PostProps.userInfo.userImage}
-            />
-            <div className="input w-full">
-              <Input
-                value={commentContent}
-                placeholder="Add a Comment"
-                allowClear
-                onChange={(e) => {
-                  handleComment(e.target.value);
-                }}
-                style={{
-                  borderColor: themeColorSet.colorText3,
-                }}
-                maxLength={150}
-                addonAfter={
-                  <Popover
-                    placement="right"
-                    trigger="click"
-                    title={"Emoji"}
-                    content={
-                      <Picker
-                        data={data}
-                        onEmojiSelect={(emoji: any) => {
-                          handleComment(commentContent + emoji.native);
-                        }}
-                      />
+          <ConfigProvider>
+            <StyleTotal theme={themeColorSet}>
+              <div className=" commentInput text-right flex items-center">
+                <Avatar
+                  className="mr-2"
+                  size={40}
+                  src={PostProps.userInfo.userImage}
+                />
+                <div className="input w-full">
+                  <Input
+                    value={commentContent}
+                    placeholder="Add a Comment"
+                    // allowClear
+                    onChange={(e) => {
+                      handleComment(e.target.value);
+                    }}
+                    style={{
+                      borderColor: themeColorSet.colorText3,
+                    }}
+                    maxLength={150}
+                    addonAfter={
+                      <Popover
+                        placement="right"
+                        trigger="click"
+                        title={"Emoji"}
+                        content={
+                          <Picker
+                            data={data}
+                            onEmojiSelect={(emoji: any) => {
+                              handleComment(commentContent + emoji.native);
+                            }}
+                          />
+                        }
+                      >
+                        <span
+                          className="emoji cursor-pointer hover:text-blue-700"
+                          style={{
+                            transition: "all 0.3s",
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className="item mr-3 ml-3"
+                            size="lg"
+                            icon={faFaceSmile}
+                          />
+                        </span>
+                      </Popover>
                     }
+                  ></Input>
+                  <span
+                    className="sendComment cursor-pointer hover:text-blue-700"
+                    {...(checkEmpty()
+                      ? {
+                          style: {
+                            transition: "all 0.3s",
+                            color: "gray",
+                            //hover disabled
+                            cursor: "not-allowed",
+                          },
+                        }
+                      : { transition: "all 0.3s" })}
+                    onClick={handleSubmitComment}
                   >
-                    <span
-                      className="emoji cursor-pointer hover:text-blue-700"
-                      style={{
-                        transition: "all 0.3s",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        className="item mr-3 ml-3"
-                        size="lg"
-                        icon={faFaceSmile}
-                      />
-                    </span>
-                  </Popover>
-                }
-              ></Input>
-            </div>
-          </div>
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                  </span>
+                </div>
+              </div>
+            </StyleTotal>
+          </ConfigProvider>
         ),
       })
     );
-  }, [commentContent]);
+  }, [PostProps.post, commentContent]);
 
   return (
     <ConfigProvider
