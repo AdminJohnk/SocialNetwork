@@ -10,21 +10,58 @@ interface PostProps {
 }
 
 const PostDetail = (Props: PostProps) => {
-  console.log(Props.post);
   return (
     <div className="">
       <Post post={Props.post} userInfo={Props.userInfo} />
       {Props.post.comments.map((item: any, index: number) => {
-        console.log(item);
         return (
-          <Comment
-            key={index}
-            author={item.user.username}
-            avatar={
-              <Avatar src={item.user.userImage} alt={item.user.username} />
-            }
-            content={item.content}
-          />
+          <div>
+            {item ? (
+              <Comment
+                key={index}
+                author={item.user.username}
+                avatar={
+                  item.user.userImage ? (
+                    <Avatar
+                      src={item.user.userImage}
+                      alt={item.user.username}
+                    />
+                  ) : (
+                    <Avatar
+                      style={{ backgroundColor: "#87d068" }}
+                      icon="user"
+                      alt={item.user.username}
+                    />
+                  )
+                }
+                content={item.content}
+              >
+                {item.listReply.map((item: any, index: number) => {
+                  return (
+                    <Comment
+                      key={index}
+                      author={item.user.username}
+                      avatar={
+                        item.user.userImage ? (
+                          <Avatar
+                            src={item.user.userImage}
+                            alt={item.user.username}
+                          />
+                        ) : (
+                          <Avatar
+                            style={{ backgroundColor: "#87d068" }}
+                            icon="user"
+                            alt={item.user.username}
+                          />
+                        )
+                      }
+                      content={item.content}
+                    />
+                  );
+                })}
+              </Comment>
+            ) : null}
+          </div>
         );
       })}
     </div>
