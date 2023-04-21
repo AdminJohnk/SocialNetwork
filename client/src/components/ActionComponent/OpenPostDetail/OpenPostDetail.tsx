@@ -46,7 +46,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
             />
             <div className="input w-full">
               <Input
-                // value={commentContent}
+                value={commentContent}
                 placeholder="Add a Comment"
                 allowClear
                 onChange={(e) => {
@@ -62,7 +62,12 @@ const OpenPostDetail = (PostProps: PostProps) => {
                     trigger="click"
                     title={"Emoji"}
                     content={
-                      <Picker data={data} onEmojiSelect={(emoji: any) => {}} />
+                      <Picker
+                        data={data}
+                        onEmojiSelect={(emoji: any) => {
+                          handleComment(commentContent + emoji.native);
+                        }}
+                      />
                     }
                   >
                     <span
