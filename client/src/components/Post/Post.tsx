@@ -53,6 +53,7 @@ import { openModal } from "../../redux/Slice/ModalHOCSlice";
 import PostDetail from "../Form/PostDetail/PostDetail";
 import { useFormik } from "formik";
 import OpenPostDetail from "../ActionComponent/OpenPostDetail/OpenPostDetail";
+import { openPostDetail } from "../../redux/Slice/PostSlice";
 
 interface PostProps {
   post: any;
@@ -213,11 +214,11 @@ const Post = (PostProps: PostProps) => {
   };
 
   // Open PostDetail
-  const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
+  const isOpenPostDetail = useSelector(
+    (state: any) => state.postReducer.isOpenPostDetail
+  );
 
-  useEffect(() => {
-    setIsOpenPostDetail(false);
-  }, [isOpenPostDetail]);
+  console.log(isOpenPostDetail);
 
   return (
     <ConfigProvider
@@ -365,7 +366,7 @@ const Post = (PostProps: PostProps) => {
                   style={{ backgroundColor: "transparent" }}
                   icon={<FontAwesomeIcon icon={faComment} />}
                   onClick={() => {
-                    setIsOpenPostDetail(true);
+                    dispatch(openPostDetail({}));
                   }}
                 />
               </Space>

@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../../redux/Slice/ModalHOCSlice";
 import { getTheme } from "../../../util/functions/ThemeFunction";
@@ -24,13 +24,9 @@ const OpenPostDetail = (PostProps: PostProps) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState("");
+  
 
-  const handleComment = (content: any) => {
-    setCommentContent(content);
-  };
-
-  useEffect(() => {
-    console.log("abc");
+  useLayoutEffect(() => {
     dispatch(
       openModal({
         title: "The post of " + PostProps.userInfo.username,
@@ -46,11 +42,12 @@ const OpenPostDetail = (PostProps: PostProps) => {
             />
             <div className="input w-full">
               <Input
-                // value={commentContent}
+                value={commentContent}
                 placeholder="Add a Comment"
                 allowClear
                 onChange={(e) => {
-                  handleComment(e.target.value);
+                    setCommentContent(e.target.value);
+                    
                 }}
                 style={{
                   borderColor: themeColorSet.colorText3,
@@ -85,7 +82,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
         ),
       })
     );
-  }, [commentContent]);
+  }, []);
 
   return (
     <ConfigProvider

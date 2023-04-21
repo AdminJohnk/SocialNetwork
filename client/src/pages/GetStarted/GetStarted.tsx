@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, ConfigProvider, Radio, Space } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssGetStarted";
@@ -21,8 +22,8 @@ const GetStarted = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div className="flex justify-center w-full h-full getStarted">
-          <div className="content w-1/2 h-1/2 mt-10">
+        <div className="flex justify-center w-full h-full getStarted ">
+          <div className="content w-1/2 pt-10 h-full relative">
             <div>
               <span
                 className="mr-3"
@@ -34,7 +35,7 @@ const GetStarted = () => {
                 Get started
               </span>
             </div>
-            <div className="slide w-full flex justify-between mt-2">
+            <div className="slide w-full flex justify-between mt-2 ">
               <span
                 style={{
                   width: "19.4%",
@@ -171,6 +172,9 @@ const GetStarted = () => {
                 </div>
               </Radio.Group>
             </div>
+            <NavLink to="/select-interest">
+              <button className="btnNext absolute px-4 py-2">Next</button>
+            </NavLink>
           </div>
         </div>
       </StyleTotal>

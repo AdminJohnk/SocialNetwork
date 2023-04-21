@@ -21,7 +21,6 @@ const ModalHOC = () => {
   const onClose = () => {
     dispatch(closeModal({}));
   };
-  console.log("title", title);
 
   return (
     <ConfigProvider

@@ -8,6 +8,7 @@ import GetStarted from "./pages/GetStarted/GetStarted";
 import Login from "./pages/Login/Login";
 import NewFeed from "./pages/NewFeed/NewFeed";
 import Register from "./pages/Register/Register";
+import SelectCommunity from "./pages/SelectCommunity/SelectCommunity";
 import SelectInterest from "./pages/SelectInterest/SelectInterest";
 import TimeLine from "./pages/TimeLine/TimeLine";
 import { CHECK_LOGIN_SAGA } from "./redux/actionSaga/AuthActionSaga";
@@ -35,8 +36,9 @@ const App = () => {
       <DrawerHOC />
       <ModalHOC />
       <Routes>
-        {/* <Route path="/" element={<SelectInterest/>} /> */}
-        <Route path="/" element={<GetStarted/>} />
+        <Route path="/select-interest" element={<SelectInterest/>} />
+        <Route path="/select-community" element={<SelectCommunity/>} />
+        <Route path="/get-started" element={<GetStarted/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/me" element={<TimeLine />} />

@@ -12,7 +12,6 @@ const modalHOCSlide = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
-      console.log("abc");
       return {
         ...state,
         title: action.payload.title,
