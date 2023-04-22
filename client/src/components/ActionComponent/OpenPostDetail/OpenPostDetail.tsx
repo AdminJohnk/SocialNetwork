@@ -10,7 +10,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Picker from "@emoji-mart/react";
 import { setHandleSubmit } from "../../../redux/Slice/ModalHOCSlice";
-import { SAVE_COMMENT_SAGA } from "../../../redux/actionSaga/PostActionSaga";
+import {
+  SAVE_COMMENT_SAGA,
+  SAVE_REPLY_SAGA,
+} from "../../../redux/actionSaga/PostActionSaga";
 
 interface PostProps {
   post: any;
@@ -27,25 +30,40 @@ const OpenPostDetail = (PostProps: PostProps) => {
 
   const [commentContent, setCommentContent] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>({ isReply: false, idComment: null });
+
+  const handleData = (data: any) => {
+    setData(data);
+  };
 
   const handleComment = (content: any) => {
     setCommentContent(content);
   };
 
   const handleSubmitComment = () => {
-    setLoading(true);
-    dispatch(
-      SAVE_COMMENT_SAGA({
-        comment: {
-          contentComment: commentContent,
-        },
-        id: PostProps.post._id,
-      })
-    );
+    if (data.isReply) {
+      dispatch(
+        SAVE_REPLY_SAGA({
+          id: PostProps.post._id,
+          reply: {
+            contentComment: commentContent,
+            idComment: data.idComment,
+          },
+        })
+      );
+      setData({ isReply: false, idComment: null });
+    } else {
+      dispatch(
+        SAVE_COMMENT_SAGA({
+          comment: {
+            contentComment: commentContent,
+          },
+          id: PostProps.post._id,
+        })
+      );
+    }
     setTimeout(() => {
       setCommentContent("");
-      setLoading(false);
     }, 1000);
   };
 
@@ -58,11 +76,16 @@ const OpenPostDetail = (PostProps: PostProps) => {
   };
 
   useLayoutEffect(() => {
+    console.log("data", data);
     dispatch(
       openModal({
         title: "The post of " + PostProps.userInfo.username,
         component: (
-          <PostDetail post={PostProps.post} userInfo={PostProps.userInfo} />
+          <PostDetail
+            onData={handleData}
+            post={PostProps.post}
+            userInfo={PostProps.userInfo}
+          />
         ),
         footer: (
           <ConfigProvider>
@@ -119,7 +142,6 @@ const OpenPostDetail = (PostProps: PostProps) => {
                     {...(checkEmpty()
                       ? {
                           style: {
-                            transition: "all 0.3s",
                             color: "gray",
                             //hover disabled
                             cursor: "not-allowed",
@@ -137,7 +159,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
         ),
       })
     );
-  }, [PostProps.post, commentContent]);
+  }, [PostProps.post, commentContent, data]);
 
   return (
     <ConfigProvider

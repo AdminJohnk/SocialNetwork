@@ -29,20 +29,22 @@ const App = () => {
 
   dispatch(setUseSelector(useSelector));
 
- 
   return (
     <>
       <LoadingComponent />
       <DrawerHOC />
       <ModalHOC />
       <Routes>
-        <Route path="/select-interest" element={<SelectInterest/>} />
-        <Route path="/select-community" element={<SelectCommunity/>} />
-        <Route path="/get-started" element={<GetStarted/>} />
+        <Route path="/select-interest" element={<SelectInterest />} />
+        <Route path="/select-community" element={<SelectCommunity />} />
+        <Route path="/get-started" element={<GetStarted />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/me" element={<TimeLine />} />
-        <Route path="/timeline" element={<MainTemplate Component={TimeLine} />} />
+        <Route path="/me" element={<MainTemplate Component={TimeLine} />} />
+        <Route
+          path="/timeline"
+          element={<MainTemplate Component={TimeLine} />}
+        />
       </Routes>
     </>
   );

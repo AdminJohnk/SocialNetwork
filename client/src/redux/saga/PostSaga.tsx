@@ -10,6 +10,7 @@ import {
   UPDATE_POST_SAGA,
   SAVE_POST_SAGA,
   SAVE_COMMENT_SAGA,
+  SAVE_REPLY_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
 
@@ -102,6 +103,29 @@ export function* saveCommentSaga({ payload }: any) {
 
 export function* theoDoiSaveCommentSaga() {
   yield takeLatest(SAVE_COMMENT_SAGA, saveCommentSaga);
+}
+
+// Save Reply Saga
+export function* saveReplySaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.saveReply(
+      payload.id,
+      payload.reply
+    );
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSaveReplySaga() {
+  yield takeLatest(SAVE_REPLY_SAGA, saveReplySaga);
 }
 
 // Delete Post Saga

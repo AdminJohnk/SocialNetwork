@@ -1,12 +1,22 @@
 import CommentDetail from "../../Comment/CommentDetail";
 import Post from "../../Post/Post";
+import { useState } from "react";
 
 interface PostProps {
   post: any;
   userInfo: any;
+  onData: (data: any) => void;
 }
 
 const PostDetail = (Props: PostProps) => {
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
+    null
+  );
+
+  const handleSelectComment = (commentId: string | null) => {
+    setSelectedCommentId(commentId);
+  };
+
   return (
     <div>
       <Post post={Props.post} userInfo={Props.userInfo} />
@@ -15,16 +25,23 @@ const PostDetail = (Props: PostProps) => {
           <div>
             {item ? (
               <CommentDetail
+                onData={Props.onData}
                 key={index}
                 comment={item}
                 userInfo={Props.userInfo}
+                selectedCommentId={selectedCommentId}
+                onSelectComment={handleSelectComment}
               >
                 {item.listReply.map((item: any, index: number) => {
                   return (
                     <CommentDetail
+                      onData={Props.onData}
                       key={index}
                       comment={item}
                       userInfo={Props.userInfo}
+                      selectedCommentId={selectedCommentId}
+                      onSelectComment={handleSelectComment}
+                      isReply={true}
                     />
                   );
                 })}

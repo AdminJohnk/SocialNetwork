@@ -22,5 +22,6 @@ export function* rootSaga() {
     postSaga.theoDoiSharePostSaga(),
     postSaga.theoDoiSavePostSaga(),
     postSaga.theoDoiSaveCommentSaga(),
+    postSaga.theoDoiSaveReplySaga(),
   ]);
 }
