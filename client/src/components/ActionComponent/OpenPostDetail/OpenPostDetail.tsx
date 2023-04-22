@@ -76,7 +76,6 @@ const OpenPostDetail = (PostProps: PostProps) => {
   };
 
   useLayoutEffect(() => {
-    console.log("data", data);
     dispatch(
       openModal({
         title: "The post of " + PostProps.userInfo.username,
@@ -85,6 +84,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
             onData={handleData}
             post={PostProps.post}
             userInfo={PostProps.userInfo}
+            data={data}
           />
         ),
         footer: (
