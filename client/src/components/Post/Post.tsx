@@ -216,13 +216,7 @@ const Post = (PostProps: PostProps) => {
   // Open PostDetail
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
+  console.log(isOpenPostDetail);
 
   return (
     <ConfigProvider
