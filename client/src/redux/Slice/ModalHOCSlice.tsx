@@ -5,6 +5,7 @@ const initialState = {
   visible: false,
   ComponentContentModal: <p>default</p>,
   footer: <p>default</p>,
+  handleSubmit: () => {},
 };
 
 const modalHOCSlide = createSlice({
@@ -26,8 +27,14 @@ const modalHOCSlide = createSlice({
         visible: false,
       };
     },
+    setHandleSubmit: (state, action) => {
+      return {
+        ...state,
+        handleSubmit: action.payload,
+      };
+    },
   },
 });
 
-export const { openModal, closeModal } = modalHOCSlide.actions;
+export const { openModal, closeModal, setHandleSubmit } = modalHOCSlide.actions;
 export default modalHOCSlide.reducer;

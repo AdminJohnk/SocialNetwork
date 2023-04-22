@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover } from "antd";
+import { Avatar, ConfigProvider, Input, Popover, Button } from "antd";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../../redux/Slice/ModalHOCSlice";
@@ -7,8 +7,13 @@ import PostDetail from "../../Form/PostDetail/PostDetail";
 import StyleTotal from "./cssOpenPostDetail";
 import data from "@emoji-mart/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Picker from "@emoji-mart/react";
+import { setHandleSubmit } from "../../../redux/Slice/ModalHOCSlice";
+import {
+  SAVE_COMMENT_SAGA,
+  SAVE_REPLY_SAGA,
+} from "../../../redux/actionSaga/PostActionSaga";
 
 interface PostProps {
   post: any;
@@ -25,71 +30,136 @@ const OpenPostDetail = (PostProps: PostProps) => {
 
   const [commentContent, setCommentContent] = useState("");
 
+  const [data, setData] = useState<any>({ isReply: false, idComment: null });
+
+  const handleData = (data: any) => {
+    setData(data);
+  };
+
   const handleComment = (content: any) => {
     setCommentContent(content);
   };
 
+  const handleSubmitComment = () => {
+    if (data.isReply) {
+      dispatch(
+        SAVE_REPLY_SAGA({
+          id: PostProps.post._id,
+          reply: {
+            contentComment: commentContent,
+            idComment: data.idComment,
+          },
+        })
+      );
+      setData({ isReply: false, idComment: null });
+    } else {
+      dispatch(
+        SAVE_COMMENT_SAGA({
+          comment: {
+            contentComment: commentContent,
+          },
+          id: PostProps.post._id,
+        })
+      );
+    }
+    setTimeout(() => {
+      setCommentContent("");
+    }, 1000);
+  };
+
+  const checkEmpty = () => {
+    if (commentContent === "") {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useLayoutEffect(() => {
+    console.log("data", data);
     dispatch(
       openModal({
         title: "The post of " + PostProps.userInfo.username,
         component: (
-          <PostDetail post={PostProps.post} userInfo={PostProps.userInfo} />
+          <PostDetail
+            onData={handleData}
+            post={PostProps.post}
+            userInfo={PostProps.userInfo}
+          />
         ),
         footer: (
-          <div className=" commentInput text-left flex items-center">
-            <Avatar
-              className="mr-2"
-              size={40}
-              src={PostProps.userInfo.userImage}
-            />
-            <div className="input w-full">
-              <Input
-                value={commentContent}
-                placeholder="Add a Comment"
-                allowClear
-                onChange={(e) => {
-                  handleComment(e.target.value);
-                }}
-                style={{
-                  borderColor: themeColorSet.colorText3,
-                }}
-                maxLength={150}
-                addonAfter={
-                  <Popover
-                    placement="right"
-                    trigger="click"
-                    title={"Emoji"}
-                    content={
-                      <Picker
-                        data={data}
-                        onEmojiSelect={(emoji: any) => {
-                          handleComment(commentContent + emoji.native);
-                        }}
-                      />
+          <ConfigProvider>
+            <StyleTotal theme={themeColorSet}>
+              <div className=" commentInput text-right flex items-center">
+                <Avatar
+                  className="mr-2"
+                  size={40}
+                  src={PostProps.userInfo.userImage}
+                />
+                <div className="input w-full">
+                  <Input
+                    value={commentContent}
+                    placeholder="Add a Comment"
+                    // allowClear
+                    onChange={(e) => {
+                      handleComment(e.target.value);
+                    }}
+                    style={{
+                      borderColor: themeColorSet.colorText3,
+                    }}
+                    maxLength={150}
+                    addonAfter={
+                      <Popover
+                        placement="right"
+                        trigger="click"
+                        title={"Emoji"}
+                        content={
+                          <Picker
+                            data={data}
+                            onEmojiSelect={(emoji: any) => {
+                              handleComment(commentContent + emoji.native);
+                            }}
+                          />
+                        }
+                      >
+                        <span
+                          className="emoji cursor-pointer hover:text-blue-700"
+                          style={{
+                            transition: "all 0.3s",
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className="item mr-3 ml-3"
+                            size="lg"
+                            icon={faFaceSmile}
+                          />
+                        </span>
+                      </Popover>
                     }
+                  ></Input>
+                  <span
+                    className="sendComment cursor-pointer hover:text-blue-700"
+                    {...(checkEmpty()
+                      ? {
+                          style: {
+                            color: "gray",
+                            //hover disabled
+                            cursor: "not-allowed",
+                          },
+                        }
+                      : { transition: "all 0.3s" })}
+                    onClick={handleSubmitComment}
                   >
-                    <span
-                      className="emoji cursor-pointer hover:text-blue-700"
-                      style={{
-                        transition: "all 0.3s",
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        className="item mr-3 ml-3"
-                        size="lg"
-                        icon={faFaceSmile}
-                      />
-                    </span>
-                  </Popover>
-                }
-              ></Input>
-            </div>
-          </div>
+                    <FontAwesomeIcon icon={faPaperPlane} />
+                  </span>
+                </div>
+              </div>
+            </StyleTotal>
+          </ConfigProvider>
         ),
       })
     );
-  }, [commentContent]);
+  }, [PostProps.post, commentContent, data]);
 
   return (
     <ConfigProvider

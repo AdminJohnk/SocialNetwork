@@ -9,6 +9,8 @@ import {
   SHARE_POST_SAGA,
   UPDATE_POST_SAGA,
   SAVE_POST_SAGA,
+  SAVE_COMMENT_SAGA,
+  SAVE_REPLY_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
 
@@ -60,7 +62,6 @@ export function* theoDoiCreatePostSaga() {
 // Update Post Saga
 export function* updatePostSaga({ payload }: any) {
   try {
-
     const { data, status } = yield postService.updatePost(
       payload.id,
       payload.postUpdate
@@ -81,6 +82,51 @@ export function* theoDoiUpdatePostSaga() {
   yield takeLatest(UPDATE_POST_SAGA, updatePostSaga);
 }
 
+// Save Comment Saga
+export function* saveCommentSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.saveComment(
+      payload.id,
+      payload.comment
+    );
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSaveCommentSaga() {
+  yield takeLatest(SAVE_COMMENT_SAGA, saveCommentSaga);
+}
+
+// Save Reply Saga
+export function* saveReplySaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.saveReply(
+      payload.id,
+      payload.reply
+    );
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSaveReplySaga() {
+  yield takeLatest(SAVE_REPLY_SAGA, saveReplySaga);
+}
 
 // Delete Post Saga
 export function* deletePostSaga({ payload }: any) {
@@ -100,7 +146,6 @@ export function* deletePostSaga({ payload }: any) {
 export function* theoDoiDeletePostSaga() {
   yield takeLatest(DELETE_POST_SAGA, deletePostSaga);
 }
-
 
 // Like Post Saga
 export function* likePostSaga({ payload }: any) {
@@ -142,7 +187,6 @@ export function* theoDoiSharePostSaga() {
   yield takeLatest(SHARE_POST_SAGA, sharePostSaga);
 }
 
-
 // Save Post Saga
 export function* savePostSaga({ payload }: any) {
   try {
@@ -162,5 +206,3 @@ export function* savePostSaga({ payload }: any) {
 export function* theoDoiSavePostSaga() {
   yield takeLatest(SAVE_POST_SAGA, savePostSaga);
 }
-
-

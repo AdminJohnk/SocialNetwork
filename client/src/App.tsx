@@ -30,7 +30,6 @@ const App = () => {
 
   dispatch(setUseSelector(useSelector));
 
- 
   return (
     <>
       <LoadingComponent />
@@ -43,8 +42,11 @@ const App = () => {
         <Route path="/get-started" element={<GetStarted/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/me" element={<TimeLine />} />
-        <Route path="/timeline" element={<MainTemplate Component={TimeLine} />} />
+        <Route path="/me" element={<MainTemplate Component={TimeLine} />} />
+        <Route
+          path="/timeline"
+          element={<MainTemplate Component={TimeLine} />}
+        />
       </Routes>
     </>
   );

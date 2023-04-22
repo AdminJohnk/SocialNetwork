@@ -44,6 +44,7 @@ export const commonColor = {
   colorBlue3: "#1f57b8",
   colorGreen1: "#00ae8c",
   colorWarning1: "#ff6b6b",
+  borderColor: "#d4d4d4",
 };
 
 //--------------------------------------------
