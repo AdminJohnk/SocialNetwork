@@ -1,17 +1,22 @@
 import CommentDetail from "../../Comment/CommentDetail";
 import Post from "../../Post/Post";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface PostProps {
   post: any;
   userInfo: any;
+  data: any;
   onData: (data: any) => void;
 }
 
 const PostDetail = (Props: PostProps) => {
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
-    null
+    Props.data.idComment
   );
+
+  useEffect(() => {
+    setSelectedCommentId(Props.data.idComment);
+  }, [Props.data]);
 
   const handleSelectComment = (commentId: string | null) => {
     setSelectedCommentId(commentId);

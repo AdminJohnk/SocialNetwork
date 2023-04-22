@@ -18,16 +18,6 @@ const CommentDetail = (Props: CommentProps) => {
   const [dislikes, setDislike] = useState(0);
   const [action, setAction] = useState("");
 
-  useEffect(() => {
-    // Reset the reply button text and style when the component re-renders
-    const reply = document.getElementById("reply");
-    if (reply) {
-      reply.innerHTML = "Reply";
-      reply.style.color = "#D4D4D4A6";
-      reply.style.fontWeight = "normal";
-    }
-  }, []);
-
   const like = () => {
     if (action === "liked") {
       setLike(0);
