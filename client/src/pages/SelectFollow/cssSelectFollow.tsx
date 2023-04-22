@@ -5,7 +5,7 @@ const StyleTotal = styled.div`
   height: fit-content;
   background-color: ${(props) => props.theme.colorBg1};
 
-  .btnJoin {
+  .btnFollow {
     background-color: ${commonColor.colorBlue2};
     bottom: 10%;
     right: 0%;
@@ -15,9 +15,9 @@ const StyleTotal = styled.div`
       transition: all 0.5s;
     }
   }
-  .btnNext {
+  .btnDone {
     background-color: ${commonColor.colorBlue2};
-    
+
     :hover {
       background-color: ${commonColor.colorBlue3};
       cursor: pointer;
