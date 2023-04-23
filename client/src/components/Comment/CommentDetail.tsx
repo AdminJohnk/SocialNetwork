@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Comment, Icon } from "@ant-design/compatible";
-import { Avatar, Tooltip } from "antd";
+import { Avatar, ConfigProvider, Tooltip } from "antd";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { getTheme } from "../../util/functions/ThemeFunction";
+import StyleTotal from "../Post/cssPost";
 
 interface CommentProps {
   comment: any;
@@ -14,6 +17,12 @@ interface CommentProps {
 }
 
 const CommentDetail = (Props: CommentProps) => {
+
+ // Lấy theme từ LocalStorage chuyển qua css
+ const { change } = useSelector((state: any) => state.themeReducer);
+ const { themeColor } = getTheme();
+ const { themeColorSet } = getTheme();
+
   const [likes, setLike] = useState(0);
   const [dislikes, setDislike] = useState(0);
   const [action, setAction] = useState("");
@@ -57,6 +66,9 @@ const CommentDetail = (Props: CommentProps) => {
           type="like"
           theme={action === "liked" ? "filled" : "outlined"}
           onClick={like}
+          style={{
+            fontSize: "0.9rem", 
+          }}
         />
       </Tooltip>
       <span style={{ paddingLeft: 8, cursor: "auto" }}>{likes}</span>
@@ -67,6 +79,9 @@ const CommentDetail = (Props: CommentProps) => {
           type="dislike"
           theme={action === "disliked" ? "filled" : "outlined"}
           onClick={dislike}
+          style={{
+            fontSize: "0.9rem", 
+          }}
         />
       </Tooltip>
       <span style={{ paddingLeft: 8, cursor: "auto" }}>{dislikes}</span>
@@ -84,12 +99,14 @@ const CommentDetail = (Props: CommentProps) => {
                 style: {
                   color: "#1890ff",
                   fontWeight: "bold",
+                  fontSize: "0.9rem", 
                 },
               }
             : {
                 style: {
                   color: "#D4D4D4A6",
                   fontWeight: "normal",
+                  fontSize: "0.9rem", 
                 },
               })}
         >
@@ -99,9 +116,21 @@ const CommentDetail = (Props: CommentProps) => {
     },
   ];
   return (
+    <ConfigProvider
+      theme={{
+        token: themeColor,
+      }}
+    >
+      <StyleTotal theme={themeColorSet}>
     <div className="">
       <Comment
-        author={Props.comment.user.username}
+        author={<div
+        style={{
+          fontWeight: 600,
+          color: themeColorSet.colorText1,
+          fontSize: "0.85rem", 
+        }}
+        >{Props.comment.user.username}</div>}
         actions={actions}
         avatar={
           Props.comment.user.userImage ? (
@@ -117,11 +146,17 @@ const CommentDetail = (Props: CommentProps) => {
             />
           )
         }
-        content={Props.comment.content}
+        content={
+          <div className="">
+            {Props.comment.content}
+          </div>
+        }
       >
         {Props.children}
       </Comment>
     </div>
+    </StyleTotal>
+    </ConfigProvider>
   );
 };
 
