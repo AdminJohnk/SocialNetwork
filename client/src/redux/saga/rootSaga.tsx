@@ -23,5 +23,8 @@ export function* rootSaga() {
     postSaga.theoDoiSavePostSaga(),
     postSaga.theoDoiSaveCommentSaga(),
     postSaga.theoDoiSaveReplySaga(),
+    postSaga.theoDoiSaveCommentPostShareSaga(),
+    postSaga.theoDoiLikePostShareSaga(),
+    postSaga.theoDoiSaveReplyPostShareSaga(),
   ]);
 }

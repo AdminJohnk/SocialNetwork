@@ -28,3 +28,15 @@ export const SAVE_COMMENT_SAGA = createAction("SAVE_COMMENT_SAGA", (data) => ({
 export const SAVE_REPLY_SAGA = createAction("SAVE_REPLY_SAGA", (data) => ({
   payload: data,
 }));
+export const SAVE_COMMENT_POSTSHARE_SAGA = createAction(
+  "SAVE_COMMENT_POSTSHARE_SAGA",
+  (data) => ({ payload: data })
+);
+export const LIKE_POSTSHARE_SAGA = createAction(
+  "LIKE_POSTSHARE_SAGA",
+  (data) => ({ payload: data })
+);
+export const SAVE_REPLY_POSTSHARE_SAGA = createAction(
+  "SAVE_REPLY_POSTSHARE_SAGA",
+  (data) => ({ payload: data })
+);

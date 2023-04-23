@@ -11,6 +11,9 @@ import {
   SAVE_POST_SAGA,
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
+  SAVE_COMMENT_POSTSHARE_SAGA,
+  LIKE_POSTSHARE_SAGA,
+  SAVE_REPLY_POSTSHARE_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost } from "../Slice/PostSlice";
 
@@ -35,8 +38,8 @@ export function* theoDoiGetAllPostByUserIDSaga() {
 function* createPostSaga({ payload }: any) {
   try {
     const postCreate = {
-      title: payload.title,
-      content: payload.content,
+      title: payload.postCreate.title,
+      content: payload.postCreate.content,
     };
     const postImage = payload.linkImage;
     const { data, status } = yield postService.createPost(
@@ -143,8 +146,55 @@ export function* deletePostSaga({ payload }: any) {
     console.log(err.response.data);
   }
 }
+
 export function* theoDoiDeletePostSaga() {
   yield takeLatest(DELETE_POST_SAGA, deletePostSaga);
+}
+
+// Save comment postshare Saga
+export function* saveCommentPostShareSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.saveCommentPostShare(
+      payload.id,
+      payload.comment
+    );
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSaveCommentPostShareSaga() {
+  yield takeLatest(SAVE_COMMENT_POSTSHARE_SAGA, saveCommentPostShareSaga);
+}
+
+// Save Reply PostShare Saga
+export function* saveReplyPostShareSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.saveReplyPostShare(
+      payload.id,
+      payload.reply
+    );
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiSaveReplyPostShareSaga() {
+  yield takeLatest(SAVE_REPLY_POSTSHARE_SAGA, saveReplyPostShareSaga);
 }
 
 // Like Post Saga
@@ -185,6 +235,26 @@ export function* sharePostSaga({ payload }: any) {
 
 export function* theoDoiSharePostSaga() {
   yield takeLatest(SHARE_POST_SAGA, sharePostSaga);
+}
+
+// Like post share Saga
+export function* likePostShareSaga({ payload }: any) {
+  try {
+    const { data, status } = yield postService.likePostShare(payload.id);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: "me",
+        })
+      );
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiLikePostShareSaga() {
+  yield takeLatest(LIKE_POSTSHARE_SAGA, likePostShareSaga);
 }
 
 // Save Post Saga
