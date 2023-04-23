@@ -1,11 +1,9 @@
 import {
-  faBookmark,
   faComment,
   faCopy,
   faEllipsis,
   faHeart,
   faPenToSquare,
-  faShare,
   faShareNodes,
   faTrash,
   faTriangleExclamation,
@@ -14,7 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Avatar,
   ConfigProvider,
-  Divider,
   Dropdown,
   Space,
   Modal,
@@ -29,25 +26,21 @@ import StyleTotal from "./cssPost";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 
 import {
-  DELETE_POST_SAGA,
-  LIKE_POST_SAGA,
   SHARE_POST_SAGA,
-  SAVE_POST_SAGA,
+  LIKE_POSTSHARE_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenPostDetail from "../ActionComponent/OpenPostDetail/OpenPostDetail";
 
-interface PostProps {
+interface PostShareProps {
   post: any;
   userInfo: any;
 }
 
 type NotificationType = "success" | "info" | "warning" | "error";
 
-// -----------------------------------------------------
-
-const Post = (PostProps: PostProps) => {
+const PostShare = (PostProps: PostShareProps) => {
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -75,40 +68,6 @@ const Post = (PostProps: PostProps) => {
     setIsLiked(PostProps.post.isLiked);
   }, [PostProps.post.isLiked]);
 
-  // ------------------------ Share ------------------------
-
-  // Share Number
-  const [shareNumber, setShareNumber] = useState(PostProps.post.shares.length);
-  useEffect(() => {
-    setShareNumber(PostProps.post.shares.length);
-  }, [PostProps.post.shares.length]);
-
-  // Share color
-  const [shareColor, setShareColor] = useState("white");
-  useEffect(() => {
-    PostProps.post.isShared ? setShareColor("blue") : setShareColor("white");
-  }, [PostProps.post.isShared]);
-
-  // isShared
-  const [isShared, setIsShared] = useState(true);
-  useEffect(() => {
-    setIsShared(PostProps.post.isShared);
-  }, [PostProps.post.isShared]);
-
-  // ------------------------ Save ------------------------
-
-  // isSaved
-  const [isSaved, setIsSaved] = useState(true);
-  useEffect(() => {
-    setIsSaved(PostProps.post.isSaved);
-  }, [PostProps.post.isSaved]);
-
-  // Save color
-  const [saveColor, setSaveColor] = useState("white");
-  useEffect(() => {
-    PostProps.post.isSaved ? setSaveColor("yellow") : setSaveColor("white");
-  }, [PostProps.post.isSaved]);
-
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
   const date = createdAt.toLocaleDateString("en-US", {
@@ -126,8 +85,8 @@ const Post = (PostProps: PostProps) => {
 
   const handleOk = () => {
     dispatch(
-      DELETE_POST_SAGA({
-        id: PostProps.post._id,
+      SHARE_POST_SAGA({
+        id: PostProps.post.postID,
       })
     );
     setIsModalOpen(false);
@@ -242,7 +201,11 @@ const Post = (PostProps: PostProps) => {
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
       {isOpenPostDetail ? (
-        <OpenPostDetail post={PostProps.post} userInfo={PostProps.userInfo} />
+        <OpenPostDetail
+          postShare={true}
+          post={PostProps.post}
+          userInfo={PostProps.userInfo}
+        />
       ) : null}
       <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
         <div className="post px-4 py-3">
@@ -281,17 +244,42 @@ const Post = (PostProps: PostProps) => {
               </div>
             </div>
           </div>
-          <div className="postBody mt-5">
-            <div className="title font-bold">{PostProps.post.title}</div>
-            <div className="content mt-3">
-              <div
-                className="content__text"
-                dangerouslySetInnerHTML={{
-                  __html: PostProps.post.content,
-                }}
-              ></div>
+          <div className="space-align-block">
+            <div className="postHeader flex justify-between items-center">
+              <div className="postHeader__left">
+                <div className="name_avatar flex">
+                  <Avatar size={50} src={PostProps.userInfo.userImage} />
+                  <div className="name ml-2">
+                    <div className="name__top font-bold">
+                      <NavLink
+                        to="/profile"
+                        style={{ color: themeColorSet.colorText1 }}
+                      >
+                        {PostProps.userInfo.username}
+                      </NavLink>
+                    </div>
+                    <div
+                      className="time"
+                      style={{ color: themeColorSet.colorText3 }}
+                    >
+                      <span>{"Data Analyst"} • </span>
+                      <span>{date}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
+            <div className="postBody mt-5">
+              <div className="title font-bold">{PostProps.post.title}</div>
+              <div className="content mt-3">
+                <div
+                  className="content__text"
+                  dangerouslySetInnerHTML={{
+                    __html: PostProps.post.content,
+                  }}
+                ></div>
+              </div>
+            </div>
           </div>
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
@@ -312,31 +300,7 @@ const Post = (PostProps: PostProps) => {
                       setIsLiked(true);
                     }
                     dispatch(
-                      LIKE_POST_SAGA({
-                        id: PostProps.post._id,
-                      })
-                    );
-                  }}
-                />
-              </Space>
-              <Space className="like" direction="vertical" align="center">
-                <span>{shareNumber} Share</span>
-                <Avatar
-                  className="item"
-                  style={{ backgroundColor: "transparent" }}
-                  icon={<FontAwesomeIcon icon={faShare} color={shareColor} />}
-                  onClick={(e: any) => {
-                    if (isShared) {
-                      setShareNumber(shareNumber - 1);
-                      setShareColor("white");
-                      setIsShared(false);
-                    } else {
-                      setShareNumber(shareNumber + 1);
-                      setShareColor("blue");
-                      setIsShared(true);
-                    }
-                    dispatch(
-                      SHARE_POST_SAGA({
+                      LIKE_POSTSHARE_SAGA({
                         id: PostProps.post._id,
                       })
                     );
@@ -362,27 +326,6 @@ const Post = (PostProps: PostProps) => {
                   <Avatar
                     className="item"
                     style={{ backgroundColor: "transparent" }}
-                    icon={
-                      <FontAwesomeIcon icon={faBookmark} color={saveColor} />
-                    }
-                    onClick={(e: any) => {
-                      if (isSaved) {
-                        setIsSaved(false);
-                        setSaveColor("white");
-                      } else {
-                        setIsSaved(true);
-                        setSaveColor("yellow");
-                      }
-                      dispatch(
-                        SAVE_POST_SAGA({
-                          id: PostProps.post._id,
-                        })
-                      );
-                    }}
-                  />
-                  <Avatar
-                    className="item"
-                    style={{ backgroundColor: "transparent" }}
                     icon={<FontAwesomeIcon icon={faShareNodes} />}
                   />
                 </Space>
@@ -395,4 +338,4 @@ const Post = (PostProps: PostProps) => {
   );
 };
 
-export default Post;
+export default PostShare;

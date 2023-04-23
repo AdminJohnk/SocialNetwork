@@ -3,6 +3,13 @@ import { commonColor } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
+  .space-align-block {
+    flex: none;
+    margin: 16px 8px;
+    padding: 20px;
+    border: 1px solid ${(props) => props.theme.colorBg4};
+    border-radius: 20px;
+  }
   .post {
     .postHeader {
       .postHeader__left {

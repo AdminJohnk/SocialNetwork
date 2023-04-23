@@ -40,7 +40,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import Post from "../../components/Post/Post";
 import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
-
+import PostShare from "../../components/Post/PostShare";
 
 const descArray = [
   {
@@ -275,7 +275,16 @@ const TimeLine = () => {
                   {postArray.map((item: any, index: number) => {
                     return (
                       <div className="w-8/12">
-                        <Post key={index} post={item} userInfo={userInfo} />
+                        {item.PostShared && (
+                          <PostShare
+                            key={index}
+                            post={item}
+                            userInfo={userInfo}
+                          />
+                        )}
+                        {!item.PostShared && (
+                          <Post key={index} post={item} userInfo={userInfo} />
+                        )}
                       </div>
                     );
                   })}
