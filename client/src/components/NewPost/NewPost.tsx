@@ -88,6 +88,7 @@ const NewPost = () => {
             postCreate: values,
           })
         );
+        quill.root.innerHTML = "<p><br></p>";
       }
     },
   });

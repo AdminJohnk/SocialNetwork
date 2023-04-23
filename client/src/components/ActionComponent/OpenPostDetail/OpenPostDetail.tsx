@@ -11,13 +11,16 @@ import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import Picker from "@emoji-mart/react";
 import { setHandleSubmit } from "../../../redux/Slice/ModalHOCSlice";
 import {
+  SAVE_COMMENT_POSTSHARE_SAGA,
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
+  SAVE_REPLY_POSTSHARE_SAGA,
 } from "../../../redux/actionSaga/PostActionSaga";
 
 interface PostProps {
   post: any;
   userInfo: any;
+  postShare?: any;
 }
 
 const OpenPostDetail = (PostProps: PostProps) => {
@@ -41,26 +44,50 @@ const OpenPostDetail = (PostProps: PostProps) => {
   };
 
   const handleSubmitComment = () => {
-    if (data.isReply) {
-      dispatch(
-        SAVE_REPLY_SAGA({
-          id: PostProps.post._id,
-          reply: {
-            contentComment: commentContent,
-            idComment: data.idComment,
-          },
-        })
-      );
-      setData({ isReply: false, idComment: null });
+    if (PostProps.postShare) {
+      if (data.isReply) {
+        dispatch(
+          SAVE_REPLY_POSTSHARE_SAGA({
+            id: PostProps.post._id,
+            reply: {
+              contentComment: commentContent,
+              idComment: data.idComment,
+            },
+          })
+        );
+        setData({ isReply: false, idComment: null });
+      } else {
+        dispatch(
+          SAVE_COMMENT_POSTSHARE_SAGA({
+            comment: {
+              contentComment: commentContent,
+            },
+            id: PostProps.post._id,
+          })
+        );
+      }
     } else {
-      dispatch(
-        SAVE_COMMENT_SAGA({
-          comment: {
-            contentComment: commentContent,
-          },
-          id: PostProps.post._id,
-        })
-      );
+      if (data.isReply) {
+        dispatch(
+          SAVE_REPLY_SAGA({
+            id: PostProps.post._id,
+            reply: {
+              contentComment: commentContent,
+              idComment: data.idComment,
+            },
+          })
+        );
+        setData({ isReply: false, idComment: null });
+      } else {
+        dispatch(
+          SAVE_COMMENT_SAGA({
+            comment: {
+              contentComment: commentContent,
+            },
+            id: PostProps.post._id,
+          })
+        );
+      }
     }
     setTimeout(() => {
       setCommentContent("");
@@ -82,6 +109,7 @@ const OpenPostDetail = (PostProps: PostProps) => {
         post={PostProps.post}
         userInfo={PostProps.userInfo}
         data={data}
+        postShare={PostProps.postShare}
       />
     ),
     [PostProps.post, PostProps.userInfo, data]

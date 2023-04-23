@@ -35,6 +35,18 @@ export class PostService extends BaseService {
       replyContent
     );
   };
+  saveCommentPostShare = (id: string, commentContent: any) => {
+    return this.post(`/postshare/${id}/comment`, commentContent);
+  };
+  likePostShare = (id: string) => {
+    return this.post(`/postshare/${id}/like`, "");
+  };
+  saveReplyPostShare = (id: string, replyContent: any) => {
+    return this.post(
+      `/postshare/${id}/comment/${replyContent.idComment}`,
+      replyContent
+    );
+  };
 }
 
 export const postService = new PostService();

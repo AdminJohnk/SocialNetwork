@@ -323,7 +323,10 @@ const SelectFollow = () => {
               {peopleArray.map((item, index) => {
                 return (
                   <div>
-                    <div className="peopleItem flex justify-between items-center mt-5 p-2" key={index}>
+                    <div
+                      className="peopleItem flex justify-between items-center mt-5 p-2"
+                      key={index}
+                    >
                       <div
                         className="peopleImage p-3"
                         style={{
@@ -413,7 +416,7 @@ const SelectFollow = () => {
               })}
             </div>
             <div className="button mt-16 mr-2 mb-10 text-right">
-              <NavLink to="/select-community">
+              <NavLink to="/timeline">
                 <button className="btnDone px-4 py-2">Done</button>
               </NavLink>
             </div>

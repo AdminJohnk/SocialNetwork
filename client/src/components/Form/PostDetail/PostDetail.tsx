@@ -1,12 +1,14 @@
 import CommentDetail from "../../Comment/CommentDetail";
 import Post from "../../Post/Post";
 import { useState, useEffect } from "react";
+import PostShare from "../../Post/PostShare";
 
 interface PostProps {
   post: any;
   userInfo: any;
   data: any;
   onData: (data: any) => void;
+  postShare?: any;
 }
 
 const PostDetail = (Props: PostProps) => {
@@ -24,7 +26,11 @@ const PostDetail = (Props: PostProps) => {
 
   return (
     <div>
-      <Post post={Props.post} userInfo={Props.userInfo} />
+      {Props.postShare ? (
+        <PostShare post={Props.post} userInfo={Props.userInfo} />
+      ) : (
+        <Post post={Props.post} userInfo={Props.userInfo} />
+      )}
       {Props.post.comments.map((item: any, index: number) => {
         return (
           <div>
