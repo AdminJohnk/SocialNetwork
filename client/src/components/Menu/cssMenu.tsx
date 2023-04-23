@@ -6,6 +6,7 @@ import {
 } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
+z-index: 10;
   .sider {
     &::-webkit-scrollbar {
       display: none;

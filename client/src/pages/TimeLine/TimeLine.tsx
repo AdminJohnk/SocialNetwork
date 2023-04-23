@@ -257,7 +257,7 @@ const TimeLine = () => {
             <div className="mainContain mt-5">
               <Tabs
                 defaultActiveKey="1"
-                // onChange={onChange}
+              // onChange={onChange}
               >
                 <TabPane tab="Introduce" key="1">
                   Introduce

@@ -19,7 +19,6 @@ const functionSlice = createSlice({
     setUseSelector: (state, action) => {
       return { ...state, useSelector: action.payload.useSelector };
     },
-
   },
 });
 
