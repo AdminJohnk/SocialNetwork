@@ -277,13 +277,17 @@ const TimeLine = () => {
                       <div className="w-8/12">
                         {item.PostShared && (
                           <PostShare
-                            key={index}
+                            key={item._id}
                             post={item}
                             userInfo={userInfo}
                           />
                         )}
                         {!item.PostShared && (
-                          <Post key={index} post={item} userInfo={userInfo} />
+                          <Post
+                            key={item._id}
+                            post={item}
+                            userInfo={userInfo}
+                          />
                         )}
                       </div>
                     );
