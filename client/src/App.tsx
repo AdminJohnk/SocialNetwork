@@ -4,6 +4,7 @@ import { useNavigate, Navigate, Route, Routes } from "react-router-dom";
 import LoadingComponent from "./components/GlobalSetting/LoadingComponent/LoadingComponent";
 import DrawerHOC from "./HOC/Drawer/DrawerHOC";
 import ModalHOC from "./HOC/Modal/ModalHOC";
+import Chat from "./pages/Chat/Chat";
 import GetStarted from "./pages/GetStarted/GetStarted";
 import Login from "./pages/Login/Login";
 import NewFeed from "./pages/NewFeed/NewFeed";
@@ -36,10 +37,11 @@ const App = () => {
       <DrawerHOC />
       <ModalHOC />
       <Routes>
-        <Route path="/select-interest" element={<SelectInterest/>} />
-        <Route path="/select-follow" element={<SelectFollow/>} />
-        <Route path="/select-community" element={<SelectCommunity/>} />
-        <Route path="/get-started" element={<GetStarted/>} />
+        <Route path="/message" element={<Chat />} />
+        <Route path="/select-interest" element={<SelectInterest />} />
+        <Route path="/select-follow" element={<SelectFollow />} />
+        <Route path="/select-community" element={<SelectCommunity />} />
+        <Route path="/get-started" element={<GetStarted />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/me" element={<MainTemplate Component={TimeLine} />} />

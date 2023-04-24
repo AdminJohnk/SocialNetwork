@@ -1,7 +1,5 @@
 import styled, { css } from "styled-components";
-import {
-  commonColor,
-} from "../../util/cssVariable/cssVariable";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg2};
@@ -15,25 +13,27 @@ const StyleTotal = styled.div`
   .ql-editor {
     font-size: 14px;
   }
-  .newPostBody{
-    .name_avatar{
-        .name{
-            a{
-                color: ${(props) => props.theme.colorText1};
-                :hover{
-                    text-decoration: underline;
-                    transition: all 0.5s;
-                }
-            }
+  .newPostBody {
+    .name_avatar {
+      .name {
+        a {
+          color: ${(props) => props.theme.colorText1};
+          :hover {
+            text-decoration: underline;
+            transition: all 0.5s;
+          }
         }
+      }
     }
   }
   .newPostFooter {
     .newPostFooter__left {
-      .emoji, .code {
+      .emoji,
+      .code {
+        color: ${(props) => props.theme.colorText3};
         :hover {
           cursor: pointer;
-          color: ${commonColor.colorBlue2};
+          color: ${(props) => props.theme.colorText2};
           transition: all 0.5s;
         }
       }

@@ -31,11 +31,12 @@ const StyleTotal = styled.div`
   .newPostFooter {
     .newPostFooter__left {
       .emoji, .code {
-        :hover {
-          cursor: pointer;
-          color: ${commonColor.colorBlue2};
-          transition: all 0.5s;
-        }
+        color: ${(props) => props.theme.colorText3};
+            :hover {
+              cursor: pointer;
+              color:${(props) => props.theme.colorText2};
+              transition: all 0.5s;
+            }
       }
     }
     .newPostFooter__right {

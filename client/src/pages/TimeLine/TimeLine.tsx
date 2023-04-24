@@ -130,6 +130,8 @@ const TimeLine = () => {
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
 
+  console.log(postArray);
+
   return (
     <ConfigProvider
       theme={{
@@ -273,9 +275,33 @@ const TimeLine = () => {
                 <TabPane tab="Post" key="2" className="mt-10">
                   <NewPost />
                   {postArray.map((item: any, index: number) => {
+                    // if (item.hasOwnProperty("PostShared")) {
+                    //   console.log(item);
+                    // }
+                    // return (
+                    //   <div className="w-8/12">
+                    //     {item.PostShared && (
+                    //       <PostShare
+                    //         key={index}
+                    //         post={item}
+                    //         userInfo={userInfo}
+                    //       />
+                    //     )}
+                    //     {item.PostShared!===null && (
+                    //       <Post key={index} post={item} userInfo={userInfo} />
+                    //     )}
+                    //   </div>
+                    // );
                     return (
                       <div className="w-8/12">
-                        {item.PostShared && (
+                        {!item.hasOwnProperty("PostShared") && (
+                          <Post
+                            key={item._id}
+                            post={item}
+                            userInfo={userInfo}
+                          />
+                        )}
+                        {item.hasOwnProperty("PostShared") && (
                           <PostShare
                             key={item._id}
                             post={item}
