@@ -16,6 +16,9 @@ export function* rootSaga() {
     //chatSaga
     chatSaga.theoDoiGetMessageByConversationIdSaga(),
     chatSaga.theoDoiSendMessageSaga(),
+    chatSaga.theoDoiCreateNewConversationSaga(),
+    chatSaga.theoDoiGetConversationByUserIdSaga(),
+    chatSaga.theoDoiGetConversationByTwoUserIdSaga(),
 
 
   ]);

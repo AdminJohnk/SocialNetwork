@@ -3,78 +3,95 @@ import React, { useState, useEffect } from "react";
 import { Layout, theme, Input, Row, List, Avatar, Divider, Skeleton } from 'antd';
 import StyleTotal from "./cssContacts";
 import InfiniteScroll from 'react-infinite-scroll-component';
-const { Search } = Input;
+import axios from "axios";
 
-const dataUser = [
+// const { Search } = Input;
+
+let dataUser = [
     {
+        userId: '1',
         userName: 'Ant Design Title 1',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 2',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 3',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 4',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 1',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 2',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 3',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 4',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 1',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 2',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 3',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
     {
+        userId: '1',
         userName: 'Ant Design Title 4',
         userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png'
     },
 ];
 
 interface DataType {
+    userId: String;
     userName: string;
     userImage: string;
 }
 
-const Contacts = (contact: any, changeChat: any) => {
+const Contacts = ({ conversations, currentUser, currentChat }: any) => {
+
+    // const [user, setUser] = useState(null);
+
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState<DataType[]>([]);
-    const [collapsed, setCollapsed] = useState(false);
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
 
+    const setCurrentChat = (user: any) => {
+        currentChat(user);
+    }
 
-    const loadMoreData = () => {
+    const loadMoreData = async () => {
         if (loading) {
             return;
         }
-        // setLoading(true);
+        setLoading(true);
         // fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
         //   .then((res) => res.json())
         //   .then((body) => {
@@ -85,12 +102,37 @@ const Contacts = (contact: any, changeChat: any) => {
         //     setLoading(false);
         //   });
         setData(dataUser);
-        // setLoading(false);
+        setLoading(false);
     };
 
+    const getUSer = async () => {
+        try {
+            for (let i = 0; i < conversations.length; i++) {
+                const friendId = conversations[i].members.find((m: any) => m !== currentUser);
+                const res = await axios.get(`http://localhost:7000/api/users/` + friendId);
+                data.push({
+                    userId: res.data.content.user._id,
+                    userName: res.data.content.user.firstname + ' ' + res.data.content.user.lastname,
+                    userImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/800px-Image_created_with_a_mobile_phone.png',
+                });
+                // console.log(res.data.content.user.firstname + ' ' + res.data.content.user.lastname);
+                // setData(dataUser);
+            }
+            setData(data);
+            console.log(data);
+
+        } catch (err) {
+            console.log(err);
+        }
+    };
     useEffect(() => {
         loadMoreData();
-    }, []);
+        getUSer();
+
+
+    }, [conversations, currentUser]);
+
+
 
     return (
         <StyleTotal>
@@ -102,7 +144,7 @@ const Contacts = (contact: any, changeChat: any) => {
                     <Input
                         placeholder="Search..."
                         allowClear
-                        // onSearch={(value) => console.log(value)}
+                        // onInput={(value: any) => console.log(value)}
                         className="search"
 
                     />
@@ -113,7 +155,7 @@ const Contacts = (contact: any, changeChat: any) => {
                     <InfiniteScroll
                         dataLength={data.length}
                         next={loadMoreData}
-                        hasMore={data.length < 10}
+                        hasMore={data.length < 1}
                         loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
                         endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
                         scrollableTarget="scrollableDiv"
@@ -122,14 +164,16 @@ const Contacts = (contact: any, changeChat: any) => {
                             itemLayout="horizontal"
                             dataSource={data}
                             renderItem={(item) => (
-                                <List.Item className="oneUser">
+                                <List.Item className="oneUser" onClick={() => setCurrentChat(item)}>
                                     <List.Item.Meta
                                         avatar={<Avatar src={item.userImage} />}
                                         title={<div>{item.userName}</div>}
                                     />
                                 </List.Item>
                             )}
-                        /></InfiniteScroll></div>
+                        />
+                    </InfiniteScroll>
+                </div>
             </Layout>
         </StyleTotal >
 

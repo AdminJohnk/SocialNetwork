@@ -1,22 +1,39 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    
-   data: null
+
+    messagesArr: {},
+    convArr: {},
+    conv2UserArr: {}
+
 }
 
 const chatSlice = createSlice({
     name: "chat",
     initialState,
     reducers: {
-        getMessage: (state, action) => {
+        setAllMessageByConvId: (state, action) => {
             return {
                 ...state,
-                data: action.payload
+                messagesArr: action.payload
+            }
+        },
+
+        setConvByUserId: (state, action) => {
+            return {
+                ...state,
+                convArr: action.payload
+            }
+        },
+
+        setConvByTwoUserId: (state, action) => {
+            return {
+                ...state,
+                conv2UserArr: action.payload
             }
         },
     }
 });
 
-export const { getMessage } = chatSlice.actions;
+export const { setAllMessageByConvId, setConvByUserId, setConvByTwoUserId } = chatSlice.actions;
 export default chatSlice.reducer;

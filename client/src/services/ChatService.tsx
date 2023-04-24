@@ -12,6 +12,18 @@ export class ChatService extends BaseService {
     sendMessage = (message: any) => {
         return this.post(`/messages`, message);
     };
+
+    newConversation = (data: any) => {
+        return this.post(`/conversations`, data);
+    };
+
+    getConversationByUserID = (userId: any) => {
+        return this.get(`/conversations/${userId}`);
+    };
+
+    getConversationByTwoUserID = ({ firstUserId, secondUserId }: any) => {
+        return this.get(`/conversations/find/${firstUserId}/${secondUserId}`);
+    };
 }
 
 export const chatService = new ChatService();
