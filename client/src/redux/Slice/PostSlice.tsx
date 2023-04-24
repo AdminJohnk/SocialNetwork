@@ -12,6 +12,7 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setAllPost: (state, action) => {
+      // console.log(action.payload.postArr);
       return {
         ...state,
         postArr: action.payload.postArr,

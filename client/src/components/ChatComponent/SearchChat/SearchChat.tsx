@@ -356,7 +356,7 @@ const SearchChat = () => {
                             <>
                               <span
                                 style={{
-                                  color: themeColorSet.colorText1,
+                                  color: themeColorSet.colorText1, 
                                 }}
                               >
                                 You:{" "}
