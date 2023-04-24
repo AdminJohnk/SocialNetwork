@@ -221,7 +221,6 @@ export function* theoDoiLikePostSaga() {
 export function* sharePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.sharePost(payload.id);
-    console.log(payload.id);
 
     if (status === STATUS_CODE.SUCCESS) {
       yield put(
