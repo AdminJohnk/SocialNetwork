@@ -1,13 +1,19 @@
 import { call, delay, put, select, takeLatest } from "redux-saga/effects";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../services/AuthService";
-import { DARK_THEME, LIGHT_THEME, STATUS_CODE, TOKEN } from "../../util/constants/SettingSystem";
+import {
+  DARK_THEME,
+  LIGHT_THEME,
+  STATUS_CODE,
+  TOKEN,
+} from "../../util/constants/SettingSystem";
 import {
   CHECK_LOGIN_SAGA,
+  GET_USER_ID,
   LOGIN_SAGA,
   LOGOUT_SAGA,
 } from "../actionSaga/AuthActionSaga";
-import { setLogin } from "../Slice/AuthSlice";
+import { setLogin, setUserID } from "../Slice/AuthSlice";
 import { setLoading } from "../Slice/LoadingSlice";
 import { setTheme } from "../Slice/ThemeSlice";
 
@@ -50,7 +56,6 @@ function* LoginSaga({ payload }: any) {
     const { data, status } = yield authService.login(payload.userLogin);
     const { navigate } = yield select((state) => state.functionReducer);
     if (status === STATUS_CODE.SUCCESS) {
-
       // Lưu token vào localStorage
       localStorage.setItem(TOKEN, JSON.stringify(data.content.accessToken));
       yield put(setLogin({ login: true }));
@@ -88,4 +93,25 @@ function* LogoutSaga() {
 
 export function* theoDoiLogoutSaga() {
   yield takeLatest(LOGOUT_SAGA, LogoutSaga);
+}
+
+// Get User ID
+function* getUserIDSaga() {
+  try {
+    const token = localStorage.getItem(TOKEN);
+    const userAuth = {
+      accessToken: token,
+    };
+    const { data, status } = yield authService.getUserID(userAuth);
+    // console.log(data.content);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setUserID({ userID: data.content }));
+    }
+  } catch (err: any) {
+    console.log(err);
+  }
+}
+
+export function* theoDoiGetUserIDSaga() {
+  yield takeLatest(GET_USER_ID, getUserIDSaga);
 }

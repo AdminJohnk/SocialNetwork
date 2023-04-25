@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Navigate, Route, Routes } from "react-router-dom";
+import {
+  useNavigate,
+  Navigate,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 import LoadingComponent from "./components/GlobalSetting/LoadingComponent/LoadingComponent";
 import DrawerHOC from "./HOC/Drawer/DrawerHOC";
 import ModalHOC from "./HOC/Modal/ModalHOC";
@@ -13,13 +18,13 @@ import SelectCommunity from "./pages/SelectCommunity/SelectCommunity";
 import SelectFollow from "./pages/SelectFollow/SelectFollow";
 import SelectInterest from "./pages/SelectInterest/SelectInterest";
 import TimeLine from "./pages/TimeLine/TimeLine";
-import { CHECK_LOGIN_SAGA } from "./redux/actionSaga/AuthActionSaga";
 import {
   setDispatch,
   setNavigate,
   setUseSelector,
 } from "./redux/Slice/FunctionSlice";
 import MainTemplate from "./templates/MenuTemplate/MainTemplate";
+import ProfileWrapper from "./util/functions/ProfileWrapper";
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -44,7 +49,10 @@ const App = () => {
         <Route path="/get-started" element={<GetStarted />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/me" element={<MainTemplate Component={TimeLine} />} />
+        <Route
+          path="/:userID"
+          element={<MainTemplate Component={ProfileWrapper} />}
+        />
         <Route
           path="/timeline"
           element={<MainTemplate Component={TimeLine} />}

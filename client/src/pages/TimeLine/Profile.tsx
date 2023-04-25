@@ -6,6 +6,7 @@ import {
   Avatar,
   Col,
   ConfigProvider,
+  Empty,
   Input,
   Row,
   Space,
@@ -111,8 +112,14 @@ const descArray = [
   },
 ];
 
-const TimeLine = () => {
+interface Props {
+  userID: any;
+}
+
+const Profile = (Props: Props) => {
   const dispatch = useDispatch();
+
+  const { userID } = Props;
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -122,7 +129,7 @@ const TimeLine = () => {
   useEffect(() => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
-        userId: "me",
+        userId: userID,
       })
     );
   }, [dispatch]);
@@ -141,7 +148,14 @@ const TimeLine = () => {
           <Col offset={4} span={16}>
             <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"></div>
             <div className="avatar rounded-full overflow-hidden">
-              <img src="./images/TimeLinePage/avt.jpg" alt="avt" />
+              <img
+                src={
+                  userInfo.userImage
+                    ? userInfo.userImage
+                    : "./images/DefaultAvatar/default_avatar.png"
+                }
+                alt="avt"
+              />
             </div>
             <Row className="py-5">
               <Col offset={6} span={12}>
@@ -149,7 +163,7 @@ const TimeLine = () => {
                   className="text-2xl font-bold"
                   style={{ color: themeColorSet.colorText1 }}
                 >
-                  Nguyễn Hoàng Hải
+                  {userInfo.username}
                 </div>
                 <div className="position mt-2">
                   <FontAwesomeIcon className="icon" icon={faSnowflake} />
@@ -271,7 +285,15 @@ const TimeLine = () => {
                   Introduce
                 </TabPane>
                 <TabPane tab="Post" key="2" className="mt-10">
-                  <NewPost userInfo={userInfo} />
+                  {postArray.length === 0 && (
+                    <div className="w-8/12">
+                      <Empty
+                        className="mt-10 mb-20"
+                        image={Empty.PRESENTED_IMAGE_DEFAULT}
+                        description={<span>No post</span>}
+                      />
+                    </div>
+                  )}
                   {postArray.map((item: any, index: number) => {
                     return (
                       <div className="w-8/12">
@@ -311,4 +333,4 @@ const TimeLine = () => {
   );
 };
 
-export default TimeLine;
+export default Profile;

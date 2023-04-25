@@ -34,7 +34,11 @@ var toolbarOptions = [
   ["link", "image"],
 ];
 
-const NewPost = () => {
+interface Props {
+  userInfo: any;
+}
+
+const NewPost = (Props: Props) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -121,9 +125,16 @@ const NewPost = () => {
           </div>
           <div className="newPostBody">
             <div className="name_avatar flex items-center">
-              <Avatar size={50} src="./images/TimeLinePage/avt.jpg" />
+              <Avatar
+                size={50}
+                src={
+                  Props.userInfo.userImage
+                    ? Props.userInfo.userImage
+                    : "./images/DefaultAvatar/default_avatar.png"
+                }
+              />
               <div className="name font-bold ml-2">
-                <NavLink to="/profile">Nguyễn Hoàng Hải</NavLink>
+                <NavLink to="/profile">{Props.userInfo.username}</NavLink>
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">
