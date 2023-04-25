@@ -246,7 +246,7 @@ const SearchChat = () => {
             style={{
               borderBottom: "1px solid",
               borderColor: themeColorSet.colorBg4,
-              height: "23%",
+              height: "20%",
             }}
           >
             <div
@@ -300,7 +300,7 @@ const SearchChat = () => {
           <div
             className="userChat"
             style={{
-              height: "54%",
+              height: "57%",
               overflow: "auto",
             }}
           >
