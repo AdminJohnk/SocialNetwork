@@ -6,6 +6,7 @@ import {
   Avatar,
   Col,
   ConfigProvider,
+  Empty,
   Input,
   Row,
   Space,
@@ -41,6 +42,7 @@ import Post from "../../components/Post/Post";
 import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
+import { useParams } from "react-router-dom";
 
 const descArray = [
   {
@@ -111,8 +113,10 @@ const descArray = [
   },
 ];
 
-const TimeLine = () => {
+const MyProfile = () => {
   const dispatch = useDispatch();
+
+  const { userID } = useParams<{ userID: string }>();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -122,7 +126,7 @@ const TimeLine = () => {
   useEffect(() => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
-        userId: "me",
+        userId: userID,
       })
     );
   }, [dispatch]);
@@ -141,7 +145,14 @@ const TimeLine = () => {
           <Col offset={4} span={16}>
             <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"></div>
             <div className="avatar rounded-full overflow-hidden">
-              <img src="./images/TimeLinePage/avt.jpg" alt="avt" />
+              <img
+                src={
+                  userInfo.userImage
+                    ? userInfo.userImage
+                    : "./images/DefaultAvatar/default_avatar.png"
+                }
+                alt="avt"
+              />
             </div>
             <Row className="py-5">
               <Col offset={6} span={12}>
@@ -149,7 +160,7 @@ const TimeLine = () => {
                   className="text-2xl font-bold"
                   style={{ color: themeColorSet.colorText1 }}
                 >
-                  Nguyễn Hoàng Hải
+                  {userInfo.username}
                 </div>
                 <div className="position mt-2">
                   <FontAwesomeIcon className="icon" icon={faSnowflake} />
@@ -165,16 +176,6 @@ const TimeLine = () => {
                   <NavLink to="/resume" className="ml-2">
                     View Resume
                   </NavLink>
-                </div>
-              </Col>
-              <Col span={6}>
-                <div className="chat_Follow flex justify-around items-center w-full h-full">
-                  <div className="chat px-2 py-2 text-base rounded-full">
-                    <FontAwesomeIcon className="icon" icon={faComments} />
-                  </div>
-                  <div className="follow px-4 py-2">
-                    <span>Follow</span>
-                  </div>
                 </div>
               </Col>
             </Row>
@@ -272,6 +273,15 @@ const TimeLine = () => {
                 </TabPane>
                 <TabPane tab="Post" key="2" className="mt-10">
                   <NewPost userInfo={userInfo} />
+                  {postArray.length === 0 && (
+                    <div className="w-8/12">
+                      <Empty
+                        className="mt-10 mb-20"
+                        image={Empty.PRESENTED_IMAGE_DEFAULT}
+                        description={<span>No post</span>}
+                      />
+                    </div>
+                  )}
                   {postArray.map((item: any, index: number) => {
                     return (
                       <div className="w-8/12">
@@ -311,4 +321,4 @@ const TimeLine = () => {
   );
 };
 
-export default TimeLine;
+export default MyProfile;
