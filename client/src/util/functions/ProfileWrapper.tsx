@@ -7,19 +7,19 @@ import Profile from "../../pages/TimeLine/Profile";
 
 const ProfileWrapper = () => {
   const { userID } = useParams();
-  const [userIdFromServer, setUserIdFromServer] = useState(null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(GET_USER_ID());
-    setUserIdFromServer(userIDFromStore);
-  }, [dispatch]);
 
   const { userID: userIDFromStore } = useSelector(
     (state: any) => state.authReducer
   );
 
-  if (userID === "me" || userID === userIdFromServer) {
+  useEffect(() => {
+    dispatch(GET_USER_ID());
+  }, [dispatch, userIDFromStore]);
+
+  if (userIDFromStore === null) {
+    return <MyProfile />;
+  } else if (userID === "me" || userID === userIDFromStore) {
     return <MyProfile />;
   } else {
     return <Profile userID={userID} />;

@@ -23,7 +23,7 @@ interface PostProps {
   postShare?: any;
 }
 
-const OpenPostDetail = (PostProps: PostProps) => {
+const OpenPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -208,4 +208,4 @@ const OpenPostDetail = (PostProps: PostProps) => {
   );
 };
 
-export default OpenPostDetail;
+export default OpenPostDetailModal;

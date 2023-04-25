@@ -4,23 +4,38 @@ import {
   faCopy,
   faEllipsis,
   faHeart,
+  faPenToSquare,
   faShare,
   faShareNodes,
+  faTrash,
+  faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, ConfigProvider, Divider, Dropdown, Space } from "antd";
+import {
+  Avatar,
+  ConfigProvider,
+  Divider,
+  Dropdown,
+  Space,
+  Modal,
+  notification,
+} from "antd";
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 import {
+  DELETE_POST_SAGA,
   LIKE_POST_SAGA,
   SHARE_POST_SAGA,
   SAVE_POST_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
+import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
+import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
 
 interface PostProps {
@@ -28,9 +43,11 @@ interface PostProps {
   userInfo: any;
 }
 
+type NotificationType = "success" | "info" | "warning" | "error";
+
 // -----------------------------------------------------
 
-const Post = (PostProps: PostProps) => {
+const MyPost = (PostProps: PostProps) => {
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -100,6 +117,27 @@ const Post = (PostProps: PostProps) => {
     day: "numeric",
   });
 
+  // modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    dispatch(
+      DELETE_POST_SAGA({
+        id: PostProps.post._id,
+      })
+    );
+    setIsModalOpen(false);
+    openNotificationWithIcon("success");
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   // post setting
   const items: MenuProps["items"] = [
     {
@@ -110,13 +148,52 @@ const Post = (PostProps: PostProps) => {
           <span className="ml-2">Copy Link Post</span>
         </div>
       ),
+    },
+    {
+      key: "2",
+      label: (
+        <div className="item flex items-center px-4 py-2">
+          <FontAwesomeIcon className="icon" icon={faPenToSquare} />
+          <span className="ml-2">Edit Post</span>
+        </div>
+      ),
       onClick: () => {
-        navigator.clipboard.writeText(
-          `https://localhost:3000/post/${PostProps.post._id}`
+        dispatch(
+          openDrawer({
+            title: "Edit Post",
+            component: (
+              <EditPostForm
+                id={PostProps.post._id}
+                title={PostProps.post.title}
+                content={PostProps.post.content}
+              />
+            ),
+          })
         );
       },
     },
+    {
+      key: "3",
+      label: (
+        <div key="3" className="item flex items-center px-4 py-2">
+          <FontAwesomeIcon className="icon" icon={faTrash} />
+          <span className="ml-2">Delete Post</span>
+        </div>
+      ),
+      onClick: () => {
+        showModal();
+      },
+    },
   ];
+
+  // Notification delete post
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: "Delete Successfully",
+      placement: "bottomRight",
+    });
+  };
 
   // Open PostDetail
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
@@ -135,6 +212,35 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
+      {contextHolder}
+      <Modal
+        title={
+          <>
+            <FontAwesomeIcon
+              className="icon mr-2"
+              icon={faTriangleExclamation}
+              style={{ color: commonColor.colorWarning1 }}
+            />
+            <span>Are you sure delete this post?</span>
+          </>
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okButtonProps={{
+          style: {
+            backgroundColor: commonColor.colorBlue1,
+          },
+        }}
+        cancelButtonProps={{
+          style: {
+            color: themeColorSet.colorText1,
+            backgroundColor: themeColorSet.colorBg3,
+          },
+        }}
+      >
+        <p>You will not be able to recover files after deletion!</p>
+      </Modal>
       {isOpenPostDetail ? (
         <OpenPostDetailModal
           post={PostProps.post}
@@ -292,4 +398,4 @@ const Post = (PostProps: PostProps) => {
   );
 };
 
-export default Post;
+export default MyPost;

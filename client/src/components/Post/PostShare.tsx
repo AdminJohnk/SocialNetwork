@@ -3,42 +3,24 @@ import {
   faCopy,
   faEllipsis,
   faHeart,
-  faPenToSquare,
   faShareNodes,
-  faTrash,
-  faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Avatar,
-  ConfigProvider,
-  Dropdown,
-  Space,
-  Modal,
-  notification,
-} from "antd";
+import { Avatar, ConfigProvider, Dropdown, Space } from "antd";
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
-import { commonColor } from "../../util/cssVariable/cssVariable";
 
-import {
-  SHARE_POST_SAGA,
-  LIKE_POSTSHARE_SAGA,
-} from "../../redux/actionSaga/PostActionSaga";
-import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
-import EditPostForm from "../Form/EditPostForm/EditPostForm";
-import OpenPostDetail from "../ActionComponent/OpenPostDetail/OpenPostDetail";
+import { LIKE_POSTSHARE_SAGA } from "../../redux/actionSaga/PostActionSaga";
+import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
 
 interface PostShareProps {
   post: any;
   userInfo: any;
 }
-
-type NotificationType = "success" | "info" | "warning" | "error";
 
 const PostShare = (PostProps: PostShareProps) => {
   const dispatch = useDispatch();
@@ -76,26 +58,13 @@ const PostShare = (PostProps: PostShareProps) => {
     day: "numeric",
   });
 
-  // modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    dispatch(
-      SHARE_POST_SAGA({
-        id: PostProps.post.postID,
-      })
-    );
-    setIsModalOpen(false);
-    openNotificationWithIcon("success");
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const postCreatedAt = new Date(PostProps.post.postCreatedAt);
+  //format date to get full date
+  const postDate = postCreatedAt.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   // post setting
   const items: MenuProps["items"] = [
@@ -107,52 +76,13 @@ const PostShare = (PostProps: PostShareProps) => {
           <span className="ml-2">Copy Link Post</span>
         </div>
       ),
-    },
-    {
-      key: "2",
-      label: (
-        <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faPenToSquare} />
-          <span className="ml-2">Edit Post</span>
-        </div>
-      ),
       onClick: () => {
-        dispatch(
-          openDrawer({
-            title: "Edit Post",
-            component: (
-              <EditPostForm
-                id={PostProps.post._id}
-                title={PostProps.post.title}
-                content={PostProps.post.content}
-              />
-            ),
-          })
+        navigator.clipboard.writeText(
+          `https://localhost:3000/postshare/${PostProps.post._id}`
         );
       },
     },
-    {
-      key: "3",
-      label: (
-        <div key="3" className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faTrash} />
-          <span className="ml-2">Delete Post</span>
-        </div>
-      ),
-      onClick: () => {
-        showModal();
-      },
-    },
   ];
-
-  // Notification delete post
-  const [api, contextHolder] = notification.useNotification();
-  const openNotificationWithIcon = (type: NotificationType) => {
-    api[type]({
-      message: "Delete Successfully",
-      placement: "bottomRight",
-    });
-  };
 
   // Open PostDetail
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
@@ -171,37 +101,8 @@ const PostShare = (PostProps: PostShareProps) => {
         token: themeColor,
       }}
     >
-      {contextHolder}
-      <Modal
-        title={
-          <>
-            <FontAwesomeIcon
-              className="icon mr-2"
-              icon={faTriangleExclamation}
-              style={{ color: commonColor.colorWarning1 }}
-            />
-            <span>Are you sure delete this post?</span>
-          </>
-        }
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okButtonProps={{
-          style: {
-            backgroundColor: commonColor.colorBlue1,
-          },
-        }}
-        cancelButtonProps={{
-          style: {
-            color: themeColorSet.colorText1,
-            backgroundColor: themeColorSet.colorBg3,
-          },
-        }}
-      >
-        <p>You will not be able to recover files after deletion!</p>
-      </Modal>
       {isOpenPostDetail ? (
-        <OpenPostDetail
+        <OpenPostDetailModal
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
@@ -216,7 +117,7 @@ const PostShare = (PostProps: PostShareProps) => {
                 <div className="name ml-2">
                   <div className="name__top font-bold">
                     <NavLink
-                      to="/profile"
+                      to={`/${PostProps.userInfo.id}`}
                       style={{ color: themeColorSet.colorText1 }}
                     >
                       {PostProps.userInfo.username}
@@ -248,14 +149,14 @@ const PostShare = (PostProps: PostShareProps) => {
             <div className="postHeader flex justify-between items-center">
               <div className="postHeader__left">
                 <div className="name_avatar flex">
-                  <Avatar size={50} src={PostProps.userInfo.userImage} />
+                  <Avatar size={50} src={PostProps.post.user.userImage} />
                   <div className="name ml-2">
                     <div className="name__top font-bold">
                       <NavLink
-                        to="/profile"
+                        to={`/${PostProps.post.user.id}`}
                         style={{ color: themeColorSet.colorText1 }}
                       >
-                        {PostProps.userInfo.username}
+                        {PostProps.post.user.username}
                       </NavLink>
                     </div>
                     <div
@@ -263,7 +164,7 @@ const PostShare = (PostProps: PostShareProps) => {
                       style={{ color: themeColorSet.colorText3 }}
                     >
                       <span>{"Data Analyst"} • </span>
-                      <span>{date}</span>
+                      <span>{postDate}</span>
                     </div>
                   </div>
                 </div>
