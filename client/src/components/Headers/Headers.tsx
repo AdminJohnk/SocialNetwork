@@ -27,6 +27,7 @@ import {
 } from "@ant-design/icons";
 import { DARK_THEME, LIGHT_THEME } from "../../util/constants/SettingSystem";
 import { setTheme } from "../../redux/Slice/ThemeSlice";
+import { NavLink } from "react-router-dom";
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -102,11 +103,13 @@ const Headers = () => {
                         icon={<BellOutlined className="text-xl" />}
                       />
                     </Badge>
-                    <Avatar
-                      className="avatarButton cursor-pointer"
-                      icon={<UserOutlined />}
-                      size="default"
-                    />
+                    <NavLink to="/me">
+                      <Avatar
+                        className="avatarButton cursor-pointer"
+                        icon={<UserOutlined />}
+                        size="default"
+                      />
+                    </NavLink>
                     <Switch
                       checkedChildren="dark"
                       unCheckedChildren="light"
