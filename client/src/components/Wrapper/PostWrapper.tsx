@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_POST_BY_ID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import OpenPostDetail from "../ActionComponent/OpenPostDetail/OpenPostDetail";
-import { setLoading } from "../../redux/Slice/LoadingSlice";
 import OpenMyPostDetail from "../ActionComponent/OpenPostDetail/OpenMyPostDetail";
 import { GET_USER_ID } from "../../redux/actionSaga/AuthActionSaga";
 
@@ -26,12 +25,9 @@ const PostWrapper = () => {
   }, []);
 
   if (!userInfo) {
-    dispatch(setLoading({ isLoading: true }));
   } else if (userInfo.id === userID) {
-    dispatch(setLoading({ isLoading: false }));
     return <OpenMyPostDetail post={post} userInfo={userInfo} />;
   } else {
-    dispatch(setLoading({ isLoading: false }));
     return <OpenPostDetail post={post} userInfo={userInfo} />;
   }
 };

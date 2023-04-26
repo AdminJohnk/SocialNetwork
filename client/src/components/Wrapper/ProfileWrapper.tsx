@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { GET_USER_ID } from "../../redux/actionSaga/AuthActionSaga";
 import MyProfile from "../../pages/MyProfile/MyProfile";
 import Profile from "../../pages/Profile/Profile";
-import { setLoading } from "../../redux/Slice/LoadingSlice";
 
 const ProfileWrapper = () => {
   const { userID } = useParams();
@@ -20,7 +19,7 @@ const ProfileWrapper = () => {
   }, []);
 
   if (!userIDFromStore) {
-    dispatch(setLoading({ isLoading: true }));
+    return <MyProfile />;
   } else if (userID === "me" || userID === userIDFromStore) {
     return <MyProfile />;
   } else {

@@ -18,6 +18,8 @@ import { setTheme } from "../Slice/ThemeSlice";
 
 // checkLoginSaga
 function* checkLoginSaga() {
+  yield delay(400);
+
   try {
     const token = localStorage.getItem(TOKEN);
     if (token === null) {
@@ -37,6 +39,7 @@ function* checkLoginSaga() {
     localStorage.removeItem(TOKEN);
     yield put(setLogin({ login: false }));
   }
+
 }
 
 export function* theoDoicheckLoginSaga() {

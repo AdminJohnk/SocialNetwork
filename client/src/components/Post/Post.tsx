@@ -41,10 +41,10 @@ const Post = (PostProps: PostProps) => {
   // ------------------------ Like ------------------------
 
   // Like Number
-  const [likeNumber, setLikeNumber] = useState(PostProps.post.likes?.length);
+  const [likeNumber, setLikeNumber] = useState(PostProps.post?.likes?.length);
   useEffect(() => {
-    setLikeNumber(PostProps.post.likes?.length);
-  }, [PostProps.post.likes?.length]);
+    setLikeNumber(PostProps.post?.likes?.length);
+  }, [PostProps.post?.likes?.length]);
 
   // Like color
   const [likeColor, setLikeColor] = useState("white");
@@ -65,8 +65,8 @@ const Post = (PostProps: PostProps) => {
     PostProps.post?.shares?.length
   );
   useEffect(() => {
-    setShareNumber(PostProps.post.shares?.length);
-  }, [PostProps.post.shares?.length]);
+    setShareNumber(PostProps.post?.shares?.length);
+  }, [PostProps.post?.shares?.length]);
 
   // Share color
   const [shareColor, setShareColor] = useState("white");
@@ -245,7 +245,7 @@ const Post = (PostProps: PostProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post.comments?.length} Comment</span>
+                <span>{PostProps.post?.comments?.length} Comment</span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: "transparent" }}

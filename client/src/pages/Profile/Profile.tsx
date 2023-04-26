@@ -41,7 +41,6 @@ import TabPane from "antd/es/tabs/TabPane";
 import Post from "../../components/Post/Post";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
-import { setLoading } from "../../redux/Slice/LoadingSlice";
 
 const descArray = [
   {
@@ -136,12 +135,6 @@ const Profile = (Props: Props) => {
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
-
-  if (!userInfo) {
-    dispatch(setLoading({ isLoading: true }));
-  } else {
-    dispatch(setLoading({ isLoading: false }));
-  }
 
   return (
     <ConfigProvider
