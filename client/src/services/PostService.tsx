@@ -8,6 +8,9 @@ export class PostService extends BaseService {
   getAllPostByUserID = (id: String | null) => {
     return this.get(`/${id}/posts`);
   };
+  getAllPost = () => {
+    return this.get(`/posts`);
+  };
   createPost = (post: any, img: any) => {
     return this.post(`/posts`, post);
   };
