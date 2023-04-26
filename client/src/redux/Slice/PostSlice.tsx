@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  postArr: [],
-  userInfo: "",
+  postArr: null,
+  userInfo: null,
   post: {},
 
   isOpenPostDetail: false,

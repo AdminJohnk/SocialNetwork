@@ -7,8 +7,6 @@ import StyleTotal from "./cssLoadingComponent";
 const LoadingComponent = () => {
   const { isLoading } = useSelector((state: any) => state.loadingReducer);
 
-  if (!isLoading) return null;
-
   return (
     <StyleTotal>
       <Space className="w-screen h-screen justify-center" direction="vertical">

@@ -15,7 +15,7 @@ const ProfileWrapper = () => {
 
   useEffect(() => {
     dispatch(GET_USER_ID());
-  }, [dispatch, userIDFromStore]);
+  }, []);
 
   if (userIDFromStore === null) {
     return <MyProfile />;
@@ -24,7 +24,6 @@ const ProfileWrapper = () => {
   } else {
     return <Profile userID={userID} />;
   }
- 
 };
 
 export default ProfileWrapper;

@@ -14,19 +14,14 @@ import {
   LOGOUT_SAGA,
 } from "../actionSaga/AuthActionSaga";
 import { setLogin, setUserID } from "../Slice/AuthSlice";
-import { setLoading } from "../Slice/LoadingSlice";
 import { setTheme } from "../Slice/ThemeSlice";
 
 // checkLoginSaga
 function* checkLoginSaga() {
-  yield put(setLoading({ isLoading: true }));
-  yield delay(400);
-
   try {
     const token = localStorage.getItem(TOKEN);
     if (token === null) {
       yield put(setLogin({ login: false }));
-      yield put(setLoading({ isLoading: false }));
       return;
     }
     const userAuth = {
@@ -42,8 +37,6 @@ function* checkLoginSaga() {
     localStorage.removeItem(TOKEN);
     yield put(setLogin({ login: false }));
   }
-
-  yield put(setLoading({ isLoading: false }));
 }
 
 export function* theoDoicheckLoginSaga() {
