@@ -103,7 +103,6 @@ function* getUserIDSaga() {
       accessToken: token,
     };
     const { data, status } = yield authService.getUserID(userAuth);
-    // console.log(data.content);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setUserID({ userID: data.content }));
     }

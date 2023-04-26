@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_USER_ID } from "../../redux/actionSaga/AuthActionSaga";
-import MyProfile from "../../pages/TimeLine/MyProfile";
+import MyProfile from "../../pages/MyProfile/MyProfile";
 import Profile from "../../pages/TimeLine/Profile";
 
 const ProfileWrapper = () => {
@@ -24,6 +24,7 @@ const ProfileWrapper = () => {
   } else {
     return <Profile userID={userID} />;
   }
+ 
 };
 
 export default ProfileWrapper;
