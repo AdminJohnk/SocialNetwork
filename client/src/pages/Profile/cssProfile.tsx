@@ -1,19 +1,11 @@
 import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from "styled-components";
-import {
-  commonColor,
-} from "../../util/cssVariable/cssVariable";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
   height: fit-content;
   color: ${(props) => props.theme.colorText1};
-  .cover {
-    background-image: url("./images/TimeLinePage/cover2.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
   .avatar {
     width: 170px;
     height: 170px;

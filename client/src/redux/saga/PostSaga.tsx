@@ -16,10 +16,11 @@ import {
   SAVE_REPLY_POSTSHARE_SAGA,
   GET_POST_BY_ID_SAGA,
   GET_POSTSHARE_BY_ID_SAGA,
+  GET_ALL_POST_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost, setPost } from "../Slice/PostSlice";
 
-// Get All Post Saga
+// Get All Post By User ID Saga
 export function* getAllPostByUserIDSaga({ payload }: any) {
   try {
     const id = payload.userId;
@@ -34,6 +35,22 @@ export function* getAllPostByUserIDSaga({ payload }: any) {
 
 export function* theoDoiGetAllPostByUserIDSaga() {
   yield takeLatest(GET_ALL_POST_BY_USERID_SAGA, getAllPostByUserIDSaga);
+}
+
+// Get All Post Saga
+export function* getAllPostSaga() {
+  try {
+    const { data, status } = yield postService.getAllPost();
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setAllPost(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetAllPostSaga() {
+  yield takeLatest(GET_ALL_POST_SAGA, getAllPostSaga);
 }
 
 // Get Post By ID Saga

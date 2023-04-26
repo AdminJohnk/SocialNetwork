@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { ThemeProvider } from "styled-components";
 import StyleTotal from "./cssMyProfile";
 import { getTheme } from "../../util/functions/ThemeFunction";
@@ -47,7 +47,7 @@ import MyPostShare from "../../components/Post/MyPostShare";
 import { useParams } from "react-router-dom";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
-
+import { LoadingProfileComponent } from "../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent";
 
 const descArray = [
   {
@@ -134,59 +134,37 @@ const MyProfile = () => {
         userId: userID,
       })
     );
-  }, [dispatch, userID]);
+  }, []);
 
-  const postArray = useSelector((state: any) => state.postReducer.postArr);
-  const userInfo = useSelector((state: any) => state.postReducer.userInfo);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
+  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  const userInfoSlice = useSelector((state: any) => state.postReducer.userInfo);
+
+  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+
+  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+
+  const userInfoRef = React.useRef(userInfo);
+
+  useEffect(() => {
+    setIsNotAlreadyChanged(userInfoRef.current === userInfo);
+  }, [userInfo, isNotAlreadyChanged, userInfoRef]);
   return (
     <ConfigProvider
       theme={{
         token: themeColor,
       }}
     >
-      <StyleTotal theme={themeColorSet}> 
-        {!postArray || !userInfo ? (
-          <>
-            <Row>
-              <Col offset={4} span={16}>
-                <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative">
-                  <Skeleton className="pt-4" active paragraph={{ rows: 6 }} />
-                </div>
-                <div className="avatar ">
-                  <Skeleton.Image
-                    active
-                    style={{
-                      width: "10rem",
-                      height: "10rem",
-                      borderRadius: "50%",
-                    }}
-                  />
-                </div>
-                <Row className="py-5">
-                  <Col offset={6} span={12}>
-                    <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
-                  </Col>
-                  <Col span={6}>
-                    <div className="chat_Follow flex justify-around items-center w-full h-full">
-                      <div className="editProfile">
-                        <Skeleton.Button active />
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <Col span={18} className="mt-5">
-                  <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
-                </Col>
-                <div className="mainContain mt-16">
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                </div>
-              </Col>
-            </Row>
-          </>
+      <StyleTotal theme={themeColorSet}>
+        {!postArray || !userInfo || isNotAlreadyChanged ? (
+          <LoadingProfileComponent />
         ) : (
           <>
             <Row>

@@ -19,6 +19,7 @@ import MainTemplate from "./templates/MenuTemplate/MainTemplate";
 import ProfileWrapper from "./components/Wrapper/ProfileWrapper";
 import PostWrapper from "./components/Wrapper/PostWrapper";
 import PostShareWrapper from "./components/Wrapper/PostShareWrapper";
+import NewFeed from "./pages/NewFeed/NewFeed";
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -36,6 +37,7 @@ const App = () => {
       <DrawerHOC />
       <ModalHOC />
       <Routes>
+        <Route path="/" element={<MainTemplate Component={NewFeed} />} />
         <Route path="/message" element={<Chat />} />
         <Route path="/select-interest" element={<SelectInterest />} />
         <Route path="/select-follow" element={<SelectFollow />} />

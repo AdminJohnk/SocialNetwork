@@ -18,6 +18,7 @@ export function* rootSaga() {
     postSaga.theoDoiCreatePostSaga(),
     postSaga.theoDoiGetPostShareByIdSaga(),
     postSaga.theoDoiGetAllPostByUserIDSaga(),
+    postSaga.theoDoiGetAllPostSaga(),
     postSaga.theoDoiDeletePostSaga(),
     postSaga.theoDoiLikePostSaga(),
     postSaga.theoDoiUpdatePostSaga(),
