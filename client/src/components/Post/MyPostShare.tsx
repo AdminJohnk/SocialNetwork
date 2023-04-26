@@ -115,6 +115,11 @@ const MyPostShare = (PostProps: PostShareProps) => {
           <span className="ml-2">Copy Link Post</span>
         </div>
       ),
+      onClick: () => {
+        navigator.clipboard.writeText(
+          `http://localhost:3000/postshare/${PostProps.post._id}`
+        );
+      },
     },
     {
       key: "2",
@@ -162,7 +167,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
     });
   };
 
-  // Open PostDetail
+  // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   const { visible } = useSelector((state: any) => state.modalHOCReducer);
@@ -172,8 +177,6 @@ const MyPostShare = (PostProps: PostShareProps) => {
       setIsOpenPostDetail(!isOpenPostDetail);
     }
   }, [visible]);
-
-  console.log(PostProps.post);
 
   return (
     <ConfigProvider

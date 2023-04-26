@@ -17,7 +17,7 @@ import { NavLink } from "react-router-dom";
 import { getTheme } from "../../../util/functions/ThemeFunction";
 import StyleTotal from "./cssEditPostForm";
 import ImageCompress from "quill-image-compress";
-import data from "@emoji-mart/data";
+import dataEmoji from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
@@ -36,7 +36,7 @@ var toolbarOptions = [
 ];
 
 interface PostProps {
-  id: any; 
+  id: any;
   title: any;
   content: any;
 }
@@ -65,7 +65,7 @@ const EditPostForm = (PostProps: any) => {
         dispatch(
           UPDATE_POST_SAGA({
             id: PostProps.id,
-            postUpdate: values
+            postUpdate: values,
           })
         );
       }
@@ -89,7 +89,7 @@ const EditPostForm = (PostProps: any) => {
     });
 
     // Dispatch callback submit lên cho DrawerHOC
-    dispatch(callBackSubmitDrawer(formik.handleSubmit))
+    dispatch(callBackSubmitDrawer(formik.handleSubmit));
   }, []);
 
   useEffect(() => {
@@ -157,7 +157,7 @@ const EditPostForm = (PostProps: any) => {
                 title={"Members"}
                 content={
                   <Picker
-                    data={data}
+                    data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
                       quill.focus();
                       quill.insertText(

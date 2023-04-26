@@ -17,7 +17,7 @@ import { NavLink } from "react-router-dom";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssNewPost";
 import ImageCompress from "quill-image-compress";
-import data from "@emoji-mart/data";
+import dataEmoji from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
@@ -162,7 +162,7 @@ const NewPost = (Props: Props) => {
                 title={"Emoji"}
                 content={
                   <Picker
-                    data={data}
+                    data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
                       quill.focus();
                       quill.insertText(

@@ -129,7 +129,7 @@ const MyProfile = () => {
         userId: userID,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, userID]);
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);

@@ -148,6 +148,11 @@ const MyPost = (PostProps: PostProps) => {
           <span className="ml-2">Copy Link Post</span>
         </div>
       ),
+      onClick: () => {
+        navigator.clipboard.writeText(
+          `http://localhost:3000/post/${PostProps.post._id}`
+        );
+      },
     },
     {
       key: "2",
@@ -195,7 +200,7 @@ const MyPost = (PostProps: PostProps) => {
     });
   };
 
-  // Open PostDetail
+  // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   const { visible } = useSelector((state: any) => state.modalHOCReducer);

@@ -78,13 +78,13 @@ const PostShare = (PostProps: PostShareProps) => {
       ),
       onClick: () => {
         navigator.clipboard.writeText(
-          `https://localhost:3000/postshare/${PostProps.post._id}`
+          `http://localhost:3000/postshare/${PostProps.post._id}`
         );
       },
     },
   ];
 
-  // Open PostDetail
+  // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
   const { visible } = useSelector((state: any) => state.modalHOCReducer);

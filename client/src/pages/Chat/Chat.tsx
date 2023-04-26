@@ -12,7 +12,7 @@ import {
   faPaperclip,
   faSnowflake,
 } from "@fortawesome/free-solid-svg-icons";
-import data from "@emoji-mart/data";
+import dataEmoji from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { faSun } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -571,7 +571,10 @@ const Chat = () => {
                   trigger="click"
                   title={"Emoji"}
                   content={
-                    <Picker data={data} onEmojiSelect={(emoji: any) => {}} />
+                    <Picker
+                      data={dataEmoji}
+                      onEmojiSelect={(emoji: any) => {}}
+                    />
                   }
                 >
                   <span className="emoji">
@@ -819,11 +822,11 @@ const Chat = () => {
                   {sharedLinkArr.map((item: any, index: any) => {
                     return (
                       <div className="fileContent flex items-center mb-2 cursor-pointer">
-                        <div 
-                        className="image mr-2"
-                        style={{
-                          width: "3.5rem",
-                        }}
+                        <div
+                          className="image mr-2"
+                          style={{
+                            width: "3.5rem",
+                          }}
                         >
                           <img
                             src={item.image}
@@ -835,19 +838,21 @@ const Chat = () => {
                           />
                         </div>
                         <Space className="link" direction="vertical">
-                          <div 
-                          className="name"
-                          style={{
-                            color: themeColorSet.colorText1,
-                            fontWeight: "600",
-                          }}
-                          >{item.name}</div>
-                          <div 
-                          className="linkContent"
-                          style={{
-                            color: themeColorSet.colorText3,
-                            fontSize: "0.9rem",
-                          }}
+                          <div
+                            className="name"
+                            style={{
+                              color: themeColorSet.colorText1,
+                              fontWeight: "600",
+                            }}
+                          >
+                            {item.name}
+                          </div>
+                          <div
+                            className="linkContent"
+                            style={{
+                              color: themeColorSet.colorText3,
+                              fontSize: "0.9rem",
+                            }}
                           >
                             {item.link?.length > 35
                               ? item.link?.slice(0, 35) + "..."
