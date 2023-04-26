@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import StyleTotal from "./cssTimeLine";
+import StyleTotal from "./cssMyProfile";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import {
   Avatar,
+  Button,
   Col,
   ConfigProvider,
   Empty,
@@ -43,6 +44,8 @@ import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
 import { useParams } from "react-router-dom";
+import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
+import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
 
 const descArray = [
   {
@@ -121,7 +124,7 @@ const MyProfile = () => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
-  const { themeColorSet } = getTheme();
+  const { themeColorSet } = getTheme(); 
 
   useEffect(() => {
     dispatch(
@@ -143,7 +146,15 @@ const MyProfile = () => {
       <StyleTotal theme={themeColorSet}>
         <Row>
           <Col offset={4} span={16}>
-            <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"></div>
+            <div 
+            className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
+            style={{
+              backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat", 
+              backgroundPosition: "center",
+            }}
+            ></div>
             <div className="avatar rounded-full overflow-hidden">
               <img
                 src={
@@ -176,6 +187,27 @@ const MyProfile = () => {
                   <NavLink to="/resume" className="ml-2">
                     View Resume
                   </NavLink>
+                </div>
+              </Col>
+              <Col span={6}>
+                <div className="chat_Follow flex justify-around items-center w-full h-full">
+                  <div className="editProfile">
+                    <button
+                      className="btnEditProfile px-4 py-2"
+                      onClick={() => {
+                        dispatch(
+                          openDrawer({
+                            title: "Edit Profile",
+                            component: (
+                              <EditProfileForm />
+                            ),
+                          })
+                        );
+                      }}
+                    >
+                      Edit Profile
+                    </button>
+                  </div>
                 </div>
               </Col>
             </Row>
