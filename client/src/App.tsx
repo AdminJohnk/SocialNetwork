@@ -10,15 +10,15 @@ import Register from "./pages/Register/Register";
 import SelectCommunity from "./pages/SelectCommunity/SelectCommunity";
 import SelectFollow from "./pages/SelectFollow/SelectFollow";
 import SelectInterest from "./pages/SelectInterest/SelectInterest";
-import TimeLine from "./pages/TimeLine/TimeLine";
 import {
   setDispatch,
   setNavigate,
   setUseSelector,
 } from "./redux/Slice/FunctionSlice";
 import MainTemplate from "./templates/MenuTemplate/MainTemplate";
-import ProfileWrapper from "./util/functions/ProfileWrapper";
-import OpenPostDetail from "./components/ActionComponent/OpenPostDetail/OpenPostDetail";
+import ProfileWrapper from "./components/Wrapper/ProfileWrapper";
+import PostWrapper from "./components/Wrapper/PostWrapper";
+import PostShareWrapper from "./components/Wrapper/PostShareWrapper";
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -49,11 +49,11 @@ const App = () => {
         />
         <Route
           path="/post/:postID"
-          element={<MainTemplate Component={OpenPostDetail} />}
+          element={<MainTemplate Component={PostWrapper} />}
         />
         <Route
-          path="/timeline"
-          element={<MainTemplate Component={TimeLine} />}
+          path="/postshare/:postID"
+          element={<MainTemplate Component={PostShareWrapper} />}
         />
       </Routes>
     </>

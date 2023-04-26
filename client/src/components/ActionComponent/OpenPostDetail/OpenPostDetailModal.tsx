@@ -20,6 +20,7 @@ interface PostProps {
   post: any;
   userInfo: any;
   postShare?: any;
+  owner?: any;
 }
 
 const OpenPostDetailModal = (PostProps: PostProps) => {
@@ -109,6 +110,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         userInfo={PostProps.userInfo}
         data={data}
         postShare={PostProps.postShare}
+        owner={PostProps.owner}
       />
     ),
     [PostProps.post, PostProps.userInfo, data]

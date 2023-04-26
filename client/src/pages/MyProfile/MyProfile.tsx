@@ -46,6 +46,7 @@ import MyPostShare from "../../components/Post/MyPostShare";
 import { useParams } from "react-router-dom";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
+import { setLoading } from "../../redux/Slice/LoadingSlice";
 
 const descArray = [
   {
@@ -124,7 +125,7 @@ const MyProfile = () => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
-  const { themeColorSet } = getTheme(); 
+  const { themeColorSet } = getTheme();
 
   useEffect(() => {
     dispatch(
@@ -137,6 +138,12 @@ const MyProfile = () => {
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
 
+  if (!userInfo) {
+    dispatch(setLoading({ isLoading: true }));
+  } else {
+    dispatch(setLoading({ isLoading: false }));
+  }
+
   return (
     <ConfigProvider
       theme={{
@@ -146,14 +153,14 @@ const MyProfile = () => {
       <StyleTotal theme={themeColorSet}>
         <Row>
           <Col offset={4} span={16}>
-            <div 
-            className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
-            style={{
-              backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat", 
-              backgroundPosition: "center",
-            }}
+            <div
+              className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
+              style={{
+                backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }}
             ></div>
             <div className="avatar rounded-full overflow-hidden">
               <img
@@ -198,9 +205,7 @@ const MyProfile = () => {
                         dispatch(
                           openDrawer({
                             title: "Edit Profile",
-                            component: (
-                              <EditProfileForm />
-                            ),
+                            component: <EditProfileForm />,
                           })
                         );
                       }}
@@ -322,6 +327,7 @@ const MyProfile = () => {
                             key={item._id}
                             post={item}
                             userInfo={userInfo}
+                            owner={item.user}
                           />
                         )}
                         {!item.PostShared && (

@@ -22,7 +22,7 @@ interface Props {
   userInfo: any;
 }
 
-const OpenPostDetail = (Props: Props) => {
+const OpenPostShareDetail = (Props: Props) => {
   const dispatch = useDispatch();
 
   const { postID } = useParams();
@@ -199,4 +199,4 @@ const OpenPostDetail = (Props: Props) => {
   );
 };
 
-export default OpenPostDetail;
+export default OpenPostShareDetail;
