@@ -31,7 +31,7 @@ const PostDetail = (Props: PostProps) => {
       ) : (
         <Post post={Props.post} userInfo={Props.userInfo} />
       )}
-      {Props.post.comments.map((item: any, index: number) => {
+      {Props.post.comments?.map((item: any, index: number) => {
         return (
           <div>
             {item ? (
@@ -43,7 +43,7 @@ const PostDetail = (Props: PostProps) => {
                 selectedCommentId={selectedCommentId}
                 onSelectComment={handleSelectComment}
               >
-                {item.listReply.map((item: any, index: number) => {
+                {item.listReply?.map((item: any, index: number) => {
                   return (
                     <CommentDetail
                       onData={Props.onData}

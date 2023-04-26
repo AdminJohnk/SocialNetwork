@@ -16,7 +16,6 @@ export function* rootSaga() {
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),
-    postSaga.theoDoiGetPostByIdSaga(),
     postSaga.theoDoiGetPostShareByIdSaga,
     postSaga.theoDoiGetAllPostByUserIDSaga(),
     postSaga.theoDoiDeletePostSaga(),
@@ -29,5 +28,6 @@ export function* rootSaga() {
     postSaga.theoDoiSaveCommentPostShareSaga(),
     postSaga.theoDoiLikePostShareSaga(),
     postSaga.theoDoiSaveReplyPostShareSaga(),
+    postSaga.theoDoiGetPostByIdSaga(),
   ]);
 }

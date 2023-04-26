@@ -33,13 +33,21 @@ const OpenPostDetail = () => {
         id: postID,
       })
     );
-  }, [dispatch, postID]);
+  }, []);
+
+  // dispatch(
+  //   GET_POST_BY_ID_SAGA({
+  //     id: postID,
+  //   })
+  // );
 
   const post = useSelector((state: any) => state.postReducer.post);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
 
   console.log("post", post);
   console.log("userInfo", userInfo);
+
+  // return <></> 
 
   const [commentContent, setCommentContent] = useState("");
 
