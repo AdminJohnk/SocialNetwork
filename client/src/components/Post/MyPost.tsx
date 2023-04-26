@@ -36,7 +36,7 @@ import {
 } from "../../redux/actionSaga/PostActionSaga";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
-import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
+import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
 
 interface PostProps {
   post: any;
@@ -247,7 +247,7 @@ const MyPost = (PostProps: PostProps) => {
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
       {isOpenPostDetail ? (
-        <OpenPostDetailModal
+        <OpenMyPostDetailModal
           post={PostProps.post}
           userInfo={PostProps.userInfo}
         />

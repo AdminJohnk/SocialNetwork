@@ -47,7 +47,7 @@ import MyPostShare from "../../components/Post/MyPostShare";
 import { useParams } from "react-router-dom";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
-
+import { setLoading } from "../../redux/Slice/LoadingSlice";
 
 const descArray = [
   {
@@ -139,6 +139,12 @@ const MyProfile = () => {
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
 
+  if (!userInfo) {
+    dispatch(setLoading({ isLoading: true }));
+  } else {
+    dispatch(setLoading({ isLoading: false }));
+  }
+
   return (
     <ConfigProvider
       theme={{
@@ -146,12 +152,34 @@ const MyProfile = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {postArray === null || userInfo === null ? (
-          <>
-            <Row>
-              <Col offset={4} span={16}>
-                <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative">
-                  <Skeleton className="pt-4" active paragraph={{ rows: 6 }} />
+        <Row>
+          <Col offset={4} span={16}>
+            <div
+              className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
+              style={{
+                backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+              }}
+            ></div>
+            <div className="avatar rounded-full overflow-hidden">
+              <img
+                src={
+                  userInfo.userImage
+                    ? userInfo.userImage
+                    : "./images/DefaultAvatar/default_avatar.png"
+                }
+                alt="avt"
+              />
+            </div>
+            <Row className="py-5">
+              <Col offset={6} span={12}>
+                <div
+                  className="text-2xl font-bold"
+                  style={{ color: themeColorSet.colorText1 }}
+                >
+                  {userInfo.username}
                 </div>
                 <div className="avatar ">
                   <Skeleton.Image
@@ -163,26 +191,30 @@ const MyProfile = () => {
                     }}
                   />
                 </div>
-                <Row className="py-5">
-                  <Col offset={6} span={12}>
-                    <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
-                  </Col>
-                  <Col span={6}>
-                    <div className="chat_Follow flex justify-around items-center w-full h-full">
-                      <div className="editProfile">
-                        <Skeleton.Button active />
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-                <Col span={18} className="mt-5">
-                  <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
-                </Col>
-                <div className="mainContain mt-16">
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-                  <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
+                <div className="viewResume mt-2">
+                  <FontAwesomeIcon className="icon" icon={faFileLines} />
+                  <NavLink to="/resume" className="ml-2">
+                    View Resume
+                  </NavLink>
+                </div>
+              </Col>
+              <Col span={6}>
+                <div className="chat_Follow flex justify-around items-center w-full h-full">
+                  <div className="editProfile">
+                    <button
+                      className="btnEditProfile px-4 py-2"
+                      onClick={() => {
+                        dispatch(
+                          openDrawer({
+                            title: "Edit Profile",
+                            component: <EditProfileForm />,
+                          })
+                        );
+                      }}
+                    >
+                      Edit Profile
+                    </button>
+                  </div>
                 </div>
               </Col>
             </Row>
@@ -223,38 +255,25 @@ const MyProfile = () => {
                     >
                       {userInfo.username}
                     </div>
-                    <div className="position mt-2">
-                      <FontAwesomeIcon className="icon" icon={faSnowflake} />
-                      <span
-                        style={{ color: themeColorSet.colorText3 }}
-                        className="ml-2"
-                      >
-                        User Interface Architect & Senior Manager UX
-                      </span>
-                    </div>
-                    <div className="viewResume mt-2">
-                      <FontAwesomeIcon className="icon" icon={faFileLines} />
-                      <NavLink to="/resume" className="ml-2">
-                        View Resume
-                      </NavLink>
-                    </div>
-                  </Col>
-                  <Col span={6}>
-                    <div className="chat_Follow flex justify-around items-center w-full h-full">
-                      <div className="editProfile">
-                        <button
-                          className="btnEditProfile px-4 py-2"
-                          onClick={() => {
-                            dispatch(
-                              openDrawer({
-                                title: "Edit Profile",
-                                component: <EditProfileForm />,
-                              })
-                            );
-                          }}
-                        >
-                          Edit Profile
-                        </button>
+                  )}
+                  {postArray.map((item: any, index: number) => {
+                    return (
+                      <div className="w-8/12">
+                        {item.PostShared && (
+                          <MyPostShare
+                            key={item._id}
+                            post={item}
+                            userInfo={userInfo}
+                            owner={item.user}
+                          />
+                        )}
+                        {!item.PostShared && (
+                          <MyPost
+                            key={item._id}
+                            post={item}
+                            userInfo={userInfo}
+                          />
+                        )}
                       </div>
                     </div>
                   </Col>

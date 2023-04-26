@@ -61,7 +61,9 @@ const Post = (PostProps: PostProps) => {
   // ------------------------ Share ------------------------
 
   // Share Number
-  const [shareNumber, setShareNumber] = useState(PostProps.post.shares?.length);
+  const [shareNumber, setShareNumber] = useState(
+    PostProps.post?.shares?.length
+  );
   useEffect(() => {
     setShareNumber(PostProps.post.shares?.length);
   }, [PostProps.post.shares?.length]);
@@ -146,14 +148,14 @@ const Post = (PostProps: PostProps) => {
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
               <div className="name_avatar flex">
-                <Avatar size={50} src={PostProps.userInfo.userImage} />
+                <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
                     <NavLink
-                      to={`/${PostProps.userInfo.id}`}
+                      to={`/${PostProps.userInfo?.id}`}
                       style={{ color: themeColorSet.colorText1 }}
                     >
-                      {PostProps.userInfo.username}
+                      {PostProps.userInfo?.username}
                     </NavLink>
                   </div>
                   <div
