@@ -39,10 +39,10 @@ import { NavLink } from "react-router-dom";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import TabPane from "antd/es/tabs/TabPane";
-import Post from "../../components/Post/Post";
+import MyPost from "../../components/Post/MyPost";
 import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
-import PostShare from "../../components/Post/PostShare";
+import MyPostShare from "../../components/Post/MyPostShare";
 import { useParams } from "react-router-dom";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
@@ -132,7 +132,7 @@ const MyProfile = () => {
         userId: userID,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, userID]);
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
@@ -318,14 +318,14 @@ const MyProfile = () => {
                     return (
                       <div className="w-8/12">
                         {item.PostShared && (
-                          <PostShare
+                          <MyPostShare
                             key={item._id}
                             post={item}
                             userInfo={userInfo}
                           />
                         )}
                         {!item.PostShared && (
-                          <Post
+                          <MyPost
                             key={item._id}
                             post={item}
                             userInfo={userInfo}

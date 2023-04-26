@@ -37,10 +37,10 @@ import { NavLink } from "react-router-dom";
 import { commonColor } from "../../util/cssVariable/cssVariable";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import TabPane from "antd/es/tabs/TabPane";
-import Post from "../../components/Post/Post";
+import Post from "../../components/Post/MyPost";
 import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
-import PostShare from "../../components/Post/PostShare";
+import PostShare from "../../components/Post/MyPostShare";
 
 const descArray = [
   {

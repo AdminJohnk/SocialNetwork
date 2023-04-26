@@ -47,6 +47,12 @@ export class PostService extends BaseService {
       replyContent
     );
   };
+  getPostById = (id: string) => {
+    return this.get(`/posts/${id}`);
+  };
+  getPostShareById = (id: string) => {
+    return this.get(`/postshares/${id}`);
+  };
 }
 
 export const postService = new PostService();

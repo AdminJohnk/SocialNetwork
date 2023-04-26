@@ -39,7 +39,6 @@ import { commonColor } from "../../util/cssVariable/cssVariable";
 import { icon } from "@fortawesome/fontawesome-svg-core";
 import TabPane from "antd/es/tabs/TabPane";
 import Post from "../../components/Post/Post";
-import NewPost from "../../components/NewPost/NewPost";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
 
@@ -132,7 +131,7 @@ const Profile = (Props: Props) => {
         userId: userID,
       })
     );
-  }, [dispatch]);
+  }, [dispatch, userID]);
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);

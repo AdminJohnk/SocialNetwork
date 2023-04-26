@@ -40,3 +40,11 @@ export const SAVE_REPLY_POSTSHARE_SAGA = createAction(
   "SAVE_REPLY_POSTSHARE_SAGA",
   (data) => ({ payload: data })
 );
+export const GET_POST_BY_ID_SAGA = createAction(
+  "GET_POST_BY_ID_SAGA",
+  (data) => ({ payload: data })
+);
+export const GET_POSTSHARE_BY_ID_SAGA = createAction(
+  "GET_POSTSHARE_BY_ID_SAGA",
+  (data) => ({ payload: data })
+);

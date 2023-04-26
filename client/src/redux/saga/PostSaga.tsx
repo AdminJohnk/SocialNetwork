@@ -14,11 +14,13 @@ import {
   SAVE_COMMENT_POSTSHARE_SAGA,
   LIKE_POSTSHARE_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
+  GET_POST_BY_ID_SAGA,
+  GET_POSTSHARE_BY_ID_SAGA,
 } from "../actionSaga/PostActionSaga";
-import { setAllPost } from "../Slice/PostSlice";
+import { setAllPost, setPost } from "../Slice/PostSlice";
 
 // Get All Post Saga
-function* getAllPostByUserIDSaga({ payload }: any) {
+export function* getAllPostByUserIDSaga({ payload }: any) {
   try {
     const id = payload.userId;
     const { data, status } = yield postService.getAllPostByUserID(id);
@@ -32,6 +34,41 @@ function* getAllPostByUserIDSaga({ payload }: any) {
 
 export function* theoDoiGetAllPostByUserIDSaga() {
   yield takeLatest(GET_ALL_POST_BY_USERID_SAGA, getAllPostByUserIDSaga);
+}
+
+// Get Post By ID Saga
+export function* getPostByIdSaga({ payload }: any) {
+  try {
+    const id = payload.id;
+    const { data, status } = yield postService.getPostById(id);
+    console.log(data);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setPost(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetPostByIdSaga() {
+  yield takeLatest(GET_POST_BY_ID_SAGA, getPostByIdSaga);
+}
+
+// Get PostShare By ID Saga
+export function* getPostShareByIdSaga({ payload }: any) {
+  try {
+    const id = payload.id;
+    const { data, status } = yield postService.getPostShareById(id);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setPost(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetPostShareByIdSaga() {
+  yield takeLatest(GET_POSTSHARE_BY_ID_SAGA, getPostShareByIdSaga);
 }
 
 // createPostSaga Saga

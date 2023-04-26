@@ -1,8 +1,9 @@
 import { Avatar, ConfigProvider, Input, Popover, Button } from "antd";
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { openModal } from "../../../redux/Slice/ModalHOCSlice";
 import { getTheme } from "../../../util/functions/ThemeFunction";
-import PostDetail from "../../Form/PostDetail/PostDetail";
+import PostDetailModal from "../../Form/PostDetail/PostDetail";
 import StyleTotal from "./cssOpenPostDetail";
 import dataEmoji from "@emoji-mart/data";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,33 +14,21 @@ import {
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
-  GET_POST_BY_ID_SAGA,
 } from "../../../redux/actionSaga/PostActionSaga";
-import { useParams } from "react-router-dom";
 
-const OpenPostDetail = () => {
+interface PostProps {
+  post: any;
+  userInfo: any;
+  postShare?: any;
+}
+
+const OpenPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
-
-  const { postID } = useParams();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
-
-  useEffect(() => {
-    dispatch(
-      GET_POST_BY_ID_SAGA({
-        id: postID,
-      })
-    );
-  }, [dispatch, postID]);
-
-  const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.postReducer.userInfo);
-
-  console.log("post", post);
-  console.log("userInfo", userInfo);
 
   const [commentContent, setCommentContent] = useState("");
 
@@ -54,11 +43,11 @@ const OpenPostDetail = () => {
   };
 
   const handleSubmitComment = () => {
-    if (post.postShare) {
+    if (PostProps.postShare) {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: post._id,
+            id: PostProps.post._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -72,7 +61,7 @@ const OpenPostDetail = () => {
             comment: {
               contentComment: commentContent,
             },
-            id: post._id,
+            id: PostProps.post._id,
           })
         );
       }
@@ -80,7 +69,7 @@ const OpenPostDetail = () => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: post._id,
+            id: PostProps.post._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -94,7 +83,7 @@ const OpenPostDetail = () => {
             comment: {
               contentComment: commentContent,
             },
-            id: post._id,
+            id: PostProps.post._id,
           })
         );
       }
@@ -114,21 +103,21 @@ const OpenPostDetail = () => {
 
   const memoizedComponent = useMemo(
     () => (
-      <PostDetail
+      <PostDetailModal
         onData={handleData}
-        post={post}
-        userInfo={userInfo}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
         data={data}
-        postShare={post.postShare}
+        postShare={PostProps.postShare}
       />
     ),
-    [post, userInfo, data]
+    [PostProps.post, PostProps.userInfo, data]
   );
 
   const memoizedIputComment = useMemo(
     () => (
       <div className=" commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={userInfo.userImage} />
+        <Avatar className="mr-2" size={40} src={PostProps.userInfo.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
@@ -191,6 +180,20 @@ const OpenPostDetail = () => {
     [commentContent]
   );
 
+  useLayoutEffect(() => {
+    dispatch(
+      openModal({
+        title: "The post of " + PostProps.userInfo.username,
+        component: memoizedComponent,
+        footer: (
+          <ConfigProvider>
+            <StyleTotal theme={themeColorSet}>{memoizedIputComment}</StyleTotal>
+          </ConfigProvider>
+        ),
+      })
+    );
+  }, [memoizedComponent, memoizedIputComment]);
+
   return (
     <ConfigProvider
       theme={{
@@ -198,13 +201,10 @@ const OpenPostDetail = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div>
-          {memoizedComponent}
-          {memoizedIputComment}
-        </div>
+        <div></div>
       </StyleTotal>
     </ConfigProvider>
   );
 };
 
-export default OpenPostDetail;
+export default OpenPostDetailModal;

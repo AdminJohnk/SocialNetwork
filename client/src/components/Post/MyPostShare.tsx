@@ -1,36 +1,46 @@
 import {
-  faBookmark,
   faComment,
   faCopy,
   faEllipsis,
   faHeart,
-  faShare,
+  faPenToSquare,
   faShareNodes,
+  faTrash,
+  faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Avatar, ConfigProvider, Divider, Dropdown, Space } from "antd";
+import {
+  Avatar,
+  ConfigProvider,
+  Dropdown,
+  Space,
+  Modal,
+  notification,
+} from "antd";
 import type { MenuProps } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssPost";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 import {
-  LIKE_POST_SAGA,
   SHARE_POST_SAGA,
-  SAVE_POST_SAGA,
+  LIKE_POSTSHARE_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
+import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
+import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
 
-interface PostProps {
+interface PostShareProps {
   post: any;
   userInfo: any;
 }
 
-// -----------------------------------------------------
+type NotificationType = "success" | "info" | "warning" | "error";
 
-const Post = (PostProps: PostProps) => {
+const MyPostShare = (PostProps: PostShareProps) => {
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -58,40 +68,6 @@ const Post = (PostProps: PostProps) => {
     setIsLiked(PostProps.post.isLiked);
   }, [PostProps.post.isLiked]);
 
-  // ------------------------ Share ------------------------
-
-  // Share Number
-  const [shareNumber, setShareNumber] = useState(PostProps.post.shares.length);
-  useEffect(() => {
-    setShareNumber(PostProps.post.shares.length);
-  }, [PostProps.post.shares.length]);
-
-  // Share color
-  const [shareColor, setShareColor] = useState("white");
-  useEffect(() => {
-    PostProps.post.isShared ? setShareColor("blue") : setShareColor("white");
-  }, [PostProps.post.isShared]);
-
-  // isShared
-  const [isShared, setIsShared] = useState(true);
-  useEffect(() => {
-    setIsShared(PostProps.post.isShared);
-  }, [PostProps.post.isShared]);
-
-  // ------------------------ Save ------------------------
-
-  // isSaved
-  const [isSaved, setIsSaved] = useState(true);
-  useEffect(() => {
-    setIsSaved(PostProps.post.isSaved);
-  }, [PostProps.post.isSaved]);
-
-  // Save color
-  const [saveColor, setSaveColor] = useState("white");
-  useEffect(() => {
-    PostProps.post.isSaved ? setSaveColor("yellow") : setSaveColor("white");
-  }, [PostProps.post.isSaved]);
-
   const createdAt = new Date(PostProps.post.createdAt);
   //format date to get full date
   const date = createdAt.toLocaleDateString("en-US", {
@@ -99,6 +75,35 @@ const Post = (PostProps: PostProps) => {
     month: "long",
     day: "numeric",
   });
+
+  const postCreatedAt = new Date(PostProps.post.postCreatedAt);
+  //format date to get full date
+  const postDate = postCreatedAt.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  // modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    dispatch(
+      SHARE_POST_SAGA({
+        id: PostProps.post.postID,
+      })
+    );
+    setIsModalOpen(false);
+    openNotificationWithIcon("success");
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   // post setting
   const items: MenuProps["items"] = [
@@ -112,11 +117,55 @@ const Post = (PostProps: PostProps) => {
       ),
       onClick: () => {
         navigator.clipboard.writeText(
-          `http://localhost:3000/post/${PostProps.post._id}`
+          `http://localhost:3000/postshare/${PostProps.post._id}`
         );
       },
     },
+    {
+      key: "2",
+      label: (
+        <div className="item flex items-center px-4 py-2">
+          <FontAwesomeIcon className="icon" icon={faPenToSquare} />
+          <span className="ml-2">Edit Post</span>
+        </div>
+      ),
+      onClick: () => {
+        dispatch(
+          openDrawer({
+            title: "Edit Post",
+            component: (
+              <EditPostForm
+                id={PostProps.post._id}
+                title={PostProps.post.title}
+                content={PostProps.post.content}
+              />
+            ),
+          })
+        );
+      },
+    },
+    {
+      key: "3",
+      label: (
+        <div key="3" className="item flex items-center px-4 py-2">
+          <FontAwesomeIcon className="icon" icon={faTrash} />
+          <span className="ml-2">Delete Post</span>
+        </div>
+      ),
+      onClick: () => {
+        showModal();
+      },
+    },
   ];
+
+  // Notification delete post
+  const [api, contextHolder] = notification.useNotification();
+  const openNotificationWithIcon = (type: NotificationType) => {
+    api[type]({
+      message: "Delete Successfully",
+      placement: "bottomRight",
+    });
+  };
 
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
@@ -135,8 +184,38 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
+      {contextHolder}
+      <Modal
+        title={
+          <>
+            <FontAwesomeIcon
+              className="icon mr-2"
+              icon={faTriangleExclamation}
+              style={{ color: commonColor.colorWarning1 }}
+            />
+            <span>Are you sure delete this post?</span>
+          </>
+        }
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okButtonProps={{
+          style: {
+            backgroundColor: commonColor.colorBlue1,
+          },
+        }}
+        cancelButtonProps={{
+          style: {
+            color: themeColorSet.colorText1,
+            backgroundColor: themeColorSet.colorBg3,
+          },
+        }}
+      >
+        <p>You will not be able to recover files after deletion!</p>
+      </Modal>
       {isOpenPostDetail ? (
         <OpenPostDetailModal
+          postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
         />
@@ -178,17 +257,42 @@ const Post = (PostProps: PostProps) => {
               </div>
             </div>
           </div>
-          <div className="postBody mt-5">
-            <div className="title font-bold">{PostProps.post.title}</div>
-            <div className="content mt-3">
-              <div
-                className="content__text"
-                dangerouslySetInnerHTML={{
-                  __html: PostProps.post.content,
-                }}
-              ></div>
+          <div className="space-align-block">
+            <div className="postHeader flex justify-between items-center">
+              <div className="postHeader__left">
+                <div className="name_avatar flex">
+                  <Avatar size={50} src={PostProps.post.user.userImage} />
+                  <div className="name ml-2">
+                    <div className="name__top font-bold">
+                      <NavLink
+                        to={`/${PostProps.post.user.id}`}
+                        style={{ color: themeColorSet.colorText1 }}
+                      >
+                        {PostProps.post.user.username}
+                      </NavLink>
+                    </div>
+                    <div
+                      className="time"
+                      style={{ color: themeColorSet.colorText3 }}
+                    >
+                      <span>{"Data Analyst"} • </span>
+                      <span>{postDate}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
+            <div className="postBody mt-5">
+              <div className="title font-bold">{PostProps.post.title}</div>
+              <div className="content mt-3">
+                <div
+                  className="content__text"
+                  dangerouslySetInnerHTML={{
+                    __html: PostProps.post.content,
+                  }}
+                ></div>
+              </div>
+            </div>
           </div>
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
@@ -209,31 +313,7 @@ const Post = (PostProps: PostProps) => {
                       setIsLiked(true);
                     }
                     dispatch(
-                      LIKE_POST_SAGA({
-                        id: PostProps.post._id,
-                      })
-                    );
-                  }}
-                />
-              </Space>
-              <Space className="like" direction="vertical" align="center">
-                <span>{shareNumber} Share</span>
-                <Avatar
-                  className="item"
-                  style={{ backgroundColor: "transparent" }}
-                  icon={<FontAwesomeIcon icon={faShare} color={shareColor} />}
-                  onClick={(e: any) => {
-                    if (isShared) {
-                      setShareNumber(shareNumber - 1);
-                      setShareColor("white");
-                      setIsShared(false);
-                    } else {
-                      setShareNumber(shareNumber + 1);
-                      setShareColor("blue");
-                      setIsShared(true);
-                    }
-                    dispatch(
-                      SHARE_POST_SAGA({
+                      LIKE_POSTSHARE_SAGA({
                         id: PostProps.post._id,
                       })
                     );
@@ -259,27 +339,6 @@ const Post = (PostProps: PostProps) => {
                   <Avatar
                     className="item"
                     style={{ backgroundColor: "transparent" }}
-                    icon={
-                      <FontAwesomeIcon icon={faBookmark} color={saveColor} />
-                    }
-                    onClick={(e: any) => {
-                      if (isSaved) {
-                        setIsSaved(false);
-                        setSaveColor("white");
-                      } else {
-                        setIsSaved(true);
-                        setSaveColor("yellow");
-                      }
-                      dispatch(
-                        SAVE_POST_SAGA({
-                          id: PostProps.post._id,
-                        })
-                      );
-                    }}
-                  />
-                  <Avatar
-                    className="item"
-                    style={{ backgroundColor: "transparent" }}
                     icon={<FontAwesomeIcon icon={faShareNodes} />}
                   />
                 </Space>
@@ -292,4 +351,4 @@ const Post = (PostProps: PostProps) => {
   );
 };
 
-export default Post;
+export default MyPostShare;
