@@ -20,6 +20,7 @@ import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetai
 interface PostShareProps {
   post: any;
   userInfo: any;
+  owner: any;
 }
 
 const PostShare = (PostProps: PostShareProps) => {
@@ -106,6 +107,7 @@ const PostShare = (PostProps: PostShareProps) => {
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
+          owner={PostProps.owner}
         />
       ) : null}
       <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
@@ -149,14 +151,14 @@ const PostShare = (PostProps: PostShareProps) => {
             <div className="postHeader flex justify-between items-center">
               <div className="postHeader__left">
                 <div className="name_avatar flex">
-                  <Avatar size={50} src={PostProps.post.user.userImage} />
+                  <Avatar size={50} src={PostProps.owner.userImage} />
                   <div className="name ml-2">
                     <div className="name__top font-bold">
                       <NavLink
-                        to={`/${PostProps.post.user.id}`}
+                        to={`/${PostProps.owner.id}`}
                         style={{ color: themeColorSet.colorText1 }}
                       >
-                        {PostProps.post.user.username}
+                        {PostProps.owner.username}
                       </NavLink>
                     </div>
                     <div

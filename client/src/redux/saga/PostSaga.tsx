@@ -41,7 +41,6 @@ export function* getPostByIdSaga({ payload }: any) {
   try {
     const id = payload.id;
     const { data, status } = yield postService.getPostById(id);
-    console.log(data);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setPost(data.content));
     }

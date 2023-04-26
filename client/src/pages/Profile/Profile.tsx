@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
-import StyleTotal from "./cssTimeLine";
+import StyleTotal from "./cssProfile";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import {
   Avatar,
@@ -41,6 +41,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import Post from "../../components/Post/Post";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
+import { setLoading } from "../../redux/Slice/LoadingSlice";
 
 const descArray = [
   {
@@ -135,6 +136,12 @@ const Profile = (Props: Props) => {
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
   const userInfo = useSelector((state: any) => state.postReducer.userInfo);
+
+  if (!userInfo) {
+    dispatch(setLoading({ isLoading: true }));
+  } else {
+    dispatch(setLoading({ isLoading: false }));
+  }
 
   return (
     <ConfigProvider
@@ -301,6 +308,7 @@ const Profile = (Props: Props) => {
                             key={item._id}
                             post={item}
                             userInfo={userInfo}
+                            owner={item.user}
                           />
                         )}
                         {!item.PostShared && (

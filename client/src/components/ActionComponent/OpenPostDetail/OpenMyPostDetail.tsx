@@ -16,13 +16,14 @@ import {
   GET_POST_BY_ID_SAGA,
 } from "../../../redux/actionSaga/PostActionSaga";
 import { useParams } from "react-router-dom";
+import MyPostDetail from "../../Form/PostDetail/MyPostDetail";
 
 interface Props {
   post: any;
   userInfo: any;
 }
 
-const OpenPostDetail = (Props: Props) => {
+const OpenMyPostDetail = (Props: Props) => {
   const dispatch = useDispatch();
 
   const { postID } = useParams();
@@ -105,7 +106,7 @@ const OpenPostDetail = (Props: Props) => {
 
   const memoizedComponent = useMemo(
     () => (
-      <PostDetail
+      <MyPostDetail
         onData={handleData}
         post={Props.post}
         userInfo={Props.post.user}
@@ -199,4 +200,4 @@ const OpenPostDetail = (Props: Props) => {
   );
 };
 
-export default OpenPostDetail;
+export default OpenMyPostDetail;

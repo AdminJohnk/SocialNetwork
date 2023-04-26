@@ -31,11 +31,12 @@ import {
 } from "../../redux/actionSaga/PostActionSaga";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
-import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
+import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
 
 interface PostShareProps {
   post: any;
   userInfo: any;
+  owner: any;
 }
 
 type NotificationType = "success" | "info" | "warning" | "error";
@@ -214,10 +215,11 @@ const MyPostShare = (PostProps: PostShareProps) => {
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
       {isOpenPostDetail ? (
-        <OpenPostDetailModal
+        <OpenMyPostDetailModal
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
+          owner={PostProps.post.user}
         />
       ) : null}
       <StyleTotal theme={themeColorSet} className={"rounded-lg mb-4"}>
@@ -261,14 +263,14 @@ const MyPostShare = (PostProps: PostShareProps) => {
             <div className="postHeader flex justify-between items-center">
               <div className="postHeader__left">
                 <div className="name_avatar flex">
-                  <Avatar size={50} src={PostProps.post.user.userImage} />
+                  <Avatar size={50} src={PostProps.owner.userImage} />
                   <div className="name ml-2">
                     <div className="name__top font-bold">
                       <NavLink
-                        to={`/${PostProps.post.user.id}`}
+                        to={`/${PostProps.owner.id}`}
                         style={{ color: themeColorSet.colorText1 }}
                       >
-                        {PostProps.post.user.username}
+                        {PostProps.owner.username}
                       </NavLink>
                     </div>
                     <div
