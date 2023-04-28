@@ -101,9 +101,9 @@ const MyProfile = () => {
         ) : (
           <>
             <Row>
-              <Col offset={4} span={16}>
+              <Col span={24} className="avatar_cover relative">
                 <div
-                  className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
+                  className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
                     backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
                     backgroundSize: "cover",
@@ -121,7 +121,9 @@ const MyProfile = () => {
                     alt="avt"
                   />
                 </div>
-                <Row className="py-5">
+              </Col>
+              <Col offset={4} span={16}>
+                <Row className="py-5 name_Editprofile">
                   <Col offset={6} span={12}>
                     <div
                       className="text-2xl font-bold"
@@ -265,7 +267,9 @@ const MyProfile = () => {
                       Introduce
                     </TabPane>
                     <TabPane tab="Post" key="2" className="mt-10">
-                      <NewPost userInfo={userInfo} />
+                      <div className="w-8/12">
+                        <NewPost userInfo={userInfo} />
+                      </div>
                       {postArray.length === 0 && (
                         <div className="w-8/12">
                           <Empty

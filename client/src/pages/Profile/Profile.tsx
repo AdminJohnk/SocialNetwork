@@ -100,9 +100,9 @@ const Profile = (Props: Props) => {
         ) : (
           <>
             <Row>
-              <Col offset={4} span={16}>
+              <Col span={24} className="avatar_cover relative">
                 <div
-                  className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative"
+                  className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
                     backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
                     backgroundSize: "cover",
@@ -120,6 +120,8 @@ const Profile = (Props: Props) => {
                     alt="avt"
                   />
                 </div>
+              </Col>
+              <Col offset={4} span={16}>
                 <Row className="py-5">
                   <Col offset={6} span={12}>
                     <div

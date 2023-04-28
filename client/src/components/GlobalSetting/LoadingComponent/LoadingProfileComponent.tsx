@@ -2,13 +2,13 @@ import { Col, Row, Skeleton } from "antd";
 
 export const LoadingProfileComponent = () => {
   return (
-    <>
+    <div className="loadingProfileComponent">
       <Row>
         <Col offset={4} span={16}>
-          <div className="cover w-full h-80 rounded-br-lg rounded-bl-lg relative">
+          <div className="cover w-full rounded-br-lg rounded-bl-lg relative mb-10">
             <Skeleton className="pt-4" active paragraph={{ rows: 6 }} />
           </div>
-          <div className="avatar ">
+          <div className="avatar">
             <Skeleton.Image
               active
               style={{
@@ -41,6 +41,6 @@ export const LoadingProfileComponent = () => {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
