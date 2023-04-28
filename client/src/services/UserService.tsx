@@ -8,6 +8,9 @@ export class UserService extends BaseService {
   registerUser = (userRegister: any) => {
     return this.post(`/users`, userRegister);
   };
+  updateUser = (userID: any, userUpdate: any) => {
+    return this.put(`/users/${userID}`, userUpdate);
+  };
 }
 
 export const userService = new UserService();

@@ -20,6 +20,26 @@ const descArray = [
     ),
   },
   {
+    title: "6 Years Experience",
+    color1: "#009B93",
+    color: "cyan",
+    svg: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+        className="svg-inline--fa fa-graduation-cap text-blue-600"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path
+          fillRule="evenodd"
+          d="M2 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5zm3.293 1.293a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L7.586 10 5.293 7.707a1 1 0 0 1 0-1.414zM11 12a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3z"
+          clipRule="evenodd"
+        />
+      </svg>
+    ),
+  },
+  {
     title: "Data Analytics",
     color1: "#f5a623",
     color: "lime",
@@ -32,9 +52,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M5 3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zm9 4a1 1 0 1 0-2 0v6a1 1 0 1 0 2 0V7zm-3 2a1 1 0 1 0-2 0v4a1 1 0 1 0 2 0V9zm-3 3a1 1 0 1 0-2 0v1a1 1 0 1 0 2 0v-1z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -120,9 +140,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M9.243 3.03a1 1 0 0 1 .727 1.213L9.53 6h2.94l.56-2.243a1 1 0 1 1 1.94.486L14.53 6H17a1 1 0 1 1 0 2h-2.97l-1 4H15a1 1 0 1 1 0 2h-2.47l-.56 2.242a1 1 0 1 1-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 1 1-1.94-.485L5.47 14H3a1 1 0 1 1 0-2h2.97l1-4H5a1 1 0 1 1 0-2h2.47l.56-2.243a1 1 0 0 1 1.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -140,9 +160,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M18 8a6 6 0 0 1-7.743 5.743L8 16H6v2H2v-4l4.257-4.257A6 6 0 1 1 18 8zm-6-4a1 1 0 1 0 0 2 2 2 0 0 1 2 2 1 1 0 1 0 2 0 4 4 0 0 0-4-4z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -180,9 +200,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M7 2a1 1 0 0 0-.707 1.707L7 4.414v3.758a1 1 0 0 1-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0 1 13 8.172V4.414l.707-.707A1 1 0 0 0 13 2H7zm2 6.172V4h2v4.172a3 3 0 0 0 .879 2.12l1.027 1.028a4 4 0 0 0-2.171.102l-.47.156a4 4 0 0 1-2.53 0l-.563-.187a1.993 1.993 0 0 0-.114-.035l1.063-1.063A3 3 0 0 0 9 8.172z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -568,19 +588,19 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M6.625 2.655A9 9 0 0 1 19 11a1 1 0 1 1-2 0 7 7 0 0 0-9.625-6.492 1 1 0 1 1-.75-1.853zM4.662 4.959A1 1 0 0 1 4.75 6.37 6.97 6.97 0 0 0 3 11a1 1 0 1 1-2 0 8.97 8.97 0 0 1 2.25-5.953 1 1 0 0 1 1.412-.088z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M5 11a5 5 0 0 1 10 0 1 1 0 1 1-2 0 3 3 0 1 0-6 0c0 1.677-.345 3.276-.968 4.729a1 1 0 1 1-1.838-.789A9.964 9.964 0 0 0 5 11zm8.921 2.012a1 1 0 0 1 .831 1.145 19.86 19.86 0 0 1-.545 2.436 1 1 0 1 1-1.92-.558c.207-.713.371-1.445.49-2.192a1 1 0 0 1 1.144-.83z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M10 10a1 1 0 0 1 1 1c0 2.236-.46 4.368-1.29 6.304a1 1 0 0 1-1.838-.789A13.952 13.952 0 0 0 9 11a1 1 0 0 1 1-1z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -598,9 +618,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M12.316 3.051a1 1 0 0 1 .633 1.265l-4 12a1 1 0 1 1-1.898-.632l4-12a1 1 0 0 1 1.265-.633zM5.707 6.293a1 1 0 0 1 0 1.414L3.414 10l2.293 2.293a1 1 0 1 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0zm8.586 0a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 0 1 0-1.414z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -618,9 +638,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M12.316 3.051a1 1 0 0 1 .633 1.265l-4 12a1 1 0 1 1-1.898-.632l4-12a1 1 0 0 1 1.265-.633zM5.707 6.293a1 1 0 0 1 0 1.414L3.414 10l2.293 2.293a1 1 0 1 1-1.414 1.414l-3-3a1 1 0 0 1 0-1.414l3-3a1 1 0 0 1 1.414 0zm8.586 0a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 0 1 0-1.414z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),
@@ -638,9 +658,9 @@ const descArray = [
         aria-hidden="true"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M3 5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.22l.123.489.804.804A1 1 0 0 1 13 18H7a1 1 0 0 1-.707-1.707l.804-.804L7.22 15H5a2 2 0 0 1-2-2V5zm5.771 7H5V5h10v7H8.771z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </svg>
     ),

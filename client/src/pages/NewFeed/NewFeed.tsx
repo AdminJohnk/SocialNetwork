@@ -208,7 +208,7 @@ const NewFeed = () => {
   }, [dispatch]);
 
   const postArray = useSelector((state: any) => state.postReducer.postArr);
-  const userInfo = useSelector((state: any) => state.postReducer.userInfo);
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -510,7 +510,7 @@ const NewFeed = () => {
                   })}
                 </div>
                 <div
-                  className="top-community mt-3" 
+                  className="top-community mt-3"
                   style={{
                     backgroundColor: themeColorSet.colorBg2,
                     borderRadius: 10,

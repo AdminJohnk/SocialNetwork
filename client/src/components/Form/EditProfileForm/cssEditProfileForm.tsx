@@ -112,6 +112,18 @@ const StyleTotal = styled.div`
       }
     }
   }
+  .description {
+    .item {
+      border: 2px solid ${(props) => props.theme.colorText3};
+      border-radius: 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      :hover {
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+    }
+  }
 `;
 
 export default StyleTotal;

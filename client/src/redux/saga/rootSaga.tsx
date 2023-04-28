@@ -13,6 +13,7 @@ export function* rootSaga() {
 
     // userSaga
     userSaga.theoDoiRegisterUserSaga(),
+    userSaga.theoDoiUpdateUserSaga(),
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),

@@ -75,7 +75,7 @@ const Profile = (Props: Props) => {
   }, []);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.postReducer.userInfo);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
   const postArray = useMemo(() => postArraySlice, [postArraySlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);

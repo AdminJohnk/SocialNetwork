@@ -145,7 +145,7 @@ const Community = () => {
   }, []);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.postReducer.userInfo);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
   const postArray = useMemo(() => postArraySlice, [postArraySlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
@@ -231,7 +231,7 @@ const Community = () => {
                     </Space>
                   </Col>
                 </Row>
-                <div className="flex">  
+                <div className="flex">
                   <div className="mainContain mt-5 w-8/12">
                     <Tabs
                       defaultActiveKey="1"
