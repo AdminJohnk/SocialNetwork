@@ -177,9 +177,12 @@ const Profile = (Props: Props) => {
                       if (userInfo?.descriptions?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
-                            className="item mx-2 my-2"
+                            className="item mx-2 my-2 px-4 py-1"
                             key={index}
-                            color={item.color}
+                            color={themeColorSet.colorBg2}
+                            style={{
+                              border: "none",
+                            }}
                           >
                             {item.svg} &nbsp;
                             {item.title}

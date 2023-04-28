@@ -10,7 +10,6 @@ import { openModal } from "../../../redux/Slice/ModalHOCSlice";
 import AddTagComponent from "../../AddTagComponent/AddTagComponent";
 
 const EditProfileForm = () => {
-
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -135,7 +134,7 @@ const EditProfileForm = () => {
             </Space>
           </section>
           <section className="addLinks mt-3">
-          <button
+            <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
               style={{
                 border: "1px solid",
@@ -249,12 +248,14 @@ const EditProfileForm = () => {
                 borderColor: themeColorSet.colorBg4,
               }}
               onClick={() => {
-                dispatch(openModal({  
-                  title: "Add Tags",
-                  component: <AddTagComponent/>,
-                  footer: null,
-                }))
-              }} 
+                dispatch(
+                  openModal({
+                    title: "Add Tags",
+                    component: <AddTagComponent />,
+                    footer: true,
+                  })
+                );
+              }}
             >
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
               Add Tags

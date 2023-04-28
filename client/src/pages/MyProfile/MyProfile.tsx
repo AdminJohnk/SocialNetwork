@@ -190,7 +190,9 @@ const MyProfile = () => {
                             className="item mx-2 my-2 px-4 py-1"
                             key={index}
                             color={themeColorSet.colorBg2}
-                            //color={item.color}
+                            style={{
+                              border: 'none'
+                            }}
                           >
                             {item.svg} &nbsp;
                             {item.title}
