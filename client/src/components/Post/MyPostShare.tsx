@@ -128,30 +128,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
     {
       key: "2",
       label: (
-        <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faPenToSquare} />
-          <span className="ml-2">Edit Post</span>
-        </div>
-      ),
-      onClick: () => {
-        dispatch(
-          openDrawer({
-            title: "Edit Post",
-            component: (
-              <EditPostForm
-                id={PostProps.post._id}
-                title={PostProps.post.title}
-                content={PostProps.post.content}
-              />
-            ),
-          })
-        );
-      },
-    },
-    {
-      key: "3",
-      label: (
-        <div key="3" className="item flex items-center px-4 py-2">
+        <div key="2" className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faTrash} />
           <span className="ml-2">Delete Post</span>
         </div>
