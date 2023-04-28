@@ -43,75 +43,7 @@ import Post from "../../components/Post/Post";
 import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
 import PostShare from "../../components/Post/PostShare";
 import { LoadingProfileComponent } from "../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent";
-
-const descArray = [
-  {
-    icon: faSnowflake,
-    title: "Java",
-    color1: "#ed0e0e",
-    color: "magenta",
-  },
-  {
-    icon: faSnowflake,
-    title: "Back End",
-    color1: "#009B93",
-    color: "cyan",
-  },
-  {
-    icon: faSnowflake,
-    title: "Data Analytics",
-    color1: "#f5a623",
-    color: "lime",
-  },
-  {
-    icon: faSnowflake,
-    title: "Front End",
-    color1: "#7B00ED",
-    color: "volcano",
-  },
-  {
-    icon: faSnowflake,
-    title: "Full Stack",
-    color1: "#00B0F0",
-    color: "geekblue",
-  },
-  {
-    icon: faSnowflake,
-    title: "DevOps",
-    color1: "#7B00ED",
-    color: "purple",
-  },
-  {
-    icon: faSnowflake,
-    title: "Project Management",
-    color1: "#FE6700",
-    color: "gold",
-  },
-  {
-    icon: faSnowflake,
-    title: "Design",
-    color1: "#009B93",
-    color: "blue",
-  },
-  {
-    icon: faSnowflake,
-    title: "Career",
-    color1: "#00BCD4",
-    color: "orange",
-  },
-  {
-    icon: faSnowflake,
-    title: "Problem Solver",
-    color1: "#009B36",
-    color: "geekblue",
-  },
-  {
-    icon: faSnowflake,
-    title: "App Design",
-    color1: "#526D7B",
-    color: "lime",
-  },
-];
+import descArray from "../../util/constants/Description";
 
 interface Props {
   userID: any;
@@ -240,19 +172,19 @@ const Profile = (Props: Props) => {
                 <Col span={18} className="mt-5">
                   <div className="description flex flex-wrap">
                     {descArray.map((item, index) => {
-                      return (
-                        <Tag
-                          className="item mx-2 my-2"
-                          key={index}
-                          color={item.color}
-                        >
-                          <FontAwesomeIcon
-                            className="icon mr-2"
-                            icon={item.icon}
-                          />
-                          {item.title}
-                        </Tag>
-                      );
+                      if (userInfo?.descriptions?.indexOf(item.title) !== -1) {
+                        return (
+                          <Tag
+                            className="item mx-2 my-2"
+                            key={index}
+                            color={item.color}
+                          >
+                            {item.svg} &nbsp;
+                            {item.title}
+                          </Tag>
+                        );
+                      }
+                      return null;
                     })}
                   </div>
                 </Col>

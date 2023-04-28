@@ -12,6 +12,10 @@ const StyleTotal = styled.div`
   }
   .ql-container.ql-snow {
     border: none;
+    font-size: 0.88rem;
+  }
+  .ql-editor {
+    line-height: 2rem;
   }
   .post {
     .postHeader {
