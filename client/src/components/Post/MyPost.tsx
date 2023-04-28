@@ -37,6 +37,9 @@ import {
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
+import ReactQuill from "react-quill";
+import Quill from "quill";
+import "react-quill/dist/quill.snow.css";
 
 interface PostProps {
   post: any;
@@ -292,12 +295,20 @@ const MyPost = (PostProps: PostProps) => {
           <div className="postBody mt-5">
             <div className="title font-bold">{PostProps.post.title}</div>
             <div className="content mt-3">
-              <div
+              {/* <div
                 className="content__text"
                 dangerouslySetInnerHTML={{
                   __html: PostProps.post.content,
                 }}
-              ></div>
+              ></div> */}
+              <div className="content__text">
+                <ReactQuill
+                  value={PostProps.post.content}
+                  readOnly={true}
+                  modules={{ toolbar: false }}
+                  // formats={Quill.import("formats")}
+                />
+              </div>
             </div>
             <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
           </div>

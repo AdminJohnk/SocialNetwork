@@ -32,6 +32,9 @@ import {
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
+import Quill from "quill";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 interface PostShareProps {
   post: any;
@@ -287,12 +290,19 @@ const MyPostShare = (PostProps: PostShareProps) => {
             <div className="postBody mt-5">
               <div className="title font-bold">{PostProps.post.title}</div>
               <div className="content mt-3">
-                <div
+                {/* <div
                   className="content__text"
                   dangerouslySetInnerHTML={{
                     __html: PostProps.post.content,
                   }}
-                ></div>
+                ></div> */}
+                <div className="content__text">
+                  <ReactQuill
+                    value={PostProps.post.content}
+                    readOnly={true}
+                    modules={{ toolbar: false }}
+                  />
+                </div>
               </div>
             </div>
           </div>

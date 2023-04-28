@@ -22,6 +22,9 @@ import {
   SAVE_POST_SAGA,
 } from "../../redux/actionSaga/PostActionSaga";
 import OpenPostDetailModal from "../ActionComponent/OpenPostDetail/OpenPostDetailModal";
+import Quill from "quill";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
 interface PostProps {
   post: any;
@@ -183,12 +186,19 @@ const Post = (PostProps: PostProps) => {
           <div className="postBody mt-5">
             <div className="title font-bold">{PostProps.post.title}</div>
             <div className="content mt-3">
-              <div
+              {/* <div
                 className="content__text"
                 dangerouslySetInnerHTML={{
                   __html: PostProps.post.content,
                 }}
-              ></div>
+              ></div> */}
+              <div className="content__text">
+                <ReactQuill
+                  value={PostProps.post.content}
+                  readOnly={true}
+                  modules={{ toolbar: false }}
+                />
+              </div>
             </div>
             <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
           </div>
