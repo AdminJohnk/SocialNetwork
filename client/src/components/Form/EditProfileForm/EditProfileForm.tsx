@@ -37,12 +37,16 @@ const EditProfileForm = () => {
     setLastName(e.target.value);
   };
 
+  const handleChangeDescriptions = (descriptions: any) => {
+    setDescriptions(descriptions);
+  };
+
   const onSubmit = () => {
     dispatch(
       UPDATE_USER_SAGA({
         id: userInfo.id,
         userUpdate: {
-          descriptions: descriptions,
+          description: descriptions,
           firstname: firstname,
           lastname: lastname,
         },
@@ -50,7 +54,9 @@ const EditProfileForm = () => {
     );
   };
 
-  dispatch(callBackSubmitDrawer(onSubmit));
+  React.useEffect(() => {
+    dispatch(callBackSubmitDrawer(onSubmit));
+  }, [descriptions, firstname, lastname]);
 
   const componentNoInfo = (
     title: String,
@@ -305,8 +311,13 @@ const EditProfileForm = () => {
                   dispatch(
                     openModal({
                       title: "Add Tags",
-                      component: <AddTagComponent />,
-                      footer: null,
+                      component: (
+                        <AddTagComponent
+                          callback={handleChangeDescriptions}
+                          descriptions={descriptions}
+                        />
+                      ),
+                      footer: true,
                     })
                   );
                 }}

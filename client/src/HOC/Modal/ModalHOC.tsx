@@ -57,6 +57,7 @@ const ModalHOC = () => {
                       color: themeColorSet.colorText1,
                     }}
                     onClick={() => {
+                      handleSubmit();
                       onClose();
                     }}
                   >

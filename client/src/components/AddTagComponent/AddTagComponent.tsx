@@ -1,20 +1,32 @@
 import React, { useEffect } from "react";
-import descArray from "../../util/constants/Description";
+import descArrays from "../../util/constants/Description";
 import { ConfigProvider, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import StyleTotal from "./cssAddTagComponent";
+import { setHandleSubmit } from "../../redux/Slice/ModalHOCSlice";
 
-const AddTagComponent = () => {
-
-    const dispatch = useDispatch();
+const AddTagComponent = (Props: any) => {
+  const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const addTagArr: any = [];
+  const descArray = [...descArrays];
+
+  const [addTagArr, setAddTagArr] = React.useState<any>([
+    ...Props.descriptions,
+  ]);
+
+  const handleSubmit = () => {
+    Props.callback(addTagArr);
+  };
+
+  useEffect(() => {
+    dispatch(setHandleSubmit(handleSubmit));
+  }, [addTagArr]);
 
   return (
     <ConfigProvider
@@ -27,14 +39,22 @@ const AddTagComponent = () => {
           {descArray.map((item, index) => (
             <span
               key={index}
-              className="itemAddTag mx-2 my-2 px-4 py-2"
+              className={
+                addTagArr?.indexOf(item.title) !== -1
+                  ? "itemAddTag mx-2 my-2 px-4 py-2 active"
+                  : "itemAddTag mx-2 my-2 px-4 py-2"
+              }
               onClick={(e) => {
-                if (e.currentTarget.classList.contains("active")) {
-                  addTagArr.splice(addTagArr.indexOf(item.title), 1);
+                if (addTagArr?.includes(item.title)) {
+                  //   addTagArr.splice(addTagArr.indexOf(item.title), 1);
+                  setAddTagArr(
+                    addTagArr.filter((item: any) => item !== item.title)
+                  );
                   e.currentTarget.classList.remove("active");
                   return;
                 } else {
-                  addTagArr.push(item.title);
+                  //   addTagArr.push(item.title);
+                  setAddTagArr([...addTagArr, item.title]);
                   e.currentTarget.classList.add("active");
                   return;
                 }
