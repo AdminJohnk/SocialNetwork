@@ -1,13 +1,18 @@
 import { ConfigProvider, Space } from "antd";
 import React from "react";
 import StyleTotal from "./cssEditProfileForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getTheme } from "../../../util/functions/ThemeFunction";
 import { commonColor } from "../../../util/cssVariable/cssVariable";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { openModal } from "../../../redux/Slice/ModalHOCSlice";
+import AddTagComponent from "../../AddTagComponent/AddTagComponent";
 
 const EditProfileForm = () => {
+
+  const dispatch = useDispatch();
+
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -243,6 +248,13 @@ const EditProfileForm = () => {
                 border: "1px solid",
                 borderColor: themeColorSet.colorBg4,
               }}
+              onClick={() => {
+                dispatch(openModal({  
+                  title: "Add Tags",
+                  component: <AddTagComponent/>,
+                  footer: null,
+                }))
+              }} 
             >
               <FontAwesomeIcon icon={faPlus} className="mr-2" />
               Add Tags

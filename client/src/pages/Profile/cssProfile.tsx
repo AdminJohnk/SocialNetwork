@@ -6,13 +6,15 @@ const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
   height: fit-content;
   color: ${(props) => props.theme.colorText1};
-  .avatar {
-    width: 170px;
-    height: 170px;
-    position: absolute;
-    bottom: -6rem;
-    left: 17rem;
-    z-index: 1;
+  .avatar_cover {
+    .avatar {
+      width: 170px;
+      height: 170px;
+      position: absolute;
+      bottom: -6rem;
+      left: 17rem;
+      z-index: 1;
+    }
   }
   .chat_Follow {
     .chat {

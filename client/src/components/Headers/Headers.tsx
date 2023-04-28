@@ -64,7 +64,7 @@ const Headers = () => {
             position: "fixed",
             top: 0,
             left: 0,
-            zIndex: 100,
+            zIndex: 1000,
             width: "100%",
           }}
         >

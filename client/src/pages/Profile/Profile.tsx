@@ -168,7 +168,7 @@ const Profile = (Props: Props) => {
         ) : (
           <>
             <Row>
-              <Col span={24} className="relative">
+              <Col span={24} className="avatar_cover relative">
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
