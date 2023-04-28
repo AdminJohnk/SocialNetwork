@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   postArr: [],
-  userInfo: "",
   post: {},
 
   isOpenPostDetail: false,
@@ -16,7 +15,6 @@ const postSlice = createSlice({
       return {
         ...state,
         postArr: action.payload.postArr,
-        userInfo: action.payload.userInfo,
       };
     },
     openPostDetail: (state, action) => {
@@ -29,7 +27,6 @@ const postSlice = createSlice({
       return {
         ...state,
         post: action.payload.post,
-        userInfo: action.payload.userInfo,
       };
     },
   },

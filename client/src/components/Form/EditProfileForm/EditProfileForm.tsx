@@ -1,4 +1,4 @@
-import { ConfigProvider, Space } from "antd";
+import { ConfigProvider, Space, Tag } from "antd";
 import React from "react";
 import StyleTotal from "./cssEditProfileForm";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { openModal } from "../../../redux/Slice/ModalHOCSlice";
 import AddTagComponent from "../../AddTagComponent/AddTagComponent";
+import descArray from "../../../util/constants/Description";
+import { UPDATE_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
+import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
 
 const EditProfileForm = () => {
-
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -18,7 +20,37 @@ const EditProfileForm = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+
+  const [descriptions, setDescriptions] = React.useState(userInfo.descriptions);
+
   const isHaveCover = true;
+
+  const [firstname, setFirstName] = React.useState(userInfo.firstname);
+  const [lastname, setLastName] = React.useState(userInfo.lastname);
+
+  const handleChangeFirstName = (e: any) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleChangeLastName = (e: any) => {
+    setLastName(e.target.value);
+  };
+
+  const onSubmit = () => {
+    dispatch(
+      UPDATE_USER_SAGA({
+        id: userInfo.id,
+        userUpdate: {
+          descriptions: descriptions,
+          firstname: firstname,
+          lastname: lastname,
+        },
+      })
+    );
+  };
+
+  dispatch(callBackSubmitDrawer(onSubmit));
 
   const componentNoInfo = (
     title: String,
@@ -135,7 +167,7 @@ const EditProfileForm = () => {
             </Space>
           </section>
           <section className="addLinks mt-3">
-          <button
+            <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
               style={{
                 border: "1px solid",
@@ -163,13 +195,14 @@ const EditProfileForm = () => {
                 style={{ width: "48%" }}
               >
                 <input
-                  defaultValue="Hải"
+                  defaultValue={userInfo?.firstname}
                   type="input"
                   className="form__field"
                   placeholder="First Name"
                   name="firstname"
                   id="firstname"
                   required
+                  onChange={handleChangeFirstName}
                 />
                 <label htmlFor="name" className="form__label">
                   First Name
@@ -180,13 +213,14 @@ const EditProfileForm = () => {
                 style={{ width: "48%" }}
               >
                 <input
-                  defaultValue="Nguyễn Hoàng"
+                  defaultValue={userInfo?.lastname}
                   type="input"
                   className="form__field"
                   placeholder="Last Name"
                   name="lastname"
                   id="lastname"
                   required
+                  onChange={handleChangeLastName}
                 />
                 <label htmlFor="name" className="form__label">
                   Last Name
@@ -242,23 +276,45 @@ const EditProfileForm = () => {
             >
               Expertise
             </div>
-            <button
-              className="addTags mt-2 px-4 py-1 cursor-pointer"
-              style={{
-                border: "1px solid",
-                borderColor: themeColorSet.colorBg4,
-              }}
-              onClick={() => {
-                dispatch(openModal({  
-                  title: "Add Tags",
-                  component: <AddTagComponent/>,
-                  footer: null,
-                }))
-              }} 
-            >
-              <FontAwesomeIcon icon={faPlus} className="mr-2" />
-              Add Tags
-            </button>
+            <div className="description flex flex-wrap">
+              {descArray.map((item, index) => {
+                if (descriptions?.indexOf(item.title) !== -1) {
+                  return (
+                    <Tag
+                      className="item mx-2 my-2 px-4 py-1"
+                      key={index}
+                      color={themeColorSet.colorBg1}
+                      style={{
+                        border: "none",
+                      }}
+                    >
+                      {item.svg} &nbsp;
+                      {item.title}
+                    </Tag>
+                  );
+                }
+                return null;
+              })}
+              <button
+                className="addTags mt-2 px-4 py-1 cursor-pointer"
+                style={{
+                  border: "1px solid",
+                  borderColor: themeColorSet.colorBg4,
+                }}
+                onClick={() => {
+                  dispatch(
+                    openModal({
+                      title: "Add Tags",
+                      component: <AddTagComponent />,
+                      footer: null,
+                    })
+                  );
+                }}
+              >
+                <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                Add Tags
+              </button>
+            </div>
           </section>
           <section className="about mt-7">
             <div

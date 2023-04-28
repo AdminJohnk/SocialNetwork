@@ -19,6 +19,7 @@ import {
   GET_ALL_POST_SAGA,
 } from "../actionSaga/PostActionSaga";
 import { setAllPost, setPost } from "../Slice/PostSlice";
+import { setUser } from "../Slice/UserSlice";
 
 // Get All Post By User ID Saga
 export function* getAllPostByUserIDSaga({ payload }: any) {
@@ -27,6 +28,7 @@ export function* getAllPostByUserIDSaga({ payload }: any) {
     const { data, status } = yield postService.getAllPostByUserID(id);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setAllPost(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -43,6 +45,7 @@ export function* getAllPostSaga() {
     const { data, status } = yield postService.getAllPost();
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setAllPost(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -60,6 +63,7 @@ export function* getPostByIdSaga({ payload }: any) {
     const { data, status } = yield postService.getPostById(id);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setPost(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -77,6 +81,7 @@ export function* getPostShareByIdSaga({ payload }: any) {
     const { data, status } = yield postService.getPostShareById(id);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setPost(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);

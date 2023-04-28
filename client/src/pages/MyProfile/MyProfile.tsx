@@ -77,7 +77,7 @@ const MyProfile = () => {
   }, []);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.postReducer.userInfo);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
   const postArray = useMemo(() => postArraySlice, [postArraySlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
@@ -89,6 +89,7 @@ const MyProfile = () => {
   useEffect(() => {
     setIsNotAlreadyChanged(userInfoRef.current === userInfo);
   }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+
   return (
     <ConfigProvider
       theme={{
@@ -190,7 +191,9 @@ const MyProfile = () => {
                             className="item mx-2 my-2 px-4 py-1"
                             key={index}
                             color={themeColorSet.colorBg2}
-                            //color={item.color}
+                            style={{
+                              border: "none",
+                            }}
                           >
                             {item.svg} &nbsp;
                             {item.title}

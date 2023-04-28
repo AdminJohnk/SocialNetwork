@@ -11,7 +11,7 @@ const PostShareWrapper = () => {
   const dispatch = useDispatch();
 
   const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.postReducer.userInfo);
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const { userID } = useSelector((state: any) => state.authReducer);
 
