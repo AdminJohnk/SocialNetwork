@@ -123,11 +123,11 @@ export function* updatePostSaga({ payload }: any) {
       payload.postUpdate
     );
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -146,11 +146,11 @@ export function* saveCommentSaga({ payload }: any) {
       payload.comment
     );
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -169,11 +169,11 @@ export function* saveReplySaga({ payload }: any) {
       payload.reply
     );
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -189,11 +189,11 @@ export function* deletePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.deletePost(payload);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -212,11 +212,11 @@ export function* saveCommentPostShareSaga({ payload }: any) {
       payload.comment
     );
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -235,11 +235,11 @@ export function* saveReplyPostShareSaga({ payload }: any) {
       payload.reply
     );
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -255,11 +255,11 @@ export function* likePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.likePost(payload.id);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -276,11 +276,11 @@ export function* sharePostSaga({ payload }: any) {
     const { data, status } = yield postService.sharePost(payload.id);
 
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -296,11 +296,11 @@ export function* likePostShareSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.likePostShare(payload.id);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -316,11 +316,11 @@ export function* savePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.savePost(payload.id);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: "me",
-        })
-      );
+      // yield put(
+      //   GET_ALL_POST_BY_USERID_SAGA({
+      //     userId: "me",
+      //   })
+      // );
     }
   } catch (err: any) {
     console.log(err.response.data);

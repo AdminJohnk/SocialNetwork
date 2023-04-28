@@ -10,6 +10,9 @@ const StyleTotal = styled.div`
     border: 1px solid ${(props) => props.theme.colorBg4};
     border-radius: 20px;
   }
+  .ql-container.ql-snow {
+    border: none;
+  }
   .post {
     .postHeader {
       .postHeader__left {
@@ -46,11 +49,11 @@ const StyleTotal = styled.div`
       .comment_view {
         .emoji {
           color: ${(props) => props.theme.colorText3};
-            :hover {
-              cursor: pointer;
-              color:${(props) => props.theme.colorText2};
-              transition: all 0.5s;
-            }
+          :hover {
+            cursor: pointer;
+            color: ${(props) => props.theme.colorText2};
+            transition: all 0.5s;
+          }
         }
       }
     }

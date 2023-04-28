@@ -32,6 +32,9 @@ import {
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditPostForm from "../Form/EditPostForm/EditPostForm";
 import OpenMyPostDetailModal from "../ActionComponent/OpenPostDetail/OpenMyPostDetailModal";
+import Quill from "quill";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 interface PostShareProps {
   post: any;
@@ -125,30 +128,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
     {
       key: "2",
       label: (
-        <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faPenToSquare} />
-          <span className="ml-2">Edit Post</span>
-        </div>
-      ),
-      onClick: () => {
-        dispatch(
-          openDrawer({
-            title: "Edit Post",
-            component: (
-              <EditPostForm
-                id={PostProps.post._id}
-                title={PostProps.post.title}
-                content={PostProps.post.content}
-              />
-            ),
-          })
-        );
-      },
-    },
-    {
-      key: "3",
-      label: (
-        <div key="3" className="item flex items-center px-4 py-2">
+        <div key="2" className="item flex items-center px-4 py-2">
           <FontAwesomeIcon className="icon" icon={faTrash} />
           <span className="ml-2">Delete Post</span>
         </div>
@@ -287,12 +267,19 @@ const MyPostShare = (PostProps: PostShareProps) => {
             <div className="postBody mt-5">
               <div className="title font-bold">{PostProps.post.title}</div>
               <div className="content mt-3">
-                <div
+                {/* <div
                   className="content__text"
                   dangerouslySetInnerHTML={{
                     __html: PostProps.post.content,
                   }}
-                ></div>
+                ></div> */}
+                <div className="content__text">
+                  <ReactQuill
+                    value={PostProps.post.content}
+                    readOnly={true}
+                    modules={{ toolbar: false }}
+                  />
+                </div>
               </div>
             </div>
           </div>
