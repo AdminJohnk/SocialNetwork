@@ -48,6 +48,7 @@ import { useParams } from "react-router-dom";
 import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
 import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
 import { LoadingProfileComponent } from "../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent";
+import "react-quill/dist/quill.snow.css";
 
 const descArray = [
   {
