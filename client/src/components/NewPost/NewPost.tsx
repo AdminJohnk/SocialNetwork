@@ -115,7 +115,7 @@ const NewPost = (Props: Props) => {
       }}
     >
       {contextHolder}
-      <StyleTotal theme={themeColorSet} className="w-8/12 rounded-lg mb-4">
+      <StyleTotal theme={themeColorSet} className="rounded-lg mb-4">
         <div className="newPost px-4 py-3">
           <div
             className="newPostHeader text-center text-2xl font-bold"

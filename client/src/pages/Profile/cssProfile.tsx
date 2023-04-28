@@ -10,8 +10,8 @@ const StyleTotal = styled.div`
     width: 170px;
     height: 170px;
     position: absolute;
-    top: 259px;
-    left: 27px;
+    bottom: -6rem;
+    left: 17rem;
     z-index: 1;
   }
   .chat_Follow {

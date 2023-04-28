@@ -20,6 +20,7 @@ import ProfileWrapper from "./components/Wrapper/ProfileWrapper";
 import PostWrapper from "./components/Wrapper/PostWrapper";
 import PostShareWrapper from "./components/Wrapper/PostShareWrapper";
 import NewFeed from "./pages/NewFeed/NewFeed";
+import Community from "./pages/Community/Community";
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -56,6 +57,10 @@ const App = () => {
         <Route
           path="/postshare/:postID"
           element={<MainTemplate Component={PostShareWrapper} />}
+        />
+        <Route
+          path="/community"
+          element={<MainTemplate Component={Community} />}
         />
       </Routes>
     </>

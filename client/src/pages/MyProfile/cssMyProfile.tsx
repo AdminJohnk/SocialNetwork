@@ -1,8 +1,6 @@
 import { faSnowflake } from "@fortawesome/free-solid-svg-icons";
 import styled, { css } from "styled-components";
-import {
-  commonColor,
-} from "../../util/cssVariable/cssVariable";
+import { commonColor } from "../../util/cssVariable/cssVariable";
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
@@ -12,17 +10,17 @@ const StyleTotal = styled.div`
     width: 170px;
     height: 170px;
     position: absolute;
-    top: 259px;
-    left: 27px;
+    bottom: -6rem;
+    left: 17rem;
     z-index: 1;
   }
   .chat_Follow {
-    .editProfile{
-      .btnEditProfile{
+    .editProfile {
+      .btnEditProfile {
         border: 1px solid ${(props) => props.theme.colorText1};
         color: ${(props) => props.theme.colorText1};
         border-radius: 0;
-        :hover{
+        :hover {
           border-color: ${commonColor.colorBlue1};
           color: ${commonColor.colorBlue1};
           cursor: pointer;
@@ -30,7 +28,6 @@ const StyleTotal = styled.div`
         }
       }
     }
-    
   }
   .id_address_join {
     color: ${(props) => props.theme.colorText3};

@@ -8,7 +8,6 @@ import Profile from "../../pages/Profile/Profile";
 const ProfileWrapper = () => {
   const { userID } = useParams();
   const dispatch = useDispatch();
-  // const { isLoading1 } = useSelector((state: any) => state.loadingReducer);
 
   const { userID: userIDFromStore } = useSelector(
     (state: any) => state.authReducer

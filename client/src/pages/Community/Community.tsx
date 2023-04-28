@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { ThemeProvider } from "styled-components";
-import StyleTotal from "./cssMyProfile";
+import StyleTotal from "./cssCommunity";
 import { getTheme } from "../../util/functions/ThemeFunction";
 import {
   Avatar,
@@ -118,7 +118,7 @@ const descArray = [
   },
 ];
 
-const MyProfile = () => {
+const Community = () => {
   const dispatch = useDispatch();
 
   const { userID } = useParams<{ userID: string }>();
@@ -131,7 +131,7 @@ const MyProfile = () => {
   useEffect(() => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
-        userId: userID,
+        userId: "6426a822013f11e731f8083a", 
       })
     );
   }, []);
@@ -172,7 +172,7 @@ const MyProfile = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("./images/CommunityPage/cover.jpg")`,
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
@@ -387,4 +387,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Community;
