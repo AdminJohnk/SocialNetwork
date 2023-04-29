@@ -21,6 +21,7 @@ import PostWrapper from "./components/Wrapper/PostWrapper";
 import PostShareWrapper from "./components/Wrapper/PostShareWrapper";
 import NewFeed from "./pages/NewFeed/NewFeed";
 import Community from "./pages/Community/Community";
+import React from "react";
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục

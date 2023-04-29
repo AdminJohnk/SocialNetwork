@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { ThemeProvider } from "styled-components";
-import StyleTotal from "./cssMyProfile";
-import { getTheme } from "../../util/functions/ThemeFunction";
+import React, { useState, useEffect, useMemo } from 'react';
+import { ThemeProvider } from 'styled-components';
+import StyleTotal from './cssMyProfile';
+import { getTheme } from '../../util/functions/ThemeFunction';
 import {
   Avatar,
   Button,
@@ -17,39 +17,27 @@ import {
   Tag,
   theme,
   Tooltip,
-} from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { setTheme } from "../../redux/Slice/ThemeSlice";
-import { DARK_THEME, LIGHT_THEME } from "../../util/constants/SettingSystem";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSnowflake,
-  faFileLines,
-  faComments,
-  faLocationDot,
-  faBriefcase,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faFacebookF,
-  faTwitter,
-  faGithub,
-  faInstagram,
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
-import { NavLink } from "react-router-dom";
-import { commonColor } from "../../util/cssVariable/cssVariable";
-import { icon } from "@fortawesome/fontawesome-svg-core";
-import TabPane from "antd/es/tabs/TabPane";
-import MyPost from "../../components/Post/MyPost";
-import NewPost from "../../components/NewPost/NewPost";
-import { GET_ALL_POST_BY_USERID_SAGA } from "../../redux/actionSaga/PostActionSaga";
-import MyPostShare from "../../components/Post/MyPostShare";
-import { useParams } from "react-router-dom";
-import { openDrawer } from "../../redux/Slice/DrawerHOCSlice";
-import EditProfileForm from "../../components/Form/EditProfileForm/EditProfileForm";
-import { LoadingProfileComponent } from "../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent";
-import "react-quill/dist/quill.snow.css";
-import descArray from "../../util/constants/Description";
+} from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTheme } from '../../redux/Slice/ThemeSlice';
+import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { NavLink } from 'react-router-dom';
+import { commonColor } from '../../util/cssVariable/cssVariable';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import TabPane from 'antd/es/tabs/TabPane';
+import MyPost from '../../components/Post/MyPost';
+import NewPost from '../../components/NewPost/NewPost';
+import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import MyPostShare from '../../components/Post/MyPostShare';
+import { useParams } from 'react-router-dom';
+import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
+import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import 'react-quill/dist/quill.snow.css';
+import descArray from '../../util/constants/Description';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -65,30 +53,32 @@ const MyProfile = () => {
     dispatch(
       GET_ALL_POST_BY_USERID_SAGA({
         userId: userID,
-      })
+      }),
     );
   }, []);
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   }, []);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
   const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+  const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const postArray = useMemo(() => postArraySlice, [postArraySlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+  const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const userInfoRef = React.useRef(userInfo);
+  const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(userInfoRef.current === userInfo);
-  }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
 
   return (
     <ConfigProvider
@@ -97,7 +87,7 @@ const MyProfile = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || isNotAlreadyChanged ? (
+        {!postArray || !userInfo || !ownerInfo || isNotAlreadyChanged ? (
           <LoadingProfileComponent />
         ) : (
           <>
@@ -107,18 +97,14 @@ const MyProfile = () => {
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
                     backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
                   }}
                 ></div>
                 <div className="avatar rounded-full overflow-hidden">
                   <img
-                    src={
-                      userInfo.userImage
-                        ? userInfo.userImage
-                        : "./images/DefaultAvatar/default_avatar.png"
-                    }
+                    src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
                   />
                 </div>
@@ -126,18 +112,12 @@ const MyProfile = () => {
               <Col offset={4} span={16}>
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6} span={12}>
-                    <div
-                      className="text-2xl font-bold"
-                      style={{ color: themeColorSet.colorText1 }}
-                    >
-                      {userInfo.username}
+                    <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
+                      {ownerInfo.username}
                     </div>
                     <div className="position mt-2">
                       <FontAwesomeIcon className="icon" icon={faSnowflake} />
-                      <span
-                        style={{ color: themeColorSet.colorText3 }}
-                        className="ml-2"
-                      >
+                      <span style={{ color: themeColorSet.colorText3 }} className="ml-2">
                         User Interface Architect & Senior Manager UX
                       </span>
                     </div>
@@ -156,9 +136,9 @@ const MyProfile = () => {
                           onClick={() => {
                             dispatch(
                               openDrawer({
-                                title: "Edit Profile",
+                                title: 'Edit Profile',
                                 component: <EditProfileForm />,
-                              })
+                              }),
                             );
                           }}
                         >
@@ -171,10 +151,7 @@ const MyProfile = () => {
                 <div className="id_address_join">
                   <span className="id item mr-2">@tianrongliew</span>
                   <span className="address item mr-2">
-                    <FontAwesomeIcon
-                      className="icon mr-2"
-                      icon={faLocationDot}
-                    />
+                    <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
                     Global
                   </span>
                   <span className="join">
@@ -192,7 +169,7 @@ const MyProfile = () => {
                             key={index}
                             color={themeColorSet.colorBg2}
                             style={{
-                              border: "none",
+                              border: 'none',
                             }}
                           >
                             {item.svg} &nbsp;
@@ -239,26 +216,11 @@ const MyProfile = () => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
-                    />
-                    <Avatar
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faGithub)} />}
-                    />
-                    <Avatar
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
-                    />
-                    <Avatar
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
-                    />
-                    <Avatar
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
-                    />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
                   </Space>
                 </div>
                 <div className="mainContain mt-5">
@@ -286,20 +248,9 @@ const MyProfile = () => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <MyPostShare
-                                key={item._id}
-                                post={item}
-                                userInfo={userInfo}
-                                owner={item.user}
-                              />
+                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
                             )}
-                            {!item.PostShared && (
-                              <MyPost
-                                key={item._id}
-                                post={item}
-                                userInfo={userInfo}
-                              />
-                            )}
+                            {!item.PostShared && <MyPost key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>
                         );
                       })}
