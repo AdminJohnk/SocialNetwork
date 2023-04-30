@@ -93,7 +93,10 @@ const PostShare = (PostProps: PostShareProps) => {
 
   const [expanded, setExpanded] = useState(false);
 
-  const displayContent = expanded ? PostProps.post.content : PostProps.post.content.slice(0, 150) + '...';
+  const displayContent =
+    expanded || PostProps.post.content.length <= 250
+      ? PostProps.post.content
+      : PostProps.post.content.slice(0, 200) + '...';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -175,7 +178,9 @@ const PostShare = (PostProps: PostShareProps) => {
                     modules={{ toolbar: false }}
                     // formats={Quill.import("formats")}
                   />
-                  <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
+                  {PostProps.post.content.length > 250 && (
+                    <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
+                  )}
                 </div>
               </div>
             </div>
