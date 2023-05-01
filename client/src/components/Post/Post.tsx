@@ -18,7 +18,7 @@ import StyleTotal from './cssPost';
 
 import { LIKE_POST_SAGA, SHARE_POST_SAGA, SAVE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 
 interface PostProps {
@@ -185,7 +185,7 @@ const Post = (PostProps: PostProps) => {
                 <ReactQuill
                   value={displayContent}
                   readOnly={true}
-                  modules={{ toolbar: false }}
+                  theme={'bubble'}
                   // formats={Quill.import("formats")}
                 />
                 {PostProps.post.content.length > 250 && (

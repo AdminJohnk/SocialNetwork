@@ -20,7 +20,7 @@ import { commonColor } from '../../util/cssVariable/cssVariable';
 import { SHARE_POST_SAGA, LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 
 interface PostShareProps {
   post: any;
@@ -258,7 +258,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                   <ReactQuill
                     value={displayContent}
                     readOnly={true}
-                    modules={{ toolbar: false }}
+                    theme={'bubble'}
                     // formats={Quill.import("formats")}
                   />
                   {PostProps.post.content.length > 250 && (

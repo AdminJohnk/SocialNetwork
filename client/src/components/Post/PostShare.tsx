@@ -10,7 +10,7 @@ import StyleTotal from './cssPost';
 
 import { LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 
 interface PostShareProps {
@@ -175,7 +175,7 @@ const PostShare = (PostProps: PostShareProps) => {
                   <ReactQuill
                     value={displayContent}
                     readOnly={true}
-                    modules={{ toolbar: false }}
+                    theme={'bubble'}
                     // formats={Quill.import("formats")}
                   />
                   {PostProps.post.content.length > 250 && (

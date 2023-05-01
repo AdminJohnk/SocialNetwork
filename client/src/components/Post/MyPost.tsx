@@ -30,7 +30,7 @@ import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css'
 
 interface PostProps {
   post: any;
@@ -288,7 +288,7 @@ const MyPost = (PostProps: PostProps) => {
                 <ReactQuill
                   value={displayContent}
                   readOnly={true}
-                  modules={{ toolbar: false }}
+                  theme={'bubble'}
                   // formats={Quill.import("formats")}
                 />
                 {PostProps.post.content.length > 250 && (
