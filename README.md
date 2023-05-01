@@ -10,7 +10,7 @@ To start your app in development mode, run:
 npm start
 ```
 
-This will start the app at `http://localhost:3000`.
+This will start the app at `http://127.0.0.1:3000`.
 
 To build your app for production, run:
 

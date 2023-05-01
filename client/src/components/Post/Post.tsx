@@ -110,7 +110,7 @@ const Post = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://localhost:3000/post/${PostProps.post._id}`);
+        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post._id}`);
       },
     },
   ];

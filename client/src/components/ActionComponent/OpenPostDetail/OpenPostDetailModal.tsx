@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import PostDetailModal from '../../Form/PostDetail/PostDetail';
-import StyleTotal from './cssOpenPostDetail';
+import StyleTotal from './cssOpenPostDetailModal';
 import dataEmoji from '@emoji-mart/data';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -116,9 +116,9 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
     [PostProps.post, PostProps.userInfo, data],
   );
 
-  const memoizedIputComment = useMemo(
+  const memoizedInputComment = useMemo(
     () => (
-      <div className=" commentInput text-right flex items-center">
+      <div className="commentInput text-right flex items-center">
         <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
         <div className="input w-full">
           <Input
@@ -185,12 +185,12 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         component: memoizedComponent,
         footer: (
           <ConfigProvider>
-            <StyleTotal theme={themeColorSet}>{memoizedIputComment}</StyleTotal>
+            <StyleTotal theme={themeColorSet}>{memoizedInputComment}</StyleTotal>
           </ConfigProvider>
         ),
       }),
     );
-  }, [memoizedComponent, memoizedIputComment]);
+  }, [memoizedComponent, memoizedInputComment]);
 
   return (
     <ConfigProvider
