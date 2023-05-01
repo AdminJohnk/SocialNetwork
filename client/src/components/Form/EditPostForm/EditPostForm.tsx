@@ -1,38 +1,28 @@
-import {
-  Avatar,
-  Button,
-  ConfigProvider,
-  Divider,
-  Form,
-  Input,
-  message,
-  Popover,
-  Upload,
-} from "antd";
-import Quill from "quill";
-import "react-quill/dist/quill.snow.css";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { getTheme } from "../../../util/functions/ThemeFunction";
-import StyleTotal from "./cssEditPostForm";
-import ImageCompress from "quill-image-compress";
-import dataEmoji from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCode, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-import { useFormik } from "formik";
-import { TOKEN } from "../../../util/constants/SettingSystem";
-import { UPDATE_POST_SAGA } from "../../../redux/actionSaga/PostActionSaga";
-import { UploadOutlined } from "@ant-design/icons";
-import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
-Quill.register("modules/imageCompress", ImageCompress);
+import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload } from 'antd';
+import Quill from 'quill';
+import 'react-quill/dist/quill.snow.css';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { getTheme } from '../../../util/functions/ThemeFunction';
+import StyleTotal from './cssEditPostForm';
+import ImageCompress from 'quill-image-compress';
+import dataEmoji from '@emoji-mart/data';
+import Picker from '@emoji-mart/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import { useFormik } from 'formik';
+import { TOKEN } from '../../../util/constants/SettingSystem';
+import { GET_ALL_POST_BY_USERID_SAGA, UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
+import { UploadOutlined } from '@ant-design/icons';
+import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
-  ["bold", "italic", "underline", "clean"],
-  [{ list: "ordered" }, { list: "bullet" }],
+  ['bold', 'italic', 'underline', 'clean'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
-  ["link", "image"],
+  ['link', 'image'],
 ];
 
 interface PostProps {
@@ -59,14 +49,14 @@ const EditPostForm = (PostProps: any) => {
     },
     enableReinitialize: true,
     onSubmit: (values) => {
-      if (quill.root.innerHTML === "<p><br></p>") {
+      if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
         dispatch(
           UPDATE_POST_SAGA({
             id: PostProps.id,
             postUpdate: values,
-          })
+          }),
         );
       }
     },
@@ -77,14 +67,14 @@ const EditPostForm = (PostProps: any) => {
 
   useEffect(() => {
     // Tạo quill
-    quill = new Quill("#editorDrawer", {
+    quill = new Quill('#editorDrawer', {
       modules: {
         toolbar: toolbarOptions,
       },
-      theme: "snow",
-      scrollingContainer: "#scrolling-container",
+      theme: 'snow',
+      scrollingContainer: '#scrolling-container',
     });
-    quill.on("text-change", function () {
+    quill.on('text-change', function () {
       handleQuillChange();
     });
 
@@ -97,26 +87,26 @@ const EditPostForm = (PostProps: any) => {
     quill.root.innerHTML = PostProps.content;
     setQuill(quill);
     // Hiển thị lại title khi PostProps.title thay đổi
-    formik.setFieldValue("title", PostProps.title);
+    formik.setFieldValue('title', PostProps.title);
   }, [PostProps, quill]);
 
   const handleQuillChange = () => {
     const text = quill.root.innerHTML;
-    formik.setFieldValue("content", text);
+    formik.setFieldValue('content', text);
   };
 
   // Hàm hiển thị mesage
   const error = () => {
     messageApi.open({
-      type: "error",
-      content: "Please enter the content",
+      type: 'error',
+      content: 'Please enter the content',
     });
   };
 
   const [file, setFile]: any = useState([]);
   const handleUpload = (info: any) => {
     setFile(info.fileList[0].originFileObj);
-    formik.setFieldValue("linkImage", info.fileList[0].originFileObj);
+    formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
   };
 
   return (
@@ -154,26 +144,19 @@ const EditPostForm = (PostProps: any) => {
               <Popover
                 placement="top"
                 trigger="click"
-                title={"Members"}
+                title={'Members'}
                 content={
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
                       quill.focus();
-                      quill.insertText(
-                        quill.getSelection().index,
-                        emoji.native
-                      );
+                      quill.insertText(quill.getSelection().index, emoji.native);
                     }}
                   />
                 }
               >
                 <span className="emoji">
-                  <FontAwesomeIcon
-                    className="item mr-3 ml-3"
-                    size="lg"
-                    icon={faFaceSmile}
-                  />
+                  <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
               <span className="code">

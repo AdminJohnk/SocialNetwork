@@ -6,6 +6,7 @@ const initialState = {
   ownerInfo: {},
 
   isOpenPostDetail: false,
+  isInProfile: false,
 };
 
 const postSlice = createSlice({
@@ -36,8 +37,14 @@ const postSlice = createSlice({
         ownerInfo: action.payload.ownerInfo,
       };
     },
+    setIsInProfile: (state, action) => {
+      return {
+        ...state,
+        isInProfile: action.payload,
+      };
+    }
   },
 });
 
-export const { setAllPost, openPostDetail, setPost, setOwnerInfo } = postSlice.actions;
+export const { setAllPost, openPostDetail, setPost, setOwnerInfo, setIsInProfile } = postSlice.actions;
 export default postSlice.reducer;

@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { put, select, takeLatest } from 'redux-saga/effects';
 import { postService } from '../../services/PostService';
 import { ID_USER, STATUS_CODE } from '../../util/constants/SettingSystem';
 import {
@@ -123,11 +123,14 @@ export function* updatePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
     if (status === STATUS_CODE.SUCCESS) {
-      // yield put(
-      //   GET_ALL_POST_BY_USERID_SAGA({
-      //     userId: "me",
-      //   })
-      // );
+      const isInProfile = select((state) => state.postReducer.isInProfile);
+      if (isInProfile) {
+        yield put(
+          GET_ALL_POST_BY_USERID_SAGA({
+            userId: 'me',
+          }),
+        );
+      }
     }
   } catch (err: any) {
     console.log(err.response.data);

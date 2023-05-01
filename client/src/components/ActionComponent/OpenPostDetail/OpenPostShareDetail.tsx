@@ -187,8 +187,8 @@ const OpenPostShareDetail = (Props: Props) => {
     >
       <StyleTotal theme={themeColorSet}>
         <div>
-          {memoizedComponent}
-          {memoizedIputComment}
+          {/* {memoizedComponent}
+          {memoizedIputComment} */}
         </div>
       </StyleTotal>
     </ConfigProvider>

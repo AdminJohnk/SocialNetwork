@@ -35,9 +35,10 @@ import MyPostShare from '../../components/Post/MyPostShare';
 import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import 'react-quill/dist/quill.snow.css';
 import descArray from '../../util/constants/Description';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -55,6 +56,7 @@ const MyProfile = () => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(true));
   }, []);
 
   useEffect(() => {

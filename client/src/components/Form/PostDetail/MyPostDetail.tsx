@@ -1,7 +1,7 @@
-import CommentDetail from "../../Comment/CommentDetail";
-import { useState, useEffect } from "react";
-import MyPostShare from "../../Post/MyPostShare";
-import MyPost from "../../Post/MyPost";
+import CommentDetail from '../../Comment/CommentDetail';
+import { useState, useEffect } from 'react';
+import MyPostShare from '../../Post/MyPostShare';
+import MyPost from '../../Post/MyPost';
 
 interface PostProps {
   post: any;
@@ -13,9 +13,7 @@ interface PostProps {
 }
 
 const MyPostDetail = (Props: PostProps) => {
-  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
-    Props.data.idComment
-  );
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(Props.data.idComment);
 
   useEffect(() => {
     setSelectedCommentId(Props.data.idComment);
@@ -28,17 +26,13 @@ const MyPostDetail = (Props: PostProps) => {
   return (
     <div>
       {Props.postShare ? (
-        <MyPostShare
-          post={Props.post}
-          userInfo={Props.userInfo}
-          owner={Props.owner}
-        />
+        <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
       ) : (
         <MyPost post={Props.post} userInfo={Props.userInfo} />
       )}
       {Props.post.comments?.map((item: any, index: number) => {
         return (
-          <div>
+          <div className="px-4">
             {item ? (
               <CommentDetail
                 onData={Props.onData}
