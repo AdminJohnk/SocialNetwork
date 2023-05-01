@@ -22,12 +22,12 @@ const EditProfileForm = () => {
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  const [descriptions, setDescriptions] = React.useState(userInfo.descriptions);
+  const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
 
   const isHaveCover = true;
 
-  const [firstname, setFirstName] = React.useState(userInfo.firstname);
-  const [lastname, setLastName] = React.useState(userInfo.lastname);
+  const [firstname, setFirstName] = React.useState(userInfo?.firstname);
+  const [lastname, setLastName] = React.useState(userInfo?.lastname);
 
   const handleChangeFirstName = (e: any) => {
     setFirstName(e.target.value);
@@ -44,7 +44,7 @@ const EditProfileForm = () => {
   const onSubmit = () => {
     dispatch(
       UPDATE_USER_SAGA({
-        id: userInfo.id,
+        id: userInfo?.id,
         userUpdate: {
           description: descriptions,
           firstname: firstname,

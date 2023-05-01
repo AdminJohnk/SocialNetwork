@@ -30,7 +30,7 @@ import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.bubble.css'
+import 'react-quill/dist/quill.bubble.css';
 
 interface PostProps {
   post: any;
@@ -52,58 +52,58 @@ const MyPost = (PostProps: PostProps) => {
   // ------------------------ Like ------------------------
 
   // Like Number
-  const [likeNumber, setLikeNumber] = useState(PostProps.post.likes.length);
+  const [likeNumber, setLikeNumber] = useState(PostProps.post?.likes?.length);
   useEffect(() => {
-    setLikeNumber(PostProps.post.likes.length);
-  }, [PostProps.post.likes.length]);
+    setLikeNumber(PostProps.post?.likes?.length);
+  }, [PostProps.post?.likes?.length]);
 
   // Like color
   const [likeColor, setLikeColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isLiked ? setLikeColor('red') : setLikeColor('white');
-  }, [PostProps.post.isLiked]);
+    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor('white');
+  }, [PostProps.post?.isLiked]);
 
   // isLiked
   const [isLiked, setIsLiked] = useState(true);
   useEffect(() => {
-    setIsLiked(PostProps.post.isLiked);
-  }, [PostProps.post.isLiked]);
+    setIsLiked(PostProps.post?.isLiked);
+  }, [PostProps.post?.isLiked]);
 
   // ------------------------ Share ------------------------
 
   // Share Number
-  const [shareNumber, setShareNumber] = useState(PostProps.post.shares.length);
+  const [shareNumber, setShareNumber] = useState(PostProps.post?.shares?.length);
   useEffect(() => {
-    setShareNumber(PostProps.post.shares.length);
-  }, [PostProps.post.shares.length]);
+    setShareNumber(PostProps.post?.shares?.length);
+  }, [PostProps.post?.shares?.length]);
 
   // Share color
   const [shareColor, setShareColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isShared ? setShareColor('blue') : setShareColor('white');
-  }, [PostProps.post.isShared]);
+    PostProps.post?.isShared ? setShareColor('blue') : setShareColor('white');
+  }, [PostProps.post?.isShared]);
 
   // isShared
   const [isShared, setIsShared] = useState(true);
   useEffect(() => {
-    setIsShared(PostProps.post.isShared);
-  }, [PostProps.post.isShared]);
+    setIsShared(PostProps.post?.isShared);
+  }, [PostProps.post?.isShared]);
 
   // ------------------------ Save ------------------------
 
   // isSaved
   const [isSaved, setIsSaved] = useState(true);
   useEffect(() => {
-    setIsSaved(PostProps.post.isSaved);
-  }, [PostProps.post.isSaved]);
+    setIsSaved(PostProps.post?.isSaved);
+  }, [PostProps.post?.isSaved]);
 
   // Save color
   const [saveColor, setSaveColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isSaved ? setSaveColor('yellow') : setSaveColor('white');
-  }, [PostProps.post.isSaved]);
+    PostProps.post?.isSaved ? setSaveColor('yellow') : setSaveColor('white');
+  }, [PostProps.post?.isSaved]);
 
-  const createdAt = new Date(PostProps.post.createdAt);
+  const createdAt = new Date(PostProps.post?.createdAt);
   //format date to get full date
   const date = createdAt.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -121,7 +121,7 @@ const MyPost = (PostProps: PostProps) => {
   const handleOk = () => {
     dispatch(
       DELETE_POST_SAGA({
-        id: PostProps.post._id,
+        id: PostProps.post?._id,
       }),
     );
     setIsModalOpen(false);
@@ -143,7 +143,7 @@ const MyPost = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post._id}`);
+        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post?._id}`);
       },
     },
     {
@@ -159,7 +159,7 @@ const MyPost = (PostProps: PostProps) => {
           openDrawer({
             title: 'Edit Post',
             component: (
-              <EditPostForm id={PostProps.post._id} title={PostProps.post.title} content={PostProps.post.content} />
+              <EditPostForm id={PostProps.post?._id} title={PostProps.post?.title} content={PostProps.post?.content} />
             ),
           }),
         );
@@ -202,9 +202,9 @@ const MyPost = (PostProps: PostProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const displayContent =
-    expanded || PostProps.post.content.length <= 250
-      ? PostProps.post.content
-      : PostProps.post.content.slice(0, 200) + '...';
+    expanded || PostProps.post?.content?.length <= 250
+      ? PostProps.post?.content
+      : PostProps.post?.content?.slice(0, 200) + '...';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -246,7 +246,7 @@ const MyPost = (PostProps: PostProps) => {
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
       {isOpenPostDetail ? (
-        <OpenMyPostDetailModal key={PostProps.post._id} post={PostProps.post} userInfo={PostProps.userInfo} />
+        <OpenMyPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
       ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
@@ -256,8 +256,8 @@ const MyPost = (PostProps: PostProps) => {
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink to={`/${PostProps.userInfo.id}`} style={{ color: themeColorSet.colorText1 }}>
-                      {PostProps.userInfo.username}
+                    <NavLink to={`/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                      {PostProps.userInfo?.username}
                     </NavLink>
                   </div>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
@@ -276,12 +276,12 @@ const MyPost = (PostProps: PostProps) => {
             </div>
           </div>
           <div className="postBody mt-5">
-            <div className="title font-bold">{PostProps.post.title}</div>
+            <div className="title font-bold">{PostProps.post?.title}</div>
             <div className="content mt-3">
               {/* <div
                 className="content__text"
                 dangerouslySetInnerHTML={{
-                  __html: PostProps.post.content,
+                  __html: PostProps.post?.content,
                 }}
               ></div> */}
               <div className="content__text">
@@ -291,7 +291,7 @@ const MyPost = (PostProps: PostProps) => {
                   theme={'bubble'}
                   // formats={Quill.import("formats")}
                 />
-                {PostProps.post.content.length > 250 && (
+                {PostProps.post?.content?.length > 250 && (
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}
               </div>
@@ -318,7 +318,7 @@ const MyPost = (PostProps: PostProps) => {
                     }
                     dispatch(
                       LIKE_POST_SAGA({
-                        id: PostProps.post._id,
+                        id: PostProps.post?._id,
                       }),
                     );
                   }}
@@ -342,7 +342,7 @@ const MyPost = (PostProps: PostProps) => {
                     }
                     dispatch(
                       SHARE_POST_SAGA({
-                        id: PostProps.post._id,
+                        id: PostProps.post?._id,
                       }),
                     );
                   }}
@@ -351,7 +351,7 @@ const MyPost = (PostProps: PostProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post.comments.length} Comment</span>
+                <span>{PostProps.post?.comments?.length} Comment</span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -378,7 +378,7 @@ const MyPost = (PostProps: PostProps) => {
                       }
                       dispatch(
                         SAVE_POST_SAGA({
-                          id: PostProps.post._id,
+                          id: PostProps.post?._id,
                         }),
                       );
                     }}

@@ -48,7 +48,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -62,7 +62,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -70,7 +70,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -84,7 +84,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -181,7 +181,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   useLayoutEffect(() => {
     dispatch(
       openModal({
-        title: 'The post of ' + PostProps.userInfo.username,
+        title: 'The post of ' + PostProps.userInfo?.username,
         component: memoizedComponent,
         footer: (
           <ConfigProvider>

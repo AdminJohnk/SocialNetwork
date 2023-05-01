@@ -119,7 +119,7 @@ const NewPost = (Props: Props) => {
                 }
               />
               <div className="name font-bold ml-2">
-                <NavLink to={`/${Props.userInfo.id}`}>{Props.userInfo.username}</NavLink>
+                <NavLink to={`/${Props.userInfo?.id}`}>{Props.userInfo?.username}</NavLink>
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">

@@ -46,11 +46,11 @@ const OpenMyPostDetail = (Props: Props) => {
   };
 
   const handleSubmitComment = () => {
-    if (Props.post.postShare) {
+    if (Props.post?.postShare) {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -64,7 +64,7 @@ const OpenMyPostDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -72,7 +72,7 @@ const OpenMyPostDetail = (Props: Props) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -86,7 +86,7 @@ const OpenMyPostDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -109,10 +109,10 @@ const OpenMyPostDetail = (Props: Props) => {
       <MyPostDetail
         onData={handleData}
         post={Props.post}
-        userInfo={Props.post.user}
+        userInfo={Props.post?.user}
         data={data}
-        postShare={Props.post.PostShared}
-        owner={Props.post.owner}
+        postShare={Props.post?.PostShared}
+        owner={Props.post?.owner}
       />
     ),
     [Props.post, data],

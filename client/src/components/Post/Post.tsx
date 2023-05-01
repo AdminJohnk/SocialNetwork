@@ -47,14 +47,14 @@ const Post = (PostProps: PostProps) => {
   // Like color
   const [likeColor, setLikeColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isLiked ? setLikeColor('red') : setLikeColor('white');
-  }, [PostProps.post.isLiked]);
+    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor('white');
+  }, [PostProps.post?.isLiked]);
 
   // isLiked
   const [isLiked, setIsLiked] = useState(true);
   useEffect(() => {
-    setIsLiked(PostProps.post.isLiked);
-  }, [PostProps.post.isLiked]);
+    setIsLiked(PostProps.post?.isLiked);
+  }, [PostProps.post?.isLiked]);
 
   // ------------------------ Share ------------------------
 
@@ -67,30 +67,30 @@ const Post = (PostProps: PostProps) => {
   // Share color
   const [shareColor, setShareColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isShared ? setShareColor('blue') : setShareColor('white');
-  }, [PostProps.post.isShared]);
+    PostProps.post?.isShared ? setShareColor('blue') : setShareColor('white');
+  }, [PostProps.post?.isShared]);
 
   // isShared
   const [isShared, setIsShared] = useState(true);
   useEffect(() => {
-    setIsShared(PostProps.post.isShared);
-  }, [PostProps.post.isShared]);
+    setIsShared(PostProps.post?.isShared);
+  }, [PostProps.post?.isShared]);
 
   // ------------------------ Save ------------------------
 
   // isSaved
   const [isSaved, setIsSaved] = useState(true);
   useEffect(() => {
-    setIsSaved(PostProps.post.isSaved);
-  }, [PostProps.post.isSaved]);
+    setIsSaved(PostProps.post?.isSaved);
+  }, [PostProps.post?.isSaved]);
 
   // Save color
   const [saveColor, setSaveColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isSaved ? setSaveColor('yellow') : setSaveColor('white');
-  }, [PostProps.post.isSaved]);
+    PostProps.post?.isSaved ? setSaveColor('yellow') : setSaveColor('white');
+  }, [PostProps.post?.isSaved]);
 
-  const createdAt = new Date(PostProps.post.createdAt);
+  const createdAt = new Date(PostProps.post?.createdAt);
   //format date to get full date
   const date = createdAt.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -109,7 +109,7 @@ const Post = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post._id}`);
+        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post?._id}`);
       },
     },
   ];
@@ -128,9 +128,9 @@ const Post = (PostProps: PostProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const displayContent =
-    expanded || PostProps.post.content.length <= 250
-      ? PostProps.post.content
-      : PostProps.post.content.slice(0, 200) + '...';
+    expanded || PostProps.post?.content?.length <= 250
+      ? PostProps.post?.content
+      : PostProps.post?.content?.slice(0, 200) + '...';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -143,7 +143,7 @@ const Post = (PostProps: PostProps) => {
       }}
     >
       {isOpenPostDetail ? (
-        <OpenPostDetailModal key={PostProps.post._id} post={PostProps.post} userInfo={PostProps.userInfo} />
+        <OpenPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
       ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
@@ -173,12 +173,12 @@ const Post = (PostProps: PostProps) => {
             </div>
           </div>
           <div className="postBody mt-5">
-            <div className="title font-bold">{PostProps.post.title}</div>
+            <div className="title font-bold">{PostProps.post?.title}</div>
             <div className="content mt-3">
               {/* <div
                 className="content__text"
                 dangerouslySetInnerHTML={{
-                  __html: PostProps.post.content,
+                  __html: PostProps.post?.content,
                 }}
               ></div> */}
               <div className="content__text">
@@ -188,7 +188,7 @@ const Post = (PostProps: PostProps) => {
                   theme={'bubble'}
                   // formats={Quill.import("formats")}
                 />
-                {PostProps.post.content.length > 250 && (
+                {PostProps.post?.content?.length > 250 && (
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}
               </div>
@@ -215,7 +215,7 @@ const Post = (PostProps: PostProps) => {
                     }
                     dispatch(
                       LIKE_POST_SAGA({
-                        id: PostProps.post._id,
+                        id: PostProps.post?._id,
                       }),
                     );
                   }}
@@ -239,7 +239,7 @@ const Post = (PostProps: PostProps) => {
                     }
                     dispatch(
                       SHARE_POST_SAGA({
-                        id: PostProps.post._id,
+                        id: PostProps.post?._id,
                       }),
                     );
                   }}
@@ -275,7 +275,7 @@ const Post = (PostProps: PostProps) => {
                       }
                       dispatch(
                         SAVE_POST_SAGA({
-                          id: PostProps.post._id,
+                          id: PostProps.post?._id,
                         }),
                       );
                     }}
