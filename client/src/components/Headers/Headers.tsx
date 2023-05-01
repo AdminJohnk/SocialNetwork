@@ -12,6 +12,7 @@ import { BellOutlined, CommentOutlined, UserOutlined } from '@ant-design/icons';
 import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { setTheme } from '../../redux/Slice/ThemeSlice';
 import { NavLink } from 'react-router-dom';
+import DayNightSwitch from '../Button/Day&NightSwitch';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -87,12 +88,13 @@ const Headers = () => {
                     <NavLink to="/me">
                       <Avatar className="avatarButton cursor-pointer" icon={<UserOutlined />} size="default" />
                     </NavLink>
-                    <Switch
+                    {/* <Switch
                       checkedChildren="dark"
                       unCheckedChildren="light"
                       checked={switchTheme}
                       onChange={onChange}
-                    />
+                    /> */}
+                    <DayNightSwitch checked={switchTheme} onChange={onChange} />
                   </Space>
                 </Col>
               </Row>
