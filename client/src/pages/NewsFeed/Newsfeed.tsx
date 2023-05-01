@@ -12,7 +12,6 @@ import StyleTotal from './cssNewsFeed';
 import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
-import ReactQuill from 'react-quill';
 import { NavLink } from 'react-router-dom';
 
 const items = [
