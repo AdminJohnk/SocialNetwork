@@ -12,6 +12,7 @@ import PostShare from '../../components/Post/PostShare';
 import StyleTotal from './cssNewFeed';
 import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
+import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 
 const items = [
   {
@@ -223,253 +224,170 @@ const NewFeed = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <Row>
-          <Col offset={4} span={16}>
-            <div className="new-feed flex justify-between mt-10">
-              <div className="new-feed-left w-8/12">
-                <div className="">
-                  <NewPost userInfo={userInfo} />
-                </div>
-
-                <div className="show">
-                  <div
-                    className="selec-show w-full rounded-lg mb-4"
-                    style={{ backgroundColor: themeColorSet.colorBg2 }}
-                  >
-                    <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                      <FontAwesomeIcon icon={faStar} style={{ paddingRight: 8 }} />
-                      For you
-                    </Button>
-
-                    <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 1)}>
-                      <FontAwesomeIcon icon={faThumbsUp} style={{ paddingRight: 8 }} />
-                      Best
-                    </Button>
-
-                    {select === 1 ? (
-                      <Dropdown
-                        className={select ? 'btn-show' : ' btn-show hidden'}
-                        menu={{
-                          items,
-                          onClick: handleMenuClick,
-                        }}
-                        onOpenChange={handleOpenChange}
-                        open={open}
-                      >
-                        <a onClick={(e) => e.preventDefault()}>
-                          <Button className="btn-show" size="large">
-                            {value}
-                            <DownOutlined />
-                          </Button>
-                        </a>
-                      </Dropdown>
-                    ) : null}
-
-                    <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                      <FontAwesomeIcon icon={faSun} style={{ paddingRight: 8 }} />
-                      New
-                    </Button>
-
-                    <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 2)}>
-                      <FontAwesomeIcon icon={faComment} style={{ paddingRight: 8 }} />
-                      Comment
-                    </Button>
-
-                    {select === 2 ? (
-                      <Dropdown
-                        className={select ? 'btn-show' : ' btn-show hidden'}
-                        menu={{
-                          items,
-                          onClick: handleMenuClick,
-                        }}
-                        onOpenChange={handleOpenChange}
-                        open={open}
-                      >
-                        <a onClick={(e) => e.preventDefault()}>
-                          <Button className="btn-show" size="large">
-                            {value}
-                            <DownOutlined />
-                          </Button>
-                        </a>
-                      </Dropdown>
-                    ) : null}
-
-                    <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                      <div className="flex justify-center">
-                        <RiseOutlined style={{ marginRight: 8 }} />
-                        Hot
-                      </div>
-                    </Button>
+        {!postArray || !userInfo || !popular || !community ? (
+          <LoadingNewFeed />
+        ) : (
+          <Row>
+            <Col offset={4} span={16}>
+              <div className="new-feed flex justify-between mt-10">
+                <div className="new-feed-left w-8/12">
+                  <div className="">
+                    <NewPost userInfo={userInfo} />
                   </div>
-                  {postArray.map((item: any, index: number) => {
-                    return (
-                      <div>
-                        {!item.hasOwnProperty('PostShared') && <Post key={item._id} post={item} userInfo={item.user} />}
-                        {item.hasOwnProperty('PostShared') && (
-                          <PostShare key={item._id} post={item} userInfo={item.user} owner={item.owner} />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className="new-feed-right w-4/12 pl-3">
-                <div
-                  className="popular-post flex justify-between items-center"
-                  style={{
-                    backgroundColor: themeColorSet.colorBg2,
-                    borderStartStartRadius: 10,
-                    borderStartEndRadius: 10,
-                    padding: 10,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: '1.5rem',
-                      fontWeight: 600,
-                      color: themeColorSet.colorText1,
-                    }}
-                  >
-                    Popular Post
-                  </span>
 
-                  <Dropdown
-                    menu={{
-                      items: popular_time,
-                      onClick: handlePopularClick,
+                  <div className="show">
+                    <div
+                      className="selec-show w-full rounded-lg mb-4"
+                      style={{ backgroundColor: themeColorSet.colorBg2 }}
+                    >
+                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
+                        <FontAwesomeIcon icon={faStar} style={{ paddingRight: 8 }} />
+                        For you
+                      </Button>
+
+                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 1)}>
+                        <FontAwesomeIcon icon={faThumbsUp} style={{ paddingRight: 8 }} />
+                        Best
+                      </Button>
+
+                      {select === 1 ? (
+                        <Dropdown
+                          className={select ? 'btn-show' : ' btn-show hidden'}
+                          menu={{
+                            items,
+                            onClick: handleMenuClick,
+                          }}
+                          onOpenChange={handleOpenChange}
+                          open={open}
+                        >
+                          <a onClick={(e) => e.preventDefault()}>
+                            <Button className="btn-show" size="large">
+                              {value}
+                              <DownOutlined />
+                            </Button>
+                          </a>
+                        </Dropdown>
+                      ) : null}
+
+                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
+                        <FontAwesomeIcon icon={faSun} style={{ paddingRight: 8 }} />
+                        New
+                      </Button>
+
+                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 2)}>
+                        <FontAwesomeIcon icon={faComment} style={{ paddingRight: 8 }} />
+                        Comment
+                      </Button>
+
+                      {select === 2 ? (
+                        <Dropdown
+                          className={select ? 'btn-show' : ' btn-show hidden'}
+                          menu={{
+                            items,
+                            onClick: handleMenuClick,
+                          }}
+                          onOpenChange={handleOpenChange}
+                          open={open}
+                        >
+                          <a onClick={(e) => e.preventDefault()}>
+                            <Button className="btn-show" size="large">
+                              {value}
+                              <DownOutlined />
+                            </Button>
+                          </a>
+                        </Dropdown>
+                      ) : null}
+
+                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
+                        <div className="flex justify-center">
+                          <RiseOutlined style={{ marginRight: 8 }} />
+                          Hot
+                        </div>
+                      </Button>
+                    </div>
+                    {postArray.map((item: any, index: number) => {
+                      return (
+                        <div>
+                          {!item.hasOwnProperty('PostShared') && (
+                            <Post key={item._id} post={item} userInfo={item.user} />
+                          )}
+                          {item.hasOwnProperty('PostShared') && (
+                            <PostShare key={item._id} post={item} userInfo={item.user} owner={item.owner} />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="new-feed-right w-4/12 pl-3">
+                  <div
+                    className="popular-post flex justify-between items-center"
+                    style={{
+                      backgroundColor: themeColorSet.colorBg2,
+                      borderStartStartRadius: 10,
+                      borderStartEndRadius: 10,
+                      padding: 10,
                     }}
-                    trigger={['click']}
-                    onOpenChange={handleOpenPopularChange}
-                    open={popularOpen}
                   >
-                    <div onClick={(e) => e.preventDefault()}>
-                      <Space
-                        style={{
-                          maxWidth: 100,
-                          width: 100,
-                          fontWeight: 600,
-                          fontSize: 16,
-                          color: themeColorSet.colorText1,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        <span
+                    <span
+                      style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 600,
+                        color: themeColorSet.colorText1,
+                      }}
+                    >
+                      Popular Post
+                    </span>
+
+                    <Dropdown
+                      menu={{
+                        items: popular_time,
+                        onClick: handlePopularClick,
+                      }}
+                      trigger={['click']}
+                      onOpenChange={handleOpenPopularChange}
+                      open={popularOpen}
+                    >
+                      <div onClick={(e) => e.preventDefault()}>
+                        <Space
                           style={{
-                            fontSize: '0.9rem',
-                            color: themeColorSet.colorText2,
+                            maxWidth: 100,
+                            width: 100,
+                            fontWeight: 600,
+                            fontSize: 16,
+                            color: themeColorSet.colorText1,
+                            cursor: 'pointer',
                           }}
                         >
-                          {popularvalue}
-                        </span>
-                        <DownOutlined style={{ fontSize: '0.7rem' }} />
-                      </Space>
-                    </div>
-                  </Dropdown>
-                </div>
-                <div
-                  className="popular-post-body"
-                  style={{
-                    backgroundColor: themeColorSet.colorBg2,
-                    borderEndEndRadius: 10,
-                    padding: 10,
-                  }}
-                >
-                  {popular.map((item, index) => {
-                    if (index > 2) {
-                      return '';
-                    } else {
-                      return (
-                        <>
-                          <div
-                            className="popular-post-item flex items-center pt-3 pb-3"
+                          <span
                             style={{
-                              borderBottom: '1px solid',
-                              borderColor: themeColorSet.colorBg4,
+                              fontSize: '0.9rem',
+                              color: themeColorSet.colorText2,
                             }}
                           >
-                            <img
-                              style={{
-                                width: 50,
-                                height: 50,
-                                borderRadius: 50,
-                                marginLeft: 10,
-                              }}
-                              className="popular-post-item-image"
-                              src={`${item.image}`}
-                              alt=""
-                            />
-                            <div className="content ml-4  ">
-                              <div
-                                className="name"
-                                style={{
-                                  color: themeColorSet.colorText1,
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <span>{item.name}</span>
-                              </div>
-                              <div
-                                className="popular-post-item-desc mt-1"
-                                style={{
-                                  color: themeColorSet.colorText2,
-                                  fontSize: '0.9rem',
-                                }}
-                              >
-                                {item.description.length > 55
-                                  ? item.description.slice(0, 55) + '...'
-                                  : item.description}
-                              </div>
-                              <div className="popular-post-item-view mt-1">
-                                <FontAwesomeIcon
-                                  icon={faFileLines}
-                                  style={{
-                                    color: themeColorSet.colorText3,
-                                    fontSize: '0.9rem',
-                                  }}
-                                />
-                                <span
-                                  style={{
-                                    marginLeft: 5,
-                                    color: themeColorSet.colorText3,
-                                  }}
-                                >
-                                  {item.view} Views
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    }
-                  })}
-                </div>
-                <div
-                  className="top-community mt-3"
-                  style={{
-                    backgroundColor: themeColorSet.colorBg2,
-                    borderRadius: 10,
-                    padding: 10,
-                  }}
-                >
-                  <span
+                            {popularvalue}
+                          </span>
+                          <DownOutlined style={{ fontSize: '0.7rem' }} />
+                        </Space>
+                      </div>
+                    </Dropdown>
+                  </div>
+                  <div
+                    className="popular-post-body"
                     style={{
-                      fontSize: '1.5rem',
-                      fontWeight: 600,
-                      color: themeColorSet.colorText1,
+                      backgroundColor: themeColorSet.colorBg2,
+                      borderEndEndRadius: 10,
+                      padding: 10,
                     }}
                   >
-                    Top Communities
-                  </span>
-
-                  <div className="top-community-body mt-4">
-                    {community.map((item, index) => {
+                    {popular.map((item, index) => {
                       if (index > 2) {
                         return '';
                       } else {
                         return (
                           <>
                             <div
-                              className="top-community-item flex pt-3 pb-3"
+                              className="popular-post-item flex items-center pt-3 pb-3"
                               style={{
                                 borderBottom: '1px solid',
                                 borderColor: themeColorSet.colorBg4,
@@ -480,12 +398,13 @@ const NewFeed = () => {
                                   width: 50,
                                   height: 50,
                                   borderRadius: 50,
+                                  marginLeft: 10,
                                 }}
-                                className="top-community-item-image"
+                                className="popular-post-item-image"
                                 src={`${item.image}`}
                                 alt=""
                               />
-                              <div className="content ml-3  ">
+                              <div className="content ml-4  ">
                                 <div
                                   className="name"
                                   style={{
@@ -502,16 +421,16 @@ const NewFeed = () => {
                                     fontSize: '0.9rem',
                                   }}
                                 >
-                                  {item.description.length > 28
-                                    ? item.description.slice(0, 28) + '...'
+                                  {item.description.length > 55
+                                    ? item.description.slice(0, 55) + '...'
                                     : item.description}
                                 </div>
-                                <div className="top-community-item-member mt-1">
+                                <div className="popular-post-item-view mt-1">
                                   <FontAwesomeIcon
-                                    icon={faUserFriends}
+                                    icon={faFileLines}
                                     style={{
                                       color: themeColorSet.colorText3,
-                                      fontSize: '0.7rem',
+                                      fontSize: '0.9rem',
                                     }}
                                   />
                                   <span
@@ -520,7 +439,7 @@ const NewFeed = () => {
                                       color: themeColorSet.colorText3,
                                     }}
                                   >
-                                    {item.member} Members
+                                    {item.view} Views
                                   </span>
                                 </div>
                               </div>
@@ -530,11 +449,99 @@ const NewFeed = () => {
                       }
                     })}
                   </div>
+                  <div
+                    className="top-community mt-3"
+                    style={{
+                      backgroundColor: themeColorSet.colorBg2,
+                      borderRadius: 10,
+                      padding: 10,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: '1.5rem',
+                        fontWeight: 600,
+                        color: themeColorSet.colorText1,
+                      }}
+                    >
+                      Top Communities
+                    </span>
+
+                    <div className="top-community-body mt-4">
+                      {community.map((item, index) => {
+                        if (index > 2) {
+                          return '';
+                        } else {
+                          return (
+                            <>
+                              <div
+                                className="top-community-item flex pt-3 pb-3"
+                                style={{
+                                  borderBottom: '1px solid',
+                                  borderColor: themeColorSet.colorBg4,
+                                }}
+                              >
+                                <img
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 50,
+                                  }}
+                                  className="top-community-item-image"
+                                  src={`${item.image}`}
+                                  alt=""
+                                />
+                                <div className="content ml-3  ">
+                                  <div
+                                    className="name"
+                                    style={{
+                                      color: themeColorSet.colorText1,
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    <span>{item.name}</span>
+                                  </div>
+                                  <div
+                                    className="popular-post-item-desc mt-1"
+                                    style={{
+                                      color: themeColorSet.colorText2,
+                                      fontSize: '0.9rem',
+                                    }}
+                                  >
+                                    {item.description.length > 28
+                                      ? item.description.slice(0, 28) + '...'
+                                      : item.description}
+                                  </div>
+                                  <div className="top-community-item-member mt-1">
+                                    <FontAwesomeIcon
+                                      icon={faUserFriends}
+                                      style={{
+                                        color: themeColorSet.colorText3,
+                                        fontSize: '0.7rem',
+                                      }}
+                                    />
+                                    <span
+                                      style={{
+                                        marginLeft: 5,
+                                        color: themeColorSet.colorText3,
+                                      }}
+                                    >
+                                      {item.member} Members
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        }
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        )}
       </StyleTotal>
     </ConfigProvider>
   );

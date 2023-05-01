@@ -30,8 +30,9 @@ import TabPane from 'antd/es/tabs/TabPane';
 import Post from '../../components/Post/Post';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
 
 interface Props {
   userID: any;
@@ -53,6 +54,7 @@ const Profile = (Props: Props) => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(true));
   }, [dispatch, userID]);
 
   useEffect(() => {

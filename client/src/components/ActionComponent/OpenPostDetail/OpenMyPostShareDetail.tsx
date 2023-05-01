@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
+import { Avatar, ConfigProvider, Input, Popover, Button, Row, Col } from 'antd';
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -120,7 +120,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
 
   const memoizedIputComment = useMemo(
     () => (
-      <div className=" commentInput text-right flex items-center">
+      <div className=" commentInput text-right flex items-center px-4 pb-5 mt-4">
         <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
         <div className="input w-full">
           <Input
@@ -187,10 +187,19 @@ const OpenMyPostShareDetail = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <div>
-          {memoizedComponent}
-          {memoizedIputComment}
-        </div>
+      <Row className='py-10'>
+          <Col offset={4} span={16}>
+            <div
+              style={{
+                backgroundColor: themeColorSet.colorBg2,
+              }}
+              className='rounded-lg'
+            >
+              {memoizedComponent}
+              {memoizedIputComment}
+            </div>
+          </Col>
+        </Row>
       </StyleTotal>
     </ConfigProvider>
   );

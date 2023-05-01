@@ -42,7 +42,7 @@ import MyPostShare from '../../components/Post/MyPostShare';
 import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
-import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingComponent/LoadingProfileComponent';
+import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 
 const descArray = [
   {
