@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CHECK_LOGIN_SAGA } from '../../redux/actionSaga/AuthActionSaga';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import { Button, Col, ConfigProvider, Dropdown, MenuProps, Row, Space } from 'antd';
 
@@ -9,7 +8,7 @@ import { faStar, faThumbsUp, faSun, faComment, faFileLines, faUserFriends } from
 import { DownOutlined, RiseOutlined } from '@ant-design/icons';
 import { GET_ALL_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
-import StyleTotal from './cssNewFeed';
+import StyleTotal from './cssNewsFeed';
 import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
@@ -185,8 +184,19 @@ const NewFeed = () => {
     });
   }, []);
 
-  const postArray = useSelector((state: any) => state.postReducer.postArr);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+
+  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+
+  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+
+  const postArrayRef = React.useRef(postArray);
+
+  useEffect(() => {
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  }, [postArrayRef, isNotAlreadyChanged, postArray]);
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -224,7 +234,7 @@ const NewFeed = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !popular || !community ? (
+        {!postArray || !userInfo || !popular || !community || isNotAlreadyChanged ? (
           <LoadingNewFeed />
         ) : (
           <Row>
@@ -237,7 +247,7 @@ const NewFeed = () => {
 
                   <div className="show">
                     <div
-                      className="selec-show w-full rounded-lg mb-4"
+                      className="select-show w-full rounded-lg mb-4"
                       style={{ backgroundColor: themeColorSet.colorBg2 }}
                     >
                       <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>

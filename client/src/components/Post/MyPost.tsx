@@ -30,7 +30,6 @@ import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
-import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 
 interface PostProps {
@@ -246,7 +245,9 @@ const MyPost = (PostProps: PostProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? <OpenMyPostDetailModal post={PostProps.post} userInfo={PostProps.userInfo} /> : null}
+      {isOpenPostDetail ? (
+        <OpenMyPostDetailModal key={PostProps.post._id} post={PostProps.post} userInfo={PostProps.userInfo} />
+      ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

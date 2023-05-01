@@ -10,7 +10,6 @@ import StyleTotal from './cssPost';
 
 import { LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
-import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 
@@ -110,6 +109,7 @@ const PostShare = (PostProps: PostShareProps) => {
     >
       {isOpenPostDetail ? (
         <OpenPostDetailModal
+          key={PostProps.post._id}
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}

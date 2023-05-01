@@ -1,28 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, {useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import {
   Avatar,
-  Button,
   Col,
   ConfigProvider,
   Empty,
-  Input,
   Row,
-  Skeleton,
   Space,
-  Switch,
   Tabs,
   Tag,
-  theme,
-  Tooltip,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -139,7 +130,7 @@ const MyProfile = () => {
                             dispatch(
                               openDrawer({
                                 title: 'Edit Profile',
-                                component: <EditProfileForm />,
+                                component: <EditProfileForm key={Math.random()} />,
                               }),
                             );
                           }}

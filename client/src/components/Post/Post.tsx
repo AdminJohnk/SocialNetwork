@@ -18,7 +18,6 @@ import StyleTotal from './cssPost';
 
 import { LIKE_POST_SAGA, SHARE_POST_SAGA, SAVE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
-import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 
@@ -143,7 +142,9 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
-      {isOpenPostDetail ? <OpenPostDetailModal post={PostProps.post} userInfo={PostProps.userInfo} /> : null}
+      {isOpenPostDetail ? (
+        <OpenPostDetailModal key={PostProps.post._id} post={PostProps.post} userInfo={PostProps.userInfo} />
+      ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

@@ -3,7 +3,6 @@ import {
   faCopy,
   faEllipsis,
   faHeart,
-  faPenToSquare,
   faShareNodes,
   faTrash,
   faTriangleExclamation,
@@ -19,10 +18,7 @@ import StyleTotal from './cssPost';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 
 import { SHARE_POST_SAGA, LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
-import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
-import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
-import Quill from 'quill';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -196,6 +192,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
       </Modal>
       {isOpenPostDetail ? (
         <OpenMyPostDetailModal
+          key={PostProps.post._id}
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
