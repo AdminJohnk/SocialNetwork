@@ -81,7 +81,7 @@ const MenuMain = () => {
                 ) : (
                   <Avatar className="icon" icon={<UserOutlined />} shape="circle" size={20} />
                 ),
-                label: userInfo.username,
+                label: userInfo?.username,
                 title: '',
               },
               {

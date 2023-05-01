@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CHECK_LOGIN_SAGA } from '../../redux/actionSaga/AuthActionSaga';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import { Button, Col, ConfigProvider, Dropdown, MenuProps, Row, Space } from 'antd';
 
@@ -9,10 +8,12 @@ import { faStar, faThumbsUp, faSun, faComment, faFileLines, faUserFriends } from
 import { DownOutlined, RiseOutlined } from '@ant-design/icons';
 import { GET_ALL_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
-import StyleTotal from './cssNewFeed';
+import StyleTotal from './cssNewsFeed';
 import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
+import ReactQuill from 'react-quill';
+import { NavLink } from 'react-router-dom';
 
 const items = [
   {
@@ -49,75 +50,6 @@ const popular_time = [
   {
     label: 'Month',
     key: '3',
-  },
-];
-
-const popular = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8&w=1000&q=80',
-    name: 'Nguyễn Văn A',
-    title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.',
-    view: 100,
-  },
-  {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfB5xqZHjdPe17hnX2kY7kIY3vftnCavOT8g&usqp=CAU',
-    name: 'Mary Johnson',
-    title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    description:
-      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    view: 240,
-  },
-
-  {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE0An4uOQgA1lEWMWTTpQBOlIhSuYT4RYLpw&usqp=CAU',
-    name: 'John Smith',
-    title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    description:
-      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    view: 400,
-  },
-
-  {
-    image: 'https://cdn-icons-png.flaticon.com/512/5556/5556468.png',
-    name: 'Emma Wilson',
-    title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    view: 150,
-  },
-
-  {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxxOeOXHNrUgfxDbpJZJCxcDOjTlrBRlH7wA&usqp=CAU',
-    name: 'David Lee',
-    title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-    description:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    view: 300,
-  },
-
-  {
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-NFn1a5QD_qi-HzSeySBUfx5AALewRHYw-g&usqp=CAU',
-    name: 'Sarah Kim',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.',
-    view: 120,
-  },
-
-  {
-    image:
-      'https://static.vecteezy.com/system/resources/previews/002/002/403/original/man-with-beard-avatar-character-isolated-icon-free-vector.jpg',
-    name: 'Michael Brown',
-    description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.',
-    view: 250,
-  },
-
-  {
-    image:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMti6Y58F9U28BKZAOQMWDh9auJ5gfJahe5uKYMjr0kSNaXP4MZYkvDomyRUVKOfiPT5g&usqp=CAU',
-    name: 'Karen Jackson',
-    description: 'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
-    view: 180,
   },
 ];
 
@@ -185,8 +117,23 @@ const NewFeed = () => {
     });
   }, []);
 
-  const postArray = useSelector((state: any) => state.postReducer.postArr);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+
+  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+
+  const popular = [...postArray]
+    ?.filter((item: any) => item.PostShared !== true)
+    ?.sort((a: any, b: any) => b?.like?.length - a?.like?.length);
+
+  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+
+  const postArrayRef = React.useRef(postArray);
+
+  useEffect(() => {
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  }, [postArrayRef, isNotAlreadyChanged, postArray]);
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -224,7 +171,7 @@ const NewFeed = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !popular || !community ? (
+        {!postArray || !userInfo || !popular || !community || isNotAlreadyChanged ? (
           <LoadingNewFeed />
         ) : (
           <Row>
@@ -237,7 +184,7 @@ const NewFeed = () => {
 
                   <div className="show">
                     <div
-                      className="selec-show w-full rounded-lg mb-4"
+                      className="select-show w-full rounded-lg mb-4"
                       style={{ backgroundColor: themeColorSet.colorBg2 }}
                     >
                       <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
@@ -380,70 +327,70 @@ const NewFeed = () => {
                       padding: 10,
                     }}
                   >
-                    {popular.map((item, index) => {
+                    {popular.map((item: any, index: any) => {
                       if (index > 2) {
                         return '';
                       } else {
                         return (
                           <>
-                            <div
-                              className="popular-post-item flex items-center pt-3 pb-3"
-                              style={{
-                                borderBottom: '1px solid',
-                                borderColor: themeColorSet.colorBg4,
-                              }}
-                            >
-                              <img
+                            <NavLink to={`/post/${item._id}`}>
+                              <div
+                                className="popular-post-item flex items-center pt-3 pb-3"
                                 style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 50,
-                                  marginLeft: 10,
+                                  borderBottom: '1px solid',
+                                  borderColor: themeColorSet.colorBg4,
                                 }}
-                                className="popular-post-item-image"
-                                src={`${item.image}`}
-                                alt=""
-                              />
-                              <div className="content ml-4  ">
-                                <div
-                                  className="name"
+                              >
+                                <img
                                   style={{
-                                    color: themeColorSet.colorText1,
-                                    fontWeight: 600,
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 50,
+                                    marginLeft: 10,
                                   }}
-                                >
-                                  <span>{item.name}</span>
-                                </div>
-                                <div
-                                  className="popular-post-item-desc mt-1"
-                                  style={{
-                                    color: themeColorSet.colorText2,
-                                    fontSize: '0.9rem',
-                                  }}
-                                >
-                                  {item.description.length > 55
-                                    ? item.description.slice(0, 55) + '...'
-                                    : item.description}
-                                </div>
-                                <div className="popular-post-item-view mt-1">
-                                  <FontAwesomeIcon
-                                    icon={faFileLines}
+                                  className="popular-post-item-image"
+                                  src={`${item.user.userImage}`}
+                                  alt=""
+                                />
+                                <div className="content ml-4  ">
+                                  <div
+                                    className="name"
                                     style={{
-                                      color: themeColorSet.colorText3,
-                                      fontSize: '0.9rem',
-                                    }}
-                                  />
-                                  <span
-                                    style={{
-                                      marginLeft: 5,
-                                      color: themeColorSet.colorText3,
+                                      color: themeColorSet.colorText1,
+                                      fontWeight: 600,
                                     }}
                                   >
-                                    {item.view} Views
-                                  </span>
+                                    <span>{item.user.username}</span>
+                                  </div>
+                                  <div
+                                    className="popular-post-item-desc mt-1"
+                                    style={{
+                                      color: themeColorSet.colorText2,
+                                      fontSize: '0.9rem',
+                                    }}
+                                  >
+                                    <span>{item.title}</span>
+                                  </div>
+                                  <div className="popular-post-item-view mt-1">
+                                    <FontAwesomeIcon
+                                      icon={faFileLines}
+                                      style={{
+                                        color: themeColorSet.colorText3,
+                                        fontSize: '0.9rem',
+                                      }}
+                                    />
+                                    <span
+                                      style={{
+                                        marginLeft: 5,
+                                        color: themeColorSet.colorText3,
+                                      }}
+                                    >
+                                      {item.view} Views
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </NavLink>
                           </>
                         );
                       }
