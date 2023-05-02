@@ -2,17 +2,17 @@ import { faComment, faCopy, faEllipsis, faHeart, faShareNodes } from '@fortaweso
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, ConfigProvider, Dropdown, Space } from 'antd';
 import type { MenuProps } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
 
-import { LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import { INCREASE_VIEW_SHARE_SAGA, LIKE_POSTSHARE_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
-import Quill from 'quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
+import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
 
 interface PostShareProps {
   post: any;
@@ -31,24 +31,24 @@ const PostShare = (PostProps: PostShareProps) => {
   // ------------------------ Like ------------------------
 
   // Like Number
-  const [likeNumber, setLikeNumber] = useState(PostProps.post.likes.length);
+  const [likeNumber, setLikeNumber] = useState(PostProps.post?.likes?.length);
   useEffect(() => {
-    setLikeNumber(PostProps.post.likes.length);
-  }, [PostProps.post.likes.length]);
+    setLikeNumber(PostProps.post?.likes?.length);
+  }, [PostProps.post?.likes?.length]);
 
   // Like color
   const [likeColor, setLikeColor] = useState('white');
   useEffect(() => {
-    PostProps.post.isLiked ? setLikeColor('red') : setLikeColor('white');
-  }, [PostProps.post.isLiked]);
+    PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor('white');
+  }, [PostProps.post?.isLiked]);
 
   // isLiked
   const [isLiked, setIsLiked] = useState(true);
   useEffect(() => {
-    setIsLiked(PostProps.post.isLiked);
-  }, [PostProps.post.isLiked]);
+    setIsLiked(PostProps.post?.isLiked);
+  }, [PostProps.post?.isLiked]);
 
-  const createdAt = new Date(PostProps.post.createdAt);
+  const createdAt = new Date(PostProps.post?.createdAt);
   //format date to get full date
   const date = createdAt.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -56,7 +56,7 @@ const PostShare = (PostProps: PostShareProps) => {
     day: 'numeric',
   });
 
-  const postCreatedAt = new Date(PostProps.post.postCreatedAt);
+  const postCreatedAt = new Date(PostProps.post?.postCreatedAt);
   //format date to get full date
   const postDate = postCreatedAt.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -75,7 +75,7 @@ const PostShare = (PostProps: PostShareProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://localhost:3000/postshare/${PostProps.post._id}`);
+        navigator.clipboard.writeText(`http://127.0.0.1:3000/postshare/${PostProps.post?._id}`);
       },
     },
   ];
@@ -93,11 +93,27 @@ const PostShare = (PostProps: PostShareProps) => {
 
   const [expanded, setExpanded] = useState(false);
 
-  const displayContent = expanded ? PostProps.post.content : PostProps.post.content.slice(0, 150) + '...';
+  const displayContent =
+    expanded || PostProps.post?.content?.length <= 250
+      ? PostProps.post?.content
+      : PostProps.post?.content?.slice(0, 200) + '...';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
   };
+
+  // ------------------------ View ------------------------
+  const postShareRef = React.useRef(null);
+
+  const onIntersect = () => {
+    dispatch(
+      INCREASE_VIEW_SHARE_SAGA({
+        id: PostProps.post?._id,
+      }),
+    );
+  };
+
+  useIntersectionObserver(postShareRef, onIntersect);
 
   return (
     <ConfigProvider
@@ -107,6 +123,7 @@ const PostShare = (PostProps: PostShareProps) => {
     >
       {isOpenPostDetail ? (
         <OpenPostDetailModal
+          key={PostProps.post?._id}
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
@@ -114,15 +131,15 @@ const PostShare = (PostProps: PostShareProps) => {
         />
       ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
-        <div className="post px-4 py-3">
+        <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
               <div className="name_avatar flex">
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink to={`/${PostProps.userInfo.id}`} style={{ color: themeColorSet.colorText1 }}>
-                      {PostProps.userInfo.username}
+                    <NavLink to={`/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                      {PostProps.userInfo?.username}
                     </NavLink>
                   </div>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
@@ -160,22 +177,24 @@ const PostShare = (PostProps: PostShareProps) => {
               </div>
             </div>
             <div className="postBody mt-5">
-              <div className="title font-bold">{PostProps.post.title}</div>
+              <div className="title font-bold">{PostProps.post?.title}</div>
               <div className="content mt-3">
                 {/* <div
                   className="content__text"
                   dangerouslySetInnerHTML={{
-                    __html: PostProps.post.content,
+                    __html: PostProps.post?.content,
                   }}
                 ></div> */}
                 <div className="content__text">
                   <ReactQuill
                     value={displayContent}
                     readOnly={true}
-                    modules={{ toolbar: false }}
+                    theme={'bubble'}
                     // formats={Quill.import("formats")}
                   />
-                  <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
+                  {PostProps.post?.content?.length > 250 && (
+                    <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
+                  )}
                 </div>
               </div>
             </div>
@@ -200,7 +219,7 @@ const PostShare = (PostProps: PostShareProps) => {
                     }
                     dispatch(
                       LIKE_POSTSHARE_SAGA({
-                        id: PostProps.post._id,
+                        id: PostProps.post?._id,
                       }),
                     );
                   }}
@@ -209,7 +228,7 @@ const PostShare = (PostProps: PostShareProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post.comments.length} Comment</span>
+                <span>{PostProps.post?.comments?.length} Comment</span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -220,7 +239,9 @@ const PostShare = (PostProps: PostShareProps) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>70 View</span>
+                <span>
+                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                </span>
                 <Space>
                   <Avatar
                     className="item"

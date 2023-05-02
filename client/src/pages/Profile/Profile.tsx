@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'styled-components';
+import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import {
@@ -7,19 +6,12 @@ import {
   Col,
   ConfigProvider,
   Empty,
-  Input,
   Row,
-  Skeleton,
   Space,
-  Switch,
   Tabs,
   Tag,
-  theme,
-  Tooltip,
 } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
@@ -216,13 +208,13 @@ const Profile = (Props: Props) => {
                 </div>
                 <div className="mainContain mt-5">
                   <Tabs
-                    defaultActiveKey="2"
+                    defaultActiveKey="2.2"
                     // onChange={onChange}
                   >
-                    <TabPane tab="Introduce" key="1" className="mt-10">
+                    <TabPane tab="Introduce" key="1.1" className="mt-10">
                       Introduce
                     </TabPane>
-                    <TabPane tab="Post" key="2" className="mt-10">
+                    <TabPane tab="Post" key="2.2" className="mt-10">
                       {postArray.length === 0 && (
                         <div className="w-8/12">
                           <Empty
@@ -243,13 +235,13 @@ const Profile = (Props: Props) => {
                         );
                       })}
                     </TabPane>
-                    <TabPane tab="Show" key="3" className="mt-10">
+                    <TabPane tab="Show" key="3.3" className="mt-10">
                       Show
                     </TabPane>
-                    <TabPane tab="Seri" key="4" className="mt-10">
+                    <TabPane tab="Seri" key="4.4" className="mt-10">
                       Seri
                     </TabPane>
-                    <TabPane tab="Guest book" key="5" className="mt-10">
+                    <TabPane tab="Guest book" key="5.5" className="mt-10">
                       Guest book
                     </TabPane>
                   </Tabs>

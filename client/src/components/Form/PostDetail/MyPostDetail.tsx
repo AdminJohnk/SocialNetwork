@@ -30,7 +30,7 @@ const MyPostDetail = (Props: PostProps) => {
       ) : (
         <MyPost post={Props.post} userInfo={Props.userInfo} />
       )}
-      {Props.post.comments?.map((item: any, index: number) => {
+      {Props.post?.comments?.map((item: any, index: number) => {
         return (
           <div className="px-4">
             {item ? (

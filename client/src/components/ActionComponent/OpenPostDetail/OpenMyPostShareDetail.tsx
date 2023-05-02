@@ -46,11 +46,11 @@ const OpenMyPostShareDetail = (Props: Props) => {
   };
 
   const handleSubmitComment = () => {
-    if (Props.post.postShare) {
+    if (Props.post?.postShare) {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -64,7 +64,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -72,7 +72,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: Props.post._id,
+            id: Props.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -86,7 +86,7 @@ const OpenMyPostShareDetail = (Props: Props) => {
             comment: {
               contentComment: commentContent,
             },
-            id: Props.post._id,
+            id: Props.post?._id,
           }),
         );
       }
@@ -109,16 +109,16 @@ const OpenMyPostShareDetail = (Props: Props) => {
       <MyPostDetail
         onData={handleData}
         post={Props.post}
-        userInfo={Props.post.user}
+        userInfo={Props.post?.user}
         data={data}
-        postShare={Props.post.PostShared}
-        owner={Props.post.owner}
+        postShare={Props.post?.PostShared}
+        owner={Props.post?.owner}
       />
     ),
     [Props.post, data],
   );
 
-  const memoizedIputComment = useMemo(
+  const memoizedInputComment = useMemo(
     () => (
       <div className=" commentInput text-right flex items-center px-4 pb-5 mt-4">
         <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
@@ -187,16 +187,16 @@ const OpenMyPostShareDetail = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-      <Row className='py-10'>
+        <Row className="py-10">
           <Col offset={4} span={16}>
             <div
               style={{
                 backgroundColor: themeColorSet.colorBg2,
               }}
-              className='rounded-lg'
+              className="rounded-lg"
             >
               {memoizedComponent}
-              {memoizedIputComment}
+              {memoizedInputComment}
             </div>
           </Col>
         </Row>

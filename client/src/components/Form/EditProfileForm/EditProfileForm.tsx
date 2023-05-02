@@ -1,16 +1,16 @@
-import { ConfigProvider, Space, Tag } from "antd";
-import React from "react";
-import StyleTotal from "./cssEditProfileForm";
-import { useDispatch, useSelector } from "react-redux";
-import { getTheme } from "../../../util/functions/ThemeFunction";
-import { commonColor } from "../../../util/cssVariable/cssVariable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { openModal } from "../../../redux/Slice/ModalHOCSlice";
-import AddTagComponent from "../../AddTagComponent/AddTagComponent";
-import descArray from "../../../util/constants/Description";
-import { UPDATE_USER_SAGA } from "../../../redux/actionSaga/UserActionSaga";
-import { callBackSubmitDrawer } from "../../../redux/Slice/DrawerHOCSlice";
+import { ConfigProvider, Space, Tag } from 'antd';
+import React from 'react';
+import StyleTotal from './cssEditProfileForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTheme } from '../../../util/functions/ThemeFunction';
+import { commonColor } from '../../../util/cssVariable/cssVariable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { openModal } from '../../../redux/Slice/ModalHOCSlice';
+import AddTagComponent from '../../AddTagComponent/AddTagComponent';
+import descArray from '../../../util/constants/Description';
+import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
+import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -22,12 +22,12 @@ const EditProfileForm = () => {
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  const [descriptions, setDescriptions] = React.useState(userInfo.descriptions);
+  const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
 
   const isHaveCover = true;
 
-  const [firstname, setFirstName] = React.useState(userInfo.firstname);
-  const [lastname, setLastName] = React.useState(userInfo.lastname);
+  const [firstname, setFirstName] = React.useState(userInfo?.firstname);
+  const [lastname, setLastName] = React.useState(userInfo?.lastname);
 
   const handleChangeFirstName = (e: any) => {
     setFirstName(e.target.value);
@@ -44,13 +44,13 @@ const EditProfileForm = () => {
   const onSubmit = () => {
     dispatch(
       UPDATE_USER_SAGA({
-        id: userInfo.id,
+        id: userInfo?.id,
         userUpdate: {
           description: descriptions,
           firstname: firstname,
           lastname: lastname,
         },
-      })
+      }),
     );
   };
 
@@ -58,23 +58,13 @@ const EditProfileForm = () => {
     dispatch(callBackSubmitDrawer(onSubmit));
   }, [descriptions, firstname, lastname]);
 
-  const componentNoInfo = (
-    title: String,
-    description: String,
-    buttonContent: String
-  ) => {
+  const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
       <div className="componentNoInfo text-center px-16">
-        <div
-          className="title mb-3"
-          style={{ fontSize: "1.1rem", fontWeight: 600 }}
-        >
+        <div className="title mb-3" style={{ fontSize: '1.1rem', fontWeight: 600 }}>
           {title}
         </div>
-        <div
-          className="description"
-          style={{ color: themeColorSet.colorText3 }}
-        >
+        <div className="description" style={{ color: themeColorSet.colorText3 }}>
           {description}
         </div>
         <button
@@ -105,22 +95,20 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1rem",
+                fontSize: '1rem',
               }}
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">
-              Recommended dimensions 1500px x 400px (max. 4MB)
-            </div>
+            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 4MB)</div>
             <div className="cover relative">
               <div
                 className="coverImage w-full h-72 rounded-xl"
                 style={{
                   backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
-                  backgroundSize: "cover",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
                 }}
               ></div>
               <Space className="coverButton absolute bottom-8 right-5">
@@ -151,16 +139,14 @@ const EditProfileForm = () => {
                 src="https://lh3.googleusercontent.com/a/AGNmyxZvsAlaggV_fSB9ID1lO4I0urHL8s13mzmcJU-kqQ=s288"
                 alt="avatar"
                 style={{
-                  width: "7rem",
-                  height: "7rem",
-                  borderRadius: "50%",
+                  width: '7rem',
+                  height: '7rem',
+                  borderRadius: '50%',
                 }}
               />
             </div>
             <Space className="changeAvatar ml-3" direction="vertical">
-              <div style={{ fontSize: "1.2rem", fontWeight: 600 }}>
-                Set profile photo
-              </div>
+              <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Set profile photo</div>
               <button
                 className="btnChange px-4 py-2"
                 style={{
@@ -176,7 +162,7 @@ const EditProfileForm = () => {
             <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
               style={{
-                border: "1px solid",
+                border: '1px solid',
                 borderColor: themeColorSet.colorBg4,
               }}
             >
@@ -190,16 +176,13 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Information
             </div>
             <div className="line1 flex justify-between items-center mb-5">
-              <div
-                className="firstName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="firstName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue={userInfo?.firstname}
                   type="input"
@@ -214,10 +197,7 @@ const EditProfileForm = () => {
                   First Name
                 </label>
               </div>
-              <div
-                className="LastName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="LastName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue={userInfo?.lastname}
                   type="input"
@@ -234,10 +214,7 @@ const EditProfileForm = () => {
               </div>
             </div>
             <div className="line2 flex justify-between items-center">
-              <div
-                className="firstName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="firstName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue="@nguyenhoanghai"
                   type="input"
@@ -251,10 +228,7 @@ const EditProfileForm = () => {
                   User ID
                 </label>
               </div>
-              <div
-                className="LastName form__group field"
-                style={{ width: "48%" }}
-              >
+              <div className="LastName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue="Ninh Hòa- Khánh Hòa - Việt Nam"
                   type="input"
@@ -277,7 +251,7 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Expertise
@@ -291,7 +265,7 @@ const EditProfileForm = () => {
                       key={index}
                       color={themeColorSet.colorBg1}
                       style={{
-                        border: "none",
+                        border: 'none',
                       }}
                     >
                       {item.svg} &nbsp;
@@ -304,21 +278,22 @@ const EditProfileForm = () => {
               <button
                 className="addTags mt-2 px-4 py-1 cursor-pointer"
                 style={{
-                  border: "1px solid",
+                  border: '1px solid',
                   borderColor: themeColorSet.colorBg4,
                 }}
                 onClick={() => {
                   dispatch(
                     openModal({
-                      title: "Add Tags",
+                      title: 'Add Tags',
                       component: (
                         <AddTagComponent
+                          key={Math.random()}
                           callback={handleChangeDescriptions}
                           descriptions={descriptions}
                         />
                       ),
                       footer: true,
-                    })
+                    }),
                   );
                 }}
               >
@@ -333,15 +308,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               About
             </div>
             {componentNoInfo(
-              "Share something about yourself",
-              "Use Markdown to share more about who you are with the developer community on Showwcase.",
-              "Add About"
+              'Share something about yourself',
+              'Use Markdown to share more about who you are with the developer community on Showwcase.',
+              'Add About',
             )}
           </section>
           <section className="experiences mt-7">
@@ -350,15 +325,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Experiences
             </div>
             {componentNoInfo(
-              "Share a timeline of your Positions",
-              "Add your professional history so others know you’ve put your skills to good use.",
-              "Add Positions"
+              'Share a timeline of your Positions',
+              'Add your professional history so others know you’ve put your skills to good use.',
+              'Add Positions',
             )}
           </section>
           <section className="techStack mt-7">
@@ -367,15 +342,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Tech Stack
             </div>
             {componentNoInfo(
-              "Add your familiar Skills",
-              "Showcase your familiar skills and technologies and label them by years of experience so others know what you like working with.",
-              "Add Tech Stack"
+              'Add your familiar Skills',
+              'Showcase your familiar skills and technologies and label them by years of experience so others know what you like working with.',
+              'Add Tech Stack',
             )}
           </section>
           <section className="repositories mt-7">
@@ -384,15 +359,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Repositories
             </div>
             {componentNoInfo(
-              "Highlight your top Repositories",
-              "Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!",
-              "Feature Repositories"
+              'Highlight your top Repositories',
+              'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
+              'Feature Repositories',
             )}
           </section>
           <section className="memberOf mt-7">
@@ -401,15 +376,15 @@ const EditProfileForm = () => {
               style={{
                 color: themeColorSet.colorText1,
                 fontWeight: 600,
-                fontSize: "1.2rem",
+                fontSize: '1.2rem',
               }}
             >
               Member of
             </div>
             {componentNoInfo(
-              "You currently have no featured Communities",
-              "Showcase your featured communities to be highlighted on your profile",
-              "Feature Communities"
+              'You currently have no featured Communities',
+              'Showcase your featured communities to be highlighted on your profile',
+              'Feature Communities',
             )}
           </section>
         </div>
