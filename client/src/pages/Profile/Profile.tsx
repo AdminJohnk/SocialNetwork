@@ -1,16 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import {
-  Avatar,
-  Col,
-  ConfigProvider,
-  Empty,
-  Row,
-  Space,
-  Tabs,
-  Tag,
-} from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -46,7 +37,6 @@ const Profile = (Props: Props) => {
         userId: userID,
       }),
     );
-    dispatch(setIsInProfile(true));
   }, [dispatch, userID]);
 
   useEffect(() => {

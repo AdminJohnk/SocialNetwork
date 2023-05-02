@@ -35,6 +35,7 @@ interface PostProps {
 // -----------------------------------------------------
 
 const Post = (PostProps: PostProps) => {
+  const link = PostProps.post.link;
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -211,6 +212,36 @@ const Post = (PostProps: PostProps) => {
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}
               </div>
+              {PostProps.post.image ? (
+                <div className="contentImage mt-3">
+                  <img src={PostProps.post.image} alt="" style={{ width: '100%' }} />
+                </div>
+              ) : link ? (
+                <a
+                  href={link.linkAddress}
+                  target="_blank"
+                  style={{
+                    color: themeColorSet.colorText2,
+                  }}
+                >
+                  <div
+                    className="contentLink flex mt-5 px-3 py-3 cursor-pointer"
+                    style={{ backgroundColor: themeColorSet.colorBg4 }}
+                  >
+                    <div className="left w-4/5 p-2">
+                      <div className="mb-2" style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                        {link.title?.length > 100 ? link.title.slice(0, 100) + '...' : link.title}
+                      </div>
+                      <div>
+                        {link.description?.length > 100 ? link.description.slice(0, 100) + '...' : link.description}
+                      </div>
+                    </div>
+                    <img src={link.image} alt="" className="w-1/5" />
+                  </div>
+                </a>
+              ) : (
+                <></>
+              )}
             </div>
             <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
           </div>
