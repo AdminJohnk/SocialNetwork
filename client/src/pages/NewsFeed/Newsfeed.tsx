@@ -12,7 +12,6 @@ import StyleTotal from './cssNewsFeed';
 import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
-import ReactQuill from 'react-quill';
 import { NavLink } from 'react-router-dom';
 
 const items = [
@@ -125,7 +124,7 @@ const NewFeed = () => {
 
   const popular = [...postArray]
     ?.filter((item: any) => item.PostShared !== true)
-    ?.sort((a: any, b: any) => b?.like?.length - a?.like?.length);
+    ?.sort((a: any, b: any) => b?.views - a?.views);
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
@@ -385,7 +384,7 @@ const NewFeed = () => {
                                         color: themeColorSet.colorText3,
                                       }}
                                     >
-                                      {item.view} Views
+                                      {item.views} {item.views > 0 ? 'Views' : 'View'}
                                     </span>
                                   </div>
                                 </div>

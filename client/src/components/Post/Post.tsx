@@ -10,16 +10,22 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, ConfigProvider, Divider, Dropdown, Space } from 'antd';
 import type { MenuProps } from 'antd';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
 
-import { LIKE_POST_SAGA, SHARE_POST_SAGA, SAVE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
+import {
+  LIKE_POST_SAGA,
+  SHARE_POST_SAGA,
+  SAVE_POST_SAGA,
+  INCREASE_VIEW_SAGA,
+} from '../../redux/actionSaga/PostActionSaga';
 import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetailModal';
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
+import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
 
 interface PostProps {
   post: any;
@@ -136,6 +142,19 @@ const Post = (PostProps: PostProps) => {
     setExpanded(!expanded);
   };
 
+  // ------------------------ View ------------------------
+  const postRef = React.useRef(null);
+
+  const onIntersect = () => {
+    dispatch(
+      INCREASE_VIEW_SAGA({
+        id: PostProps.post?._id,
+      }),
+    );
+  };
+
+  useIntersectionObserver(postRef, onIntersect);
+
   return (
     <ConfigProvider
       theme={{
@@ -146,7 +165,7 @@ const Post = (PostProps: PostProps) => {
         <OpenPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
       ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
-        <div className="post px-4 py-3">
+        <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">
             <div className="postHeader__left">
               <div className="name_avatar flex">
@@ -259,7 +278,9 @@ const Post = (PostProps: PostProps) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>70 View</span>
+                <span>
+                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                </span>
                 <Space>
                   <Avatar
                     className="item"
