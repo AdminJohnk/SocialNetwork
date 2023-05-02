@@ -247,6 +247,7 @@ const MyProfile = () => {
                         </div>
                       )}
                       {postArray.map((item: any, index: number) => {
+                        console.log('item', item)
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (

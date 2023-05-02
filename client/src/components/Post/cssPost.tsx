@@ -15,7 +15,7 @@ const StyleTotal = styled.div`
     font-size: 0.88rem;
   }
   .ql-editor {
-    line-height: 2rem;
+    line-height: 1.8rem;
   }
   .post {
     .postHeader {

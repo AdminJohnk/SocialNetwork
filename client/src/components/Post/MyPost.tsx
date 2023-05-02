@@ -15,7 +15,7 @@ import { Avatar, ConfigProvider, Divider, Dropdown, Space, Modal, notification }
 import type { MenuProps } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -30,7 +30,6 @@ import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditPostForm from '../Form/EditPostForm/EditPostForm';
 import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostDetailModal';
 import ReactQuill from 'react-quill';
-import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 
 interface PostProps {
@@ -43,6 +42,8 @@ type NotificationType = 'success' | 'info' | 'warning' | 'error';
 // -----------------------------------------------------
 
 const MyPost = (PostProps: PostProps) => {
+  const link = PostProps.post.link;
+
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -274,21 +275,40 @@ const MyPost = (PostProps: PostProps) => {
           <div className="postBody mt-5">
             <div className="title font-bold">{PostProps.post.title}</div>
             <div className="content mt-3">
-              {/* <div
-                className="content__text"
-                dangerouslySetInnerHTML={{
-                  __html: PostProps.post.content,
-                }}
-              ></div> */}
-              <div className="content__text">
-                <ReactQuill
-                  value={displayContent}
-                  readOnly={true}
-                  modules={{ toolbar: false }}
-                  // formats={Quill.import("formats")}
-                />
+              <div className="contentText">
+                <ReactQuill value={displayContent} readOnly={true} modules={{ toolbar: false }} />
                 <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
               </div>
+              {PostProps.post.image ? (
+                <div className="contentImage mt-3">
+                  <img src={PostProps.post.image} alt="" style={{ width: '100%' }} />
+                </div>
+              ) : link ? (
+                <a
+                  href={link.linkAddress}
+                  target="_blank"
+                  style={{
+                    color: themeColorSet.colorText2,
+                  }}
+                >
+                  <div
+                    className="contentLink flex mt-5 px-3 py-3 cursor-pointer"
+                    style={{ backgroundColor: themeColorSet.colorBg4 }}
+                  >
+                    <div className="left w-4/5 p-2">
+                      <div className="mb-2" style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                        {link.title?.length > 100 ? link.title.slice(0, 100) + '...' : link.title}
+                      </div>
+                      <div>
+                        {link.description?.length > 100 ? link.description.slice(0, 100) + '...' : link.description}
+                      </div>
+                    </div>
+                    <img src={link.image} alt="" className="w-1/5" />
+                  </div>
+                </a>
+              ) : (
+                <></>
+              )}
             </div>
             <Divider style={{ backgroundColor: themeColorSet.colorText1 }} />
           </div>

@@ -22,7 +22,7 @@ var toolbarOptions = [
   ['bold', 'italic', 'underline', 'clean'],
   [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
-  ['link', 'image'],
+  ['link'],
 ];
 
 interface PostProps {
@@ -77,6 +77,29 @@ const EditPostForm = (PostProps: any) => {
     quill.on('text-change', function () {
       handleQuillChange();
     });
+
+    // Ngăn chặn paste text vào quill
+    // C1
+    quill.root.addEventListener('paste', (event: any) => {
+      event.preventDefault();
+      const text = event.clipboardData.getData('text/plain');
+      document.execCommand('insertHTML', false, text);
+    });
+
+    // C2
+    // quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
+    //   const regex = /data:image/;
+    //   if (
+    //     node.tagName === 'IMG' &&
+    //     node.getAttribute('src') &&
+    //     node.getAttribute('src').match(regex)
+    //   ) {
+    //     return delta;
+    //   }
+    //   return null;
+    // });
+
+    setQuill(quill);
 
     // Dispatch callback submit lên cho DrawerHOC
     dispatch(callBackSubmitDrawer(formik.handleSubmit));
