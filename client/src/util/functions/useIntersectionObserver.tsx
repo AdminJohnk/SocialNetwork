@@ -2,11 +2,22 @@ import { useEffect } from 'react';
 
 const useIntersectionObserver = (targetRef: any, onIntersect: any) => {
   useEffect(() => {
+    let intersectTimeoutID: any;
+    let intersectTime: any;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            onIntersect(entry.target);
+            intersectTime = intersectTime || Date.now();
+            intersectTimeoutID = setInterval(() => {
+              if (Date.now() - intersectTime >= 5000) {
+                clearInterval(intersectTimeoutID);
+                onIntersect(entry.target);
+              }
+            }, 100);
+          } else {
+            clearInterval(intersectTimeoutID);
+            intersectTime = null;
           }
         });
       },
@@ -21,6 +32,7 @@ const useIntersectionObserver = (targetRef: any, onIntersect: any) => {
     }
 
     return () => {
+      clearInterval(intersectTimeoutID);
       if (targetRef.current) {
         observer.unobserve(targetRef.current);
       }
