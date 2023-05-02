@@ -34,7 +34,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
 
-interface PostProps {
+interface PostProps { 
   post: any;
   userInfo: any;
 }
