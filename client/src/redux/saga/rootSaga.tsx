@@ -1,7 +1,7 @@
-import { all } from "redux-saga/effects";
-import * as userSaga from "./UserSaga";
-import * as authSaga from "./AuthSaga";
-import * as postSaga from "./PostSaga";
+import { all } from 'redux-saga/effects';
+import * as userSaga from './UserSaga';
+import * as authSaga from './AuthSaga';
+import * as postSaga from './PostSaga';
 
 export function* rootSaga() {
   yield all([
@@ -31,5 +31,7 @@ export function* rootSaga() {
     postSaga.theoDoiLikePostShareSaga(),
     postSaga.theoDoiSaveReplyPostShareSaga(),
     postSaga.theoDoiGetPostByIdSaga(),
+    postSaga.theoDoiIncreaseViewPostSaga(),
+    postSaga.theoDoiIncreaseViewPostShareSaga(),
   ]);
 }

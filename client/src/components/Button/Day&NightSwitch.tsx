@@ -29,7 +29,7 @@ const DayNightSwitch = (Props: Props) => {
               id="toggle"
               className="toggle-switch"
               type="checkbox"
-              checked={!Props?.checked}
+              defaultChecked={!Props?.checked}
               onClick={() => {
                 if (Props && Props.onChange) {
                   Props.onChange(!Props.checked);
