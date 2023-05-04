@@ -37,6 +37,7 @@ const Profile = (Props: Props) => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(false));
   }, [dispatch, userID]);
 
   useEffect(() => {
@@ -56,11 +57,14 @@ const Profile = (Props: Props) => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const ownerInfoRef = React.useRef(ownerInfo);
+  const postArrayRef = React.useRef(postArray);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
-  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArray;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
 
   return (
     <ConfigProvider

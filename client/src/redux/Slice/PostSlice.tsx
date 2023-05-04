@@ -54,7 +54,7 @@ const postSlice = createSlice({
     updatePosts: (state, action) => {
       const updatedPosts = state.postArr.map((post: any) => {
         if (post._id === action.payload.post._id) {
-          return action.payload;
+          return action.payload.post;
         }
         return post;
       });

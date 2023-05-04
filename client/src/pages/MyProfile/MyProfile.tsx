@@ -57,11 +57,14 @@ const MyProfile = () => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const ownerInfoRef = React.useRef(ownerInfo);
+  const postArrayRef = React.useRef(postArray);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
-  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArray;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
 
   return (
     <ConfigProvider
@@ -145,7 +148,7 @@ const MyProfile = () => {
                 <Col span={18} className="mt-5">
                   <div className="description flex flex-wrap">
                     {descArray.map((item, index) => {
-                      if (userInfo?.descriptions?.indexOf(item.title) !== -1) {
+                      if (ownerInfo?.descriptions?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
                             className="item mx-2 my-2 px-4 py-1"

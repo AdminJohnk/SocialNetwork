@@ -13,6 +13,7 @@ import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
 
 const items = [
   {
@@ -107,6 +108,7 @@ const NewFeed = () => {
 
   useEffect(() => {
     dispatch(GET_ALL_POST_SAGA());
+    dispatch(setIsInProfile(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -132,7 +134,10 @@ const NewFeed = () => {
 
   useEffect(() => {
     setIsNotAlreadyChanged(postArrayRef.current === postArray);
-  }, [postArrayRef, isNotAlreadyChanged, postArray]);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArray;
+    }
+  }, [postArrayRef, isNotAlreadyChanged, postArraySlice, postArray]);
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -348,7 +353,7 @@ const NewFeed = () => {
                                     marginLeft: 10,
                                   }}
                                   className="popular-post-item-image"
-                                  src={`${item.user.userImage}`}
+                                  src={`${item?.user?.userImage}`}
                                   alt=""
                                 />
                                 <div className="content ml-4  ">
@@ -359,7 +364,7 @@ const NewFeed = () => {
                                       fontWeight: 600,
                                     }}
                                   >
-                                    <span>{item.user.username}</span>
+                                    <span>{item?.user?.username}</span>
                                   </div>
                                   <div
                                     className="popular-post-item-desc mt-1"
