@@ -14,6 +14,7 @@ import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { useAllPostsData } from '../../util/functions/DataManager';
 
 const items = [
   {
@@ -106,10 +107,10 @@ const NewFeed = () => {
 
   const [select, setSelect] = useState(null);
 
-  useEffect(() => {
-    dispatch(GET_ALL_POST_SAGA());
-    dispatch(setIsInProfile(false));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(GET_ALL_POST_SAGA());
+  //   dispatch(setIsInProfile(false));
+  // }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo({
@@ -118,26 +119,21 @@ const NewFeed = () => {
     });
   }, []);
 
-  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+  // const allPostSlice = useSelector((state: any) => state.postReducer.allPost);
+  // const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
-  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
-  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+  // const allPost = useMemo(() => allPostSlice, [allPostSlice]);
+  // const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
 
-  const popular = [...postArray]
-    ?.filter((item: any) => item.PostShared !== true)
-    ?.sort((a: any, b: any) => b?.views - a?.views);
+  const { isLoading, allPost, userInfo, isFetching } = useAllPostsData();
 
-  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+  let popular = [];
 
-  const postArrayRef = React.useRef(postArray);
-
-  useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
-    if (!isNotAlreadyChanged) {
-      postArrayRef.current = postArray;
-    }
-  }, [postArrayRef, isNotAlreadyChanged, postArraySlice, postArray]);
+  if (!isLoading) {
+    popular = [...allPost]
+      ?.filter((item: any) => item.PostShared !== true)
+      ?.sort((a: any, b: any) => b?.views - a?.views);
+  }
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -175,7 +171,7 @@ const NewFeed = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !popular || !community || isNotAlreadyChanged ? (
+        {!allPost || !userInfo || !popular || !community || isLoading ? (
           <LoadingNewFeed />
         ) : (
           <Row>
@@ -256,7 +252,7 @@ const NewFeed = () => {
                         </div>
                       </Button>
                     </div>
-                    {postArray.map((item: any, index: number) => {
+                    {allPost.map((item: any, index: number) => {
                       return (
                         <div>
                           {!item.hasOwnProperty('PostShared') && (
@@ -419,9 +415,9 @@ const NewFeed = () => {
                     </span>
 
                     <div className="top-community-body mt-4">
-                      {community.map((item, index) => {
+                      {/* {community.map((item, index) => {
                         if (index > 2) {
-                          return '';
+                          return;
                         } else {
                           return (
                             <>
@@ -485,7 +481,7 @@ const NewFeed = () => {
                             </>
                           );
                         }
-                      })}
+                      })} */}
                     </div>
                   </div>
                 </div>

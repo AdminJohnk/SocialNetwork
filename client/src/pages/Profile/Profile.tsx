@@ -16,6 +16,7 @@ import PostShare from '../../components/Post/PostShare';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { usePostsData } from '../../util/functions/DataManager';
 
 interface Props {
   userID: any;
@@ -31,14 +32,14 @@ const Profile = (Props: Props) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  useEffect(() => {
-    dispatch(
-      GET_ALL_POST_BY_USERID_SAGA({
-        userId: userID,
-      }),
-    );
-    dispatch(setIsInProfile(false));
-  }, [dispatch, userID]);
+  // useEffect(() => {
+  //   dispatch(
+  //     GET_ALL_POST_BY_USERID_SAGA({
+  //       userId: userID,
+  //     }),
+  //   );
+  //   dispatch(setIsInProfile(false));
+  // }, [dispatch, userID]);
 
   useEffect(() => {
     window.scrollTo({
@@ -47,24 +48,26 @@ const Profile = (Props: Props) => {
     });
   }, []);
 
-  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
-  const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
+  // const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  // const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+  // const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
 
-  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
-  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
-  const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
+  // const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  // const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+  // const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
 
-  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+  // const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const postArrayRef = React.useRef(postArray);
+  // const postArrayRef = React.useRef(postArray);
 
-  useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
-    if (!isNotAlreadyChanged) {
-      postArrayRef.current = postArray;
-    }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  // useEffect(() => {
+  //   setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  //   if (!isNotAlreadyChanged) {
+  //     postArrayRef.current = postArray;
+  //   }
+  // }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+
+  const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
 
   return (
     <ConfigProvider
@@ -73,7 +76,7 @@ const Profile = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !ownerInfo || isNotAlreadyChanged ? (
+        {!postArray || !userInfo || !ownerInfo || isLoading ? (
           <LoadingProfileComponent />
         ) : (
           <>
