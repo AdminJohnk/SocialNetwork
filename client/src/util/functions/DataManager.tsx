@@ -9,11 +9,10 @@ const useAllPostsData = () => {
   // const allPost = useSelector((state: any) => state.postReducer.allPost);
   // const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  dispatch(setIsInProfile(false));
-
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey: ['allPosts'],
     queryFn: async () => {
+      dispatch(setIsInProfile(false));
       const { data } = await postService.getAllPost();
       return data;
     },
@@ -35,15 +34,14 @@ const usePostsData = (userID: String) => {
   // const userInfo = useSelector((state: any) => state.userReducer.userInfo);
   // const ownerInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
-  if (userID === 'me') {
-    dispatch(setIsInProfile(true));
-  } else {
-    dispatch(setIsInProfile(false));
-  }
-
   const { data, isLoading, isError, isFetching } = useQuery({
-    queryKey: ['myPosts', userID],
+    queryKey: ['posts', userID],
     queryFn: async () => {
+      if (userID === 'me') {
+        dispatch(setIsInProfile(true));
+      } else {
+        dispatch(setIsInProfile(false));
+      }
       const { data } = await postService.getAllPostByUserID(userID);
       return data;
     },
