@@ -16,7 +16,7 @@ import PostShare from '../../components/Post/PostShare';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { usePostsData } from '../../util/functions/DataManager';
+import { usePostsData } from '../../util/functions/DataProvider';
 
 interface Props {
   userID: any;

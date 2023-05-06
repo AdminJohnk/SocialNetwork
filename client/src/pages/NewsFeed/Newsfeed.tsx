@@ -14,7 +14,7 @@ import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { useAllPostsData } from '../../util/functions/DataManager';
+import { useAllPostsData } from '../../util/functions/DataProvider';
 
 const items = [
   {

@@ -16,6 +16,7 @@ const useAllPostsData = () => {
       const { data } = await postService.getAllPost();
       return data;
     },
+    staleTime: Infinity,
     onSuccess(data) {
       dispatch(setAllPost(data.content));
       dispatch(setUser(data.content));
@@ -46,6 +47,7 @@ const usePostsData = (userID: String) => {
       return data;
     },
     enabled: !!userID,
+    staleTime: Infinity,
     onSuccess(data) {
       dispatch(setPostArr(data.content));
       dispatch(setUser(data.content));

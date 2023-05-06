@@ -20,7 +20,7 @@ import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileFo
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { usePostsData } from '../../util/functions/DataManager';
+import { usePostsData } from '../../util/functions/DataProvider';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
