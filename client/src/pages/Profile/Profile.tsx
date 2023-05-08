@@ -16,6 +16,7 @@ import PostShare from '../../components/Post/PostShare';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { usePostsData } from '../../util/functions/DataProvider';
 
 interface Props {
   userID: any;
@@ -37,6 +38,7 @@ const Profile = (Props: Props) => {
         userId: userID,
       }),
     );
+    dispatch(setIsInProfile(false));
   }, [dispatch, userID]);
 
   useEffect(() => {
@@ -56,11 +58,16 @@ const Profile = (Props: Props) => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const ownerInfoRef = React.useRef(ownerInfo);
+  const postArrayRef = React.useRef(postArray);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
-  }, [userInfo, ownerInfo, isNotAlreadyChanged, ownerInfoRef]);
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArray;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+
+  // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
 
   return (
     <ConfigProvider

@@ -1,6 +1,6 @@
-import { put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { postService } from '../../services/PostService';
-import { ID_USER, STATUS_CODE } from '../../util/constants/SettingSystem';
+import { STATUS_CODE } from '../../util/constants/SettingSystem';
 import {
   CREATE_POST_SAGA,
   DELETE_POST_SAGA,
@@ -20,16 +20,16 @@ import {
   INCREASE_VIEW_SAGA,
   INCREASE_VIEW_SHARE_SAGA,
 } from '../actionSaga/PostActionSaga';
-import { setAllPost, setOwnerInfo, setPost, updatePosts } from '../Slice/PostSlice';
+import { setAllPost, setOwnerInfo, setPost, setPostArr, updatePosts } from '../Slice/PostSlice';
 import { setUser } from '../Slice/UserSlice';
 
 // Get All Post By User ID Saga
 export function* getAllPostByUserIDSaga({ payload }: any) {
   try {
     const id = payload.userId;
-    const { data, status } = yield postService.getAllPostByUserID(id);
+    const { data, status } = yield call(postService.getAllPostByUserID, id);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(setAllPost(data.content));
+      yield put(setPostArr(data.content));
       yield put(setOwnerInfo(data.content));
       yield put(setUser(data.content));
     }
@@ -45,9 +45,10 @@ export function* theoDoiGetAllPostByUserIDSaga() {
 // Get All Post Saga
 export function* getAllPostSaga() {
   try {
-    const { data, status } = yield postService.getAllPost();
+    const { data, status } = yield call(postService.getAllPost);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(setAllPost(data.content));
+      // yield put(setAllPost(data.content));
+      yield put(setPostArr(data.content));
       yield put(setUser(data.content));
     }
   } catch (err: any) {
@@ -107,11 +108,16 @@ function* createPostSaga({ payload }: any) {
     const postImage = payload.linkImage;
     const { data, status } = yield postService.createPost(postCreate, postImage);
     if (status === STATUS_CODE.CREATED) {
-      yield put(
-        GET_POST_BY_ID_SAGA({
-          id: data.content._id,
-        }),
-      );
+      const isInProfile: boolean = yield select((state) => state.postReducer.isInProfile);
+      if (isInProfile) {
+        yield put(
+          GET_ALL_POST_BY_USERID_SAGA({
+            userId: 'me',
+          }),
+        );
+      } else {
+        yield put(GET_ALL_POST_SAGA());
+      }
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -127,14 +133,11 @@ export function* updatePostSaga({ payload }: any) {
   try {
     const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
     if (status === STATUS_CODE.SUCCESS) {
-      const isInProfile = select((state) => state.postReducer.isInProfile);
-      if (isInProfile) {
-        yield put(
-          GET_ALL_POST_BY_USERID_SAGA({
-            userId: 'me',
-          }),
-        );
-      }
+      yield put(
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: 'me',
+        }),
+      );
     }
   } catch (err: any) {
     console.log(err.response.data);

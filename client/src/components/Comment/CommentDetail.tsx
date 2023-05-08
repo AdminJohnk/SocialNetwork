@@ -130,18 +130,18 @@ const CommentDetail = (Props: CommentProps) => {
                   fontSize: '0.85rem',
                 }}
               >
-                {Props.comment.user.username}
+                {Props.comment?.user?.username}
               </div>
             }
             actions={actions}
             avatar={
-              Props.comment.user?.userImage ? (
-                <Avatar src={Props.comment.user?.userImage} alt={Props.comment.user.username} />
+              Props.comment?.user?.userImage ? (
+                <Avatar src={Props.comment?.user?.userImage} alt={Props.comment?.user?.username} />
               ) : (
-                <Avatar style={{ backgroundColor: '#87d068' }} icon="user" alt={Props.comment.user.username} />
+                <Avatar style={{ backgroundColor: '#87d068' }} icon="user" alt={Props.comment?.user?.username} />
               )
             }
-            content={<div className="">{Props.comment.content}</div>}
+            content={<div className="">{Props.comment?.content}</div>}
           >
             {Props.children}
           </Comment>

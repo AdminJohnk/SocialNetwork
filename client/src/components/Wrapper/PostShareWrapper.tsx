@@ -26,9 +26,9 @@ const PostShareWrapper = () => {
 
   if (!userInfo) {
   } else if (userInfo?.id === userID) {
-    return <OpenMyPostShareDetail post={post} userInfo={userInfo} />;
+    return <OpenMyPostShareDetail key={post._id} post={post} userInfo={userInfo} />;
   } else {
-    return <OpenPostShareDetail post={post} userInfo={userInfo} />;
+    return <OpenPostShareDetail key={post._id} post={post} userInfo={userInfo} />;
   }
 };
 

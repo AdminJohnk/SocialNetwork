@@ -27,7 +27,7 @@ const MenuMain = () => {
   const { themeColorSet } = getTheme();
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
-  const [key, setKey] = useState('1');
+  const [key, setKey] = useState('');
 
   // Hover menu
   const [collapsed, setCollapsed] = useState(true);
@@ -42,7 +42,7 @@ const MenuMain = () => {
     const path = location.pathname;
     if (path === '/') {
       setKey('1');
-    } else if (path === '/me') {
+    } else if (path === '/me' || path === `/${userInfo?.id}`) {
       setKey('2');
     } else if (path === '/explore') {
       setKey('3');
@@ -54,8 +54,10 @@ const MenuMain = () => {
       setKey('6');
     } else if (path === '/community') {
       setKey('7');
+    } else {
+      setKey('');
     }
-  }, [location]);
+  }, [location, userInfo]);
 
   return (
     <ConfigProvider
@@ -104,7 +106,6 @@ const MenuMain = () => {
                   <Avatar className="icon" src={userInfo?.userImage} shape="circle" size={20} />
                 ) : (
                   <FontAwesomeIcon className="icon" icon={faUser} />
-                 
                 ),
                 label: userInfo?.username,
                 title: '',

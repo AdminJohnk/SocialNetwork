@@ -26,9 +26,9 @@ const PostWrapper = () => {
 
   if (!userInfo) {
   } else if (userInfo?.id === userID) {
-    return <OpenMyPostDetail post={post} userInfo={userInfo} />;
+    return <OpenMyPostDetail key={post._id} post={post} userInfo={userInfo} />;
   } else {
-    return <OpenPostDetail post={post} userInfo={userInfo} />;
+    return <OpenPostDetail key={post._id} post={post} userInfo={userInfo} />;
   }
 };
 

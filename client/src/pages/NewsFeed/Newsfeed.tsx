@@ -13,6 +13,8 @@ import NewPost from '../../components/NewPost/NewPost';
 import Post from '../../components/Post/Post';
 import LoadingNewFeed from '../../components/GlobalSetting/LoadingNewFeed/LoadingNewFeed';
 import { NavLink } from 'react-router-dom';
+import { setIsInProfile } from '../../redux/Slice/PostSlice';
+import { useAllPostsData } from '../../util/functions/DataProvider';
 
 const items = [
   {
@@ -107,6 +109,7 @@ const NewFeed = () => {
 
   useEffect(() => {
     dispatch(GET_ALL_POST_SAGA());
+    dispatch(setIsInProfile(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -116,23 +119,31 @@ const NewFeed = () => {
     });
   }, []);
 
-  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  const postArrSlice = useSelector((state: any) => state.postReducer.postArr);
   const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
 
-  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  const postArr = useMemo(() => postArrSlice, [postArrSlice]);
   const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
-
-  const popular = [...postArray]
-    ?.filter((item: any) => item.PostShared !== true)
-    ?.sort((a: any, b: any) => b?.views - a?.views);
-
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const postArrayRef = React.useRef(postArray);
+  const postArrayRef = React.useRef(postArr);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
-  }, [postArrayRef, isNotAlreadyChanged, postArray]);
+    setIsNotAlreadyChanged(postArrayRef.current === postArr);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArr;
+    }
+  }, [userInfoSlice, postArrSlice, isNotAlreadyChanged, postArrayRef]);
+
+  // const { isLoading, allPost, userInfo, isFetching } = useAllPostsData();
+
+  let popular = [];
+
+  // if (!isLoading) {
+  popular = [...postArr]
+    ?.filter((item: any) => item.PostShared !== true)
+    ?.sort((a: any, b: any) => b?.views - a?.views);
+  // }
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -170,7 +181,7 @@ const NewFeed = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !popular || !community || isNotAlreadyChanged ? (
+        {!postArr || !userInfo || !popular || !community || isNotAlreadyChanged ? (
           <LoadingNewFeed />
         ) : (
           <Row>
@@ -251,7 +262,7 @@ const NewFeed = () => {
                         </div>
                       </Button>
                     </div>
-                    {postArray.map((item: any, index: number) => {
+                    {postArr.map((item: any, index: number) => {
                       return (
                         <div>
                           {!item.hasOwnProperty('PostShared') && (
@@ -348,7 +359,7 @@ const NewFeed = () => {
                                     marginLeft: 10,
                                   }}
                                   className="popular-post-item-image"
-                                  src={`${item.user.userImage}`}
+                                  src={`${item?.user?.userImage}`}
                                   alt=""
                                 />
                                 <div className="content ml-4  ">
@@ -359,7 +370,7 @@ const NewFeed = () => {
                                       fontWeight: 600,
                                     }}
                                   >
-                                    <span>{item.user.username}</span>
+                                    <span>{item?.user?.username}</span>
                                   </div>
                                   <div
                                     className="popular-post-item-desc mt-1"
@@ -414,9 +425,9 @@ const NewFeed = () => {
                     </span>
 
                     <div className="top-community-body mt-4">
-                      {community.map((item, index) => {
+                      {/* {community.map((item, index) => {
                         if (index > 2) {
-                          return '';
+                          return;
                         } else {
                           return (
                             <>
@@ -480,7 +491,7 @@ const NewFeed = () => {
                             </>
                           );
                         }
-                      })}
+                      })} */}
                     </div>
                   </div>
                 </div>

@@ -144,15 +144,16 @@ const NewPost = (Props: Props) => {
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">
-              <Form.Item name="title">
-                <Input
-                  placeholder="Add a Title"
-                  allowClear
-                  style={{ borderColor: themeColorSet.colorText3 }}
-                  maxLength={150}
-                  onChange={formik.handleChange}
-                ></Input>
-              </Form.Item>
+              {/* <Form.Item name="title"> */}
+              <Input
+                name="title"
+                placeholder="Add a Title"
+                allowClear
+                style={{ borderColor: themeColorSet.colorText3 }}
+                maxLength={150}
+                onChange={formik.handleChange}
+              ></Input>
+              {/* </Form.Item> */}
             </div>
             <div className="AddContent mt-4">
               <div id="editor" />
