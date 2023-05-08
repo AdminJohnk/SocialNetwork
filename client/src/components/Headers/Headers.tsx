@@ -75,13 +75,15 @@ const Headers = () => {
                 </Col>
                 <Col span={5} className="pl-3">
                   <Space size={25}>
-                    <Badge count={5}>
-                      <Avatar
-                        className="messageButton cursor-pointer"
-                        shape="circle"
-                        icon={<CommentOutlined className="text-xl" />}
-                      />
-                    </Badge>
+                    <NavLink to="/message">
+                      <Badge count={5}>
+                        <Avatar
+                          className="messageButton cursor-pointer"
+                          shape="circle"
+                          icon={<CommentOutlined className="text-xl" />}
+                        />
+                      </Badge>
+                    </NavLink>
                     <Badge count={7}>
                       <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
                     </Badge>

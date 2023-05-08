@@ -18,6 +18,7 @@ import PostShareWrapper from './components/Wrapper/PostShareWrapper';
 import NewFeed from './pages/NewsFeed/Newsfeed';
 import Community from './pages/Community/Community';
 import React from 'react';
+import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -34,6 +35,7 @@ const App = () => {
       <LoadingComponent />
       <DrawerHOC />
       <ModalHOC />
+      <ActiveStatus />
       <Routes>
         <Route path="/" element={<MainTemplate Component={NewFeed} />} />
         <Route path="/message" element={<Chat />} />

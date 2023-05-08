@@ -2,6 +2,7 @@ import { all } from 'redux-saga/effects';
 import * as userSaga from './UserSaga';
 import * as authSaga from './AuthSaga';
 import * as postSaga from './PostSaga';
+import * as messageSaga from './MessageSaga';
 
 export function* rootSaga() {
   yield all([
@@ -14,6 +15,7 @@ export function* rootSaga() {
     // userSaga
     userSaga.theoDoiRegisterUserSaga(),
     userSaga.theoDoiUpdateUserSaga(),
+    userSaga.theoDoiGetFollowersSaga(),
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),
@@ -33,5 +35,9 @@ export function* rootSaga() {
     postSaga.theoDoiGetPostByIdSaga(),
     postSaga.theoDoiIncreaseViewPostSaga(),
     postSaga.theoDoiIncreaseViewPostShareSaga(),
+
+    // messageSaga
+    messageSaga.theoDoiGetConversationsSaga(),
+    messageSaga.theoDoiCreateConversationSaga(),
   ]);
 }
