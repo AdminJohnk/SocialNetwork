@@ -14,6 +14,8 @@ import {
   SAVE_COMMENT_SAGA,
   SAVE_REPLY_SAGA,
   SAVE_REPLY_POSTSHARE_SAGA,
+  GET_POSTSHARE_BY_ID_SAGA,
+  GET_POST_BY_ID_SAGA,
 } from '../../../redux/actionSaga/PostActionSaga';
 
 interface PostProps {
@@ -33,7 +35,18 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const [commentContent, setCommentContent] = useState('');
 
+  useLayoutEffect(() => {
+    if (PostProps.postShare) {
+      dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
+    } else {
+      dispatch(GET_POST_BY_ID_SAGA({ id: PostProps.post._id }));
+    }
+  }, [PostProps.post, PostProps.postShare]);
+
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
+
+  const post = useSelector((state: any) => state.postReducer.post);
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const handleData = (data: any) => {
     setData(data);
@@ -48,7 +61,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: PostProps.post?._id,
+            id: post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -62,7 +75,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post?._id,
+            id: post?._id,
           }),
         );
       }
@@ -70,7 +83,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: PostProps.post?._id,
+            id: post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -84,7 +97,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: PostProps.post?._id,
+            id: post?._id,
           }),
         );
       }
@@ -106,20 +119,20 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
     () => (
       <PostDetailModal
         onData={handleData}
-        post={PostProps.post}
-        userInfo={PostProps.userInfo}
+        post={post}
+        userInfo={userInfo}
         data={data}
         postShare={PostProps.postShare}
         owner={PostProps.owner}
       />
     ),
-    [PostProps.post, PostProps.userInfo, data],
+    [post, userInfo, data],
   );
 
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
@@ -181,7 +194,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   useLayoutEffect(() => {
     dispatch(
       openModal({
-        title: 'The post of ' + PostProps.userInfo?.username,
+        title: 'The post of ' + userInfo?.username,
         component: memoizedComponent,
         footer: (
           <ConfigProvider>
