@@ -32,14 +32,14 @@ const MyProfile = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  // useEffect(() => {
-  //   dispatch(
-  //     GET_ALL_POST_BY_USERID_SAGA({
-  //       userId: userID,
-  //     }),
-  //   );
-  //   dispatch(setIsInProfile(true));
-  // }, []);
+  useEffect(() => {
+    dispatch(
+      GET_ALL_POST_BY_USERID_SAGA({
+        userId: userID,
+      }),
+    );
+    dispatch(setIsInProfile(true));
+  }, []);
 
   useEffect(() => {
     window.scrollTo({
@@ -48,26 +48,26 @@ const MyProfile = () => {
     });
   }, []);
 
-  // const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
-  // const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
-  // const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
+  const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
+  const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
+  const ownerInfoSlice = useSelector((state: any) => state.postReducer.ownerInfo);
 
-  // const postArray = useMemo(() => postArraySlice, [postArraySlice]);
-  // const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
-  // const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
+  const postArray = useMemo(() => postArraySlice, [postArraySlice]);
+  const userInfo = useMemo(() => userInfoSlice, [userInfoSlice]);
+  const ownerInfo = useMemo(() => ownerInfoSlice, [ownerInfoSlice]);
 
-  // const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
+  const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  // const postArrayRef = React.useRef(postArray);
+  const postArrayRef = React.useRef(postArray);
 
-  // useEffect(() => {
-  //   setIsNotAlreadyChanged(postArrayRef.current === postArray);
-  //   if (!isNotAlreadyChanged) {
-  //     postArrayRef.current = postArray;
-  //   }
-  // }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  useEffect(() => {
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) {
+      postArrayRef.current = postArray;
+    }
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
 
-  const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
+  // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
   return (
     <ConfigProvider
@@ -76,7 +76,7 @@ const MyProfile = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!postArray || !userInfo || !ownerInfo || isLoading ? (
+        {!postArray || !userInfo || !ownerInfo || isNotAlreadyChanged ? (
           <LoadingProfileComponent />
         ) : (
           <>

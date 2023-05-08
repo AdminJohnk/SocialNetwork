@@ -47,7 +47,8 @@ export function* getAllPostSaga() {
   try {
     const { data, status } = yield call(postService.getAllPost);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(setAllPost(data.content));
+      // yield put(setAllPost(data.content));
+      yield put(setPostArr(data.content));
       yield put(setUser(data.content));
     }
   } catch (err: any) {
