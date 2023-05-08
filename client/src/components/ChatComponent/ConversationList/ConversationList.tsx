@@ -87,6 +87,32 @@ const SearchChat = (Props: ConversationListProps) => {
     );
   };
 
+  const formatUsername = (username: any) => {
+    const MAX_LENGTH = 14; // maximum length of username on one line
+    const words = username.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    // add each word to a line, breaking onto new line if line is too long
+    for (let i = 0; i < words.length; i++) {
+      const word = words[i];
+      if (currentLine.length + word.length > MAX_LENGTH) {
+        lines.push(currentLine);
+        currentLine = word + ' ';
+      } else {
+        currentLine += word + ' ';
+      }
+    }
+
+    // add any remaining words to the last line
+    if (currentLine.length > 0) {
+      lines.push(currentLine.trim());
+    }
+
+    // return the formatted username
+    return lines.join('\n');
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -199,7 +225,7 @@ const SearchChat = (Props: ConversationListProps) => {
                         fontSize: '0.9rem',
                       }}
                     >
-                      {item.username?.length > 10 ? item.username?.slice(0, 10) + '...' : item.name}
+                      {formatUsername(item.username)}
                     </div>
                   </div>
                 );
