@@ -52,6 +52,8 @@ const MessageChat = (Props: IParams) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [messagesState, setMessagesState] = useState([]);
 
+  console.log('messagesState', messagesState);
+
   useEffect(() => {
     if (isLoadingMessages) return;
     setMessagesState(messages);
@@ -65,7 +67,9 @@ const MessageChat = (Props: IParams) => {
       await messageService.seenMessage(Props.conversationId);
 
       setMessagesState((current: any) => {
-        if (find(current, { id: message.id })) {
+        console.log('current', current);
+        console.log('message', message);
+        if (find(current, { _id: message._id })) {
           return current;
         }
 
@@ -78,7 +82,7 @@ const MessageChat = (Props: IParams) => {
     const updateMessageHandler = (newMessage: any) => {
       setMessagesState((current: any) =>
         current.map((currentMessage: any) => {
-          if (currentMessage._id === newMessage.id) {
+          if (currentMessage._id === newMessage._id) {
             return newMessage;
           }
 
@@ -134,7 +138,7 @@ const MessageChat = (Props: IParams) => {
           <div className="flex-1 overflow-y-auto">
             {messagesState?.length !== 0 &&
               messagesState?.map((message: any, i: any) => (
-                <MessageBox isLast={i === messages.length - 1} key={message._id} data={message} />
+                <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
               ))}
             <div className="pt-24" ref={bottomRef} />
           </div>

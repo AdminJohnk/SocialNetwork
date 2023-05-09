@@ -37,11 +37,11 @@ const ConversationBox = (Props: ConversationBoxProps) => {
   }, [lastMessage, userID]);
 
   const lastMessageText = useMemo(() => {
-    if (lastMessage?.image) return 'Đã gửi một ảnh';
+    if (lastMessage?.image) return 'Sent an image';
 
     if (lastMessage?.body) return lastMessage.body;
 
-    return 'Bắt đầu cuộc trò chuyện';
+    return 'Start a conversation';
   }, [lastMessage, userID]);
 
   return (

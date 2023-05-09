@@ -63,7 +63,7 @@ const ConversationList = (Props: ConversationListProps) => {
 
     const newHandler = (conversation: any) => {
       setItems((current: any) => {
-        if (find(current, { _id: conversation.id })) {
+        if (find(current, { _id: conversation._id })) {
           return current;
         }
 
@@ -73,7 +73,7 @@ const ConversationList = (Props: ConversationListProps) => {
 
     const removeHandler = (conversation: any) => {
       setItems((current: any) => {
-        return [...current.filter((convo: any) => convo._id !== conversation.id)];
+        return [...current.filter((convo: any) => convo._id !== conversation)];
       });
     };
 
