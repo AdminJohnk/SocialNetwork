@@ -11,6 +11,9 @@ import { pusherClient } from '../../../util/functions/Pusher';
 import Avatar from '../../Avatar/Avatar';
 import { find } from 'lodash';
 import { CREATE_CONVERSATION_SAGA } from '../../../redux/actionSaga/MessageActionSaga';
+import ConversationBox from '../ConversationBox/ConversationBox';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { messageService } from '../../../services/MessageService';
 
 interface ConversationListProps {
   initialItems: any;
@@ -18,21 +21,21 @@ interface ConversationListProps {
   title?: string;
 }
 
-const SearchChat = (Props: ConversationListProps) => {
+const ConversationList = (Props: ConversationListProps) => {
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const { members } = useSelector((state: any) => state.activeListReducer);
 
   const [items, setItems] = useState(Props.initialItems);
-
-  console.log('items', items);
 
   const pusherKey = useMemo(() => {
     return userInfo?.id;
@@ -46,7 +49,7 @@ const SearchChat = (Props: ConversationListProps) => {
     const updateHandler = (conversation: any) => {
       setItems((current: any) =>
         current.map((currentConversation: any) => {
-          if (currentConversation.id === conversation.id) {
+          if (currentConversation._id === conversation.id) {
             return {
               ...currentConversation,
               messages: conversation.messages,
@@ -60,7 +63,7 @@ const SearchChat = (Props: ConversationListProps) => {
 
     const newHandler = (conversation: any) => {
       setItems((current: any) => {
-        if (find(current, { id: conversation.id })) {
+        if (find(current, { _id: conversation.id })) {
           return current;
         }
 
@@ -70,7 +73,7 @@ const SearchChat = (Props: ConversationListProps) => {
 
     const removeHandler = (conversation: any) => {
       setItems((current: any) => {
-        return [...current.filter((convo: any) => convo.id !== conversation.id)];
+        return [...current.filter((convo: any) => convo._id !== conversation.id)];
       });
     };
 
@@ -79,13 +82,24 @@ const SearchChat = (Props: ConversationListProps) => {
     pusherClient.bind('conversation-remove', removeHandler);
   }, [pusherKey]);
 
-  const HandleOnClick = (item: any) => {
-    dispatch(
-      CREATE_CONVERSATION_SAGA({
-        users: [item, userInfo._id ? userInfo._id : userInfo.id],
-      }),
-    );
+  // const { currentConversation } = useSelector((state: any) => state.conversationReducer);
+
+  const HandleOnClick = async (item: any) => {
+    // dispatch(
+    //   CREATE_CONVERSATION_SAGA({
+    //     users: [item, userInfo.id],
+    //   }),
+    // );
+
+    const { data } = await messageService.createConversation({ users: [item, userInfo.id] });
+    navigate(`/message/${data.content.conversation._id}`);
   };
+
+  // useEffect(() => {
+  //   if (currentConversation?._id) {
+  //     navigate(`/message/${currentConversation._id}`);
+  //   }
+  // }, [currentConversation?._id]);
 
   const formatUsername = (username: any) => {
     const MAX_LENGTH = 14; // maximum length of username on one line
@@ -209,11 +223,11 @@ const SearchChat = (Props: ConversationListProps) => {
               People
             </div>
             <div className="listUser flex mt-3">
-              {Props.users.map((item: any, index: number) => {
+              {Props.users.map((item: any) => {
                 return (
                   <div
                     className="user flex flex-col justify-center items-center mr-10 cursor-pointer"
-                    key={index}
+                    key={item._id}
                     onClick={() => HandleOnClick(item._id)}
                   >
                     <div className="avatar relative">
@@ -239,141 +253,11 @@ const SearchChat = (Props: ConversationListProps) => {
               overflow: 'auto',
             }}
           >
-            {/* {userChatArray.map((item, index) => {
-              return (
-                <div className="userItem flex justify-between items-center py-4 px-3" key={index}>
-                  <div
-                    className="avatar_info flex items-center"
-                    style={{
-                      width: '70%',
-                    }}
-                  >
-                    <div className="avatar relative">
-                      <Avatar size={40} src={item.avatar} />
-                      {item.active && (
-                        <span
-                          className="dot"
-                          style={{
-                            width: '7px',
-                            height: '7px',
-                            backgroundColor: commonColor.colorGreen1,
-                            display: 'inline-block',
-                            borderRadius: '50%',
-                            position: 'absolute',
-                            right: '0px',
-                            bottom: '0px',
-                          }}
-                        ></span>
-                      )}
-                    </div>
-                    <div className="info ml-4">
-                      <div
-                        className="name mb-1"
-                        style={{
-                          fontWeight: 600,
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {item.name}
-                      </div>
-                      <div
-                        className="lastMessage"
-                        style={{
-                          color: themeColorSet.colorText3,
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {!item.getMessage ? (
-                          item.lastMessage.length > 20 ? (
-                            <>
-                              <span
-                                style={{
-                                  color: themeColorSet.colorText1,
-                                }}
-                              >
-                                You:{' '}
-                              </span>
-                              <span>{item.lastMessage.slice(0, 20) + '...'}</span>
-                            </>
-                          ) : (
-                            <>
-                              <span
-                                style={{
-                                  color: themeColorSet.colorText1,
-                                }}
-                              >
-                                You:{' '}
-                              </span>
-                              <span>{item.lastMessage}</span>
-                            </>
-                          )
-                        ) : item.lastMessage.length > 20 ? (
-                          <span>{item.lastMessage.slice(0, 20) + '...'}</span>
-                        ) : (
-                          <span>{item.lastMessage}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className="time_read"
-                    style={{
-                      width: '22%',
-                    }}
-                  >
-                    <div
-                      className="time text-right"
-                      style={{
-                        color: themeColorSet.colorText3,
-                        fontSize: '0.9rem',
-                      }}
-                    >
-                      {item.time}
-                    </div>
-                    <div className="read text-right">
-                      {item.getMessage && item.unread > 0 ? (
-                        <span
-                          className="numberUnread"
-                          style={{
-                            color: themeColorSet.colorText1,
-                            fontSize: '0.7rem',
-                            width: '17px',
-                            height: '17px',
-                            lineHeight: '17px',
-                            backgroundColor: commonColor.colorBlue1,
-                            display: 'inline-block',
-                            textAlign: 'center',
-                            borderRadius: '50%',
-                          }}
-                        >
-                          {item.unread}
-                        </span>
-                      ) : item.getMessage && item.unread === 0 ? (
-                        ''
-                      ) : !item.getMessage && !item.userRead ? (
-                        <FontAwesomeIcon
-                          className="text-xl"
-                          icon={faCheck}
-                          style={{
-                            color: commonColor.colorGreen1,
-                            fontSize: '0.8rem',
-                          }}
-                        />
-                      ) : (
-                        <FontAwesomeIcon
-                          className="text-xl"
-                          icon={faCheckDouble}
-                          style={{
-                            color: commonColor.colorGreen1,
-                            fontSize: '0.8rem',
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })} */}
+            {items.map((item: any) => (
+              <NavLink to={`/message/${item._id}`}>
+                <ConversationBox key={item._id} data={item} selected={item._id === Props} />
+              </NavLink>
+            ))}
           </div>
           <div className="listUser"></div>
         </div>
@@ -382,4 +266,4 @@ const SearchChat = (Props: ConversationListProps) => {
   );
 };
 
-export default SearchChat;
+export default ConversationList;

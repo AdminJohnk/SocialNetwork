@@ -39,5 +39,9 @@ export function* rootSaga() {
     // messageSaga
     messageSaga.theoDoiGetConversationsSaga(),
     messageSaga.theoDoiCreateConversationSaga(),
+    messageSaga.theoDoiGetConversationSaga(),
+    messageSaga.theoDoiGetMessagesSaga(),
+    messageSaga.theoDoiSeenMessageSaga(),
+    messageSaga.theoDoiSendMessageSaga(),
   ]);
 }

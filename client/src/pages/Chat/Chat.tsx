@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover, Space } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssChat';
@@ -23,11 +23,28 @@ import {
   SearchOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import ConversationList from '../../components/ChatComponent/ConversationList/ConversationList';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { GET_FOLLOWERS_SAGA } from '../../redux/actionSaga/UserActionSaga';
-import { GET_CONVERSATIONS_SAGA } from '../../redux/actionSaga/MessageActionSaga';
+import {
+  GET_CONVERSATIONS_SAGA,
+  GET_CONVERSATION_SAGA,
+  SEND_MESSAGE_SAGA,
+} from '../../redux/actionSaga/MessageActionSaga';
+import EmptyChat from '../../components/ChatComponent/EmptyChat/EmptyChat';
+import MessageChat from '../../components/ChatComponent/MessageChat/MessageChat';
+import {
+  useConversationsData,
+  useCurrentConversationData,
+  useFollowersData,
+  useMessagesData,
+} from '../../util/functions/DataProvider';
+import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
+import { messageService } from '../../services/MessageService';
+import { setUserID } from '../../redux/Slice/AuthSlice';
+import { setUser } from '../../redux/Slice/UserSlice';
+import useMessage from 'antd/es/message/useMessage';
 
 const Chat = () => {
   const messageArr = [
@@ -389,14 +406,51 @@ const Chat = () => {
 
   const dispatch = useDispatch();
 
+  const { conversationID } = useParams();
+
+  const { userID } = useSelector((state: any) => state.authReducer);
+
   React.useEffect(() => {
-    dispatch(GET_FOLLOWERS_SAGA());
-    dispatch(GET_CONVERSATIONS_SAGA());
+    dispatch(GET_USER_ID());
   }, []);
 
-  const { followers } = useSelector((state: any) => state.activeListReducer);
+  const handleSubmit = async (data: any) => {
+    // dispatch(
+    //   SEND_MESSAGE_SAGA({
+    //     conversationID,
+    //     body: data,
+    //   }),
+    // );
+    await messageService.sendMessage({
+      conversationID,
+      body: data,
+    });
+  };
 
-  const { conversations } = useSelector((state: any) => state.conversationReducer);
+  // React.useEffect(() => {
+  //   dispatch(GET_FOLLOWERS_SAGA());
+  //   dispatch(GET_CONVERSATIONS_SAGA());
+  // }, []);
+
+  // React.useEffect(() => {
+  //   if (!conversationID) return;
+
+  //   dispatch(GET_CONVERSATION_SAGA(conversationID));
+  // }, [conversationID]);
+
+  // const { followers } = useSelector((state: any) => state.activeListReducer);
+
+  // const { conversations } = useSelector((state: any) => state.conversationReducer);
+
+  // const { currentConversation } = useSelector((state: any) => state.conversationReducer);
+
+  const { conversations, isLoadingConversations } = useConversationsData();
+
+  const { followers, isLoadingFollowers } = useFollowersData(userID);
+
+  const { currentConversation, isLoadingConversation } = useCurrentConversationData(
+    conversationID ? conversationID : null,
+  );
 
   return (
     <ConfigProvider
@@ -405,8 +459,8 @@ const Chat = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {!conversations || !followers ? (
-          <></>
+        {isLoadingConversations || isLoadingFollowers ? (
+          <>Loading hihi!</>
         ) : (
           <div className="chat flex">
             <div
@@ -452,7 +506,11 @@ const Chat = () => {
                 borderColor: themeColorSet.colorBg4,
               }}
             >
-              <ConversationList users={followers} initialItems={conversations} />
+              <ConversationList
+                key={followers[followers.length - 1]?._id}
+                users={followers}
+                initialItems={conversations}
+              />
             </div>
             <div
               className="chatBox"
@@ -466,152 +524,164 @@ const Chat = () => {
                 borderColor: themeColorSet.colorBg4,
               }}
             >
-              <div
-                className="header flex justify-between items-center py-4 px-3"
-                style={{
-                  height: '12%',
-                  borderBottom: '1px solid',
-                  borderColor: themeColorSet.colorBg4,
-                }}
-              >
-                <Space className="myInfo flex items-center py-4 px-3">
-                  <div className="avatar relative">
-                    <Avatar
-                      size={50}
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
-                    />
-                    <span
-                      className="dot"
-                      style={{
-                        width: '7px',
-                        height: '7px',
-                        backgroundColor: commonColor.colorGreen1,
-                        display: 'inline-block',
-                        borderRadius: '50%',
-                        position: 'absolute',
-                        right: '0px',
-                        bottom: '0px',
-                      }}
-                    ></span>
-                  </div>
-                  <div className="name_career">
-                    <div
-                      className="name mb-1"
-                      style={{
-                        color: themeColorSet.colorText1,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Carter Donin
-                    </div>
-                    <div
-                      className="career"
-                      style={{
-                        color: themeColorSet.colorText3,
-                      }}
-                    >
-                      Product Manager
-                    </div>
-                  </div>
-                </Space>
-                <Space className="extension">
-                  <div className="searchContent mr-2" style={{ color: themeColorSet.colorText3 }}>
-                    <SearchOutlined className="text-2xl" />
-                  </div>
-                  <div className="moreOption">
-                    <FontAwesomeIcon className="icon" icon={faEllipsis} size="xl" />
-                  </div>
-                </Space>
-              </div>
-              <div
-                className="body px-3"
-                style={{
-                  height: '80%',
-                  overflow: 'auto',
-                }}
-              >
-                <div className="chatContent">
-                  {messageArr.map((item: any, index: any) => {
-                    return !item.me ? (
-                      <div className="message flex items-center my-8 w-2/3" key={index}>
-                        <div className="avatar mr-3">
-                          <Avatar
-                            size={40}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
-                          />
-                        </div>
-                        <div className="text">{item.text}</div>
-                      </div>
-                    ) : (
-                      <div className="message my-8 pl-60 flex justify-end">
-                        <div
-                          className="text px-4 py-2"
-                          style={{
-                            backgroundColor: commonColor.colorBlue3,
-                            borderRadius: '30px',
-                          }}
-                        >
-                          {item.text}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div
-                className="footer flex justify-between items-center"
-                style={{
-                  height: '8%',
-                }}
-              >
-                <div
-                  className="iconEmoji"
-                  style={{
-                    width: '5%',
-                  }}
-                >
-                  <Popover
-                    placement="top"
-                    trigger="click"
-                    title={'Emoji'}
-                    content={<Picker data={dataEmoji} onEmojiSelect={(emoji: any) => {}} />}
-                  >
-                    <span className="emoji">
-                      <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
-                    </span>
-                  </Popover>
-                </div>
-                <div
-                  className="input"
-                  style={{
-                    width: '78%',
-                  }}
-                >
-                  <ConfigProvider
-                    theme={{
-                      token: {
-                        controlHeight: 32,
-                        lineWidth: 0,
-                      },
+              {!conversationID || !currentConversation ? (
+                <EmptyChat key={Math.random()} />
+              ) : (
+                <>
+                  <MessageChat key={currentConversation._id} conversationId={currentConversation._id} />
+                  {/* <div
+                    className="header flex justify-between items-center py-4 px-3"
+                    style={{
+                      height: '12%',
+                      borderBottom: '1px solid',
+                      borderColor: themeColorSet.colorBg4,
                     }}
                   >
-                    <Input placeholder="Write a message" />
-                  </ConfigProvider>
-                </div>
-                <Space
-                  className="extension text-center"
-                  style={{
-                    width: '12%',
-                  }}
-                >
-                  <div className="upload">
-                    <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faPaperclip} />
+                    <Space className="myInfo flex items-center py-4 px-3">
+                      <div className="avatar relative">
+                        <Avatar
+                          size={50}
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
+                        />
+                        <span
+                          className="dot"
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            backgroundColor: commonColor.colorGreen1,
+                            display: 'inline-block',
+                            borderRadius: '50%',
+                            position: 'absolute',
+                            right: '0px',
+                            bottom: '0px',
+                          }}
+                        ></span>
+                      </div>
+                      <div className="name_career">
+                        <div
+                          className="name mb-1"
+                          style={{
+                            color: themeColorSet.colorText1,
+                            fontWeight: 600,
+                          }}
+                        >
+                          Carter Donin
+                        </div>
+                        <div
+                          className="career"
+                          style={{
+                            color: themeColorSet.colorText3,
+                          }}
+                        >
+                          Product Manager
+                        </div>
+                      </div>
+                    </Space>
+                    <Space className="extension">
+                      <div className="searchContent mr-2" style={{ color: themeColorSet.colorText3 }}>
+                        <SearchOutlined className="text-2xl" />
+                      </div>
+                      <div className="moreOption">
+                        <FontAwesomeIcon className="icon" icon={faEllipsis} size="xl" />
+                      </div>
+                    </Space>
                   </div>
-                  <div className="micro">
-                    <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faMicrophone} />
+                  <div
+                    className="body px-3"
+                    style={{
+                      height: '80%',
+                      overflow: 'auto',
+                    }}
+                  >
+                    <div className="chatContent">
+                      {messageArr.map((item: any, index: any) => {
+                        return !item.me ? (
+                          <div className="message flex items-center my-8 w-2/3" key={index}>
+                            <div className="avatar mr-3">
+                              <Avatar
+                                size={40}
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
+                              />
+                            </div>
+                            <div className="text">{item.text}</div>
+                          </div>
+                        ) : (
+                          <div className="message my-8 pl-60 flex justify-end">
+                            <div
+                              className="text px-4 py-2"
+                              style={{
+                                backgroundColor: commonColor.colorBlue3,
+                                borderRadius: '30px',
+                              }}
+                            >
+                              {item.text}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div> */}
+                  <div
+                    className="footer flex justify-between items-center"
+                    style={{
+                      height: '8%',
+                    }}
+                  >
+                    <div
+                      className="iconEmoji"
+                      style={{
+                        width: '5%',
+                      }}
+                    >
+                      <Popover
+                        placement="top"
+                        trigger="click"
+                        title={'Emoji'}
+                        content={<Picker data={dataEmoji} onEmojiSelect={(emoji: any) => {}} />}
+                      >
+                        <span className="emoji">
+                          <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
+                        </span>
+                      </Popover>
+                    </div>
+                    <div
+                      className="input"
+                      style={{
+                        width: '78%',
+                      }}
+                    >
+                      <ConfigProvider
+                        theme={{
+                          token: {
+                            controlHeight: 32,
+                            lineWidth: 0,
+                          },
+                        }}
+                      >
+                        <Input
+                          placeholder="Write a message"
+                          onPressEnter={(e) => {
+                            handleSubmit(e.currentTarget.value);
+                          }}
+                        />
+                      </ConfigProvider>
+                    </div>
+                    <Space
+                      className="extension text-center"
+                      style={{
+                        width: '12%',
+                      }}
+                    >
+                      <div className="upload">
+                        <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faPaperclip} />
+                      </div>
+                      <div className="micro">
+                        <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faMicrophone} />
+                      </div>
+                    </Space>
                   </div>
-                </Space>
-              </div>
+                </>
+              )}
             </div>
             <div
               className="shared"

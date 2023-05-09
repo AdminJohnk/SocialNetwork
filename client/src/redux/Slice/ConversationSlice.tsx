@@ -1,12 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+interface State {
+  conversations: any;
+  currentConversation: any;
+  currentConversationId: any;
+
+  message: any;
+  messages: any;
+}
+
+const initialState: State = {
   conversations: null,
   currentConversation: null,
   currentConversationId: null,
 
   message: null,
-  messages: null,
+  messages: [],
 };
 
 const messageSlice = createSlice({
@@ -16,8 +25,24 @@ const messageSlice = createSlice({
     SetConversations: (state, action) => {
       return { ...state, conversations: action.payload.conversations };
     },
+    AddConversations: (state, action) => {
+      return { ...state, conversations: [...state.conversations, action.payload.conversation] };
+    },
+    SetCurrentConversation: (state, action) => {
+      return {
+        ...state,
+        currentConversation: action.payload.conversation,
+      };
+    },
+    SetMessages: (state, action) => {
+      return { ...state, messages: action.payload.messages };
+    },
+    SetMessage: (state, action) => {
+      return { ...state, message: action.payload.message };
+    },
   },
 });
 
-export const { SetConversations } = messageSlice.actions;
+export const { SetConversations, SetCurrentConversation, SetMessages, AddConversations, SetMessage } =
+  messageSlice.actions;
 export default messageSlice.reducer;
