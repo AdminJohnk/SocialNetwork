@@ -20,8 +20,8 @@ const MessageBox = (Props: MessageBoxProps) => {
 
   const container = `flex gap-3 p-4 ${isOwn && 'justify-end'}`;
   const avatar = `${isOwn && 'order-2'}`;
-  const body = `'flex flex-col gap-2', ${isOwn && 'items-end'}`;
-  const message = `'text-sm w-fit overflow-hidden'
+  const body = `flex flex-col gap-2', ${isOwn && 'items-end'}`;
+  const message = `text-sm w-fit overflow-hidden
     ${isOwn ? 'bg-sky-500 text-white' : 'bg-gray-100'}
     ${Props.data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'}`;
 

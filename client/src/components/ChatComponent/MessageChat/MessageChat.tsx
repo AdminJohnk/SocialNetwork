@@ -12,6 +12,7 @@ import { find } from 'lodash';
 import { GET_MESSAGES_SAGA, SEEN_MESSAGE_SAGA } from '../../../redux/actionSaga/MessageActionSaga';
 import { useCurrentConversationData, useMessagesData } from '../../../util/functions/DataProvider';
 import { messageService } from '../../../services/MessageService';
+import useIntersectionObserver from '../../../util/functions/useIntersectionObserver';
 
 interface IParams {
   conversationId: string;
@@ -52,7 +53,9 @@ const MessageChat = (Props: IParams) => {
   const bottomRef = useRef<HTMLDivElement>(null);
   const [messagesState, setMessagesState] = useState([]);
 
-  console.log('messagesState', messagesState);
+  const seenMessage = async () => {
+    await messageService.seenMessage(Props.conversationId);
+  };
 
   useEffect(() => {
     if (isLoadingMessages) return;
@@ -64,11 +67,9 @@ const MessageChat = (Props: IParams) => {
     bottomRef?.current?.scrollIntoView();
 
     const messageHandler = async (message: any) => {
-      await messageService.seenMessage(Props.conversationId);
+      seenMessage();
 
       setMessagesState((current: any) => {
-        console.log('current', current);
-        console.log('message', message);
         if (find(current, { _id: message._id })) {
           return current;
         }
@@ -101,50 +102,46 @@ const MessageChat = (Props: IParams) => {
     };
   }, [Props.conversationId, messages, messagesState]);
 
+  useIntersectionObserver(bottomRef, seenMessage);
+
   return (
-    <ConfigProvider
-      theme={{
-        token: themeColor,
-      }}
-    >
-      <StyleTotal theme={themeColorSet}>
-        <div
-          className="header flex justify-between items-center py-6 px-6"
-          style={{
-            height: '12%',
-            borderBottom: '1px solid',
-            borderColor: themeColorSet.colorBg4,
-          }}
-        >
-          <div className="flex gap-3 items-center">
-            {currentConversation.isGroup ? (
-              <AvatarGroup users={currentConversation.users} />
-            ) : (
-              <Avatar user={otherUser} />
-            )}
-            <div className="flex flex-col">
-              <div>{currentConversation.name || otherUser.username}</div>
-              <div className="text-sm font-light text-neutral-500">{statusText}</div>
-            </div>
+    <>
+      <div
+        className="header flex justify-between items-center py-6 px-6"
+        style={{
+          height: '12%',
+          borderBottom: '1px solid',
+          borderColor: themeColorSet.colorBg4,
+        }}
+      >
+        <div className="flex gap-3 items-center">
+          {currentConversation.isGroup ? (
+            <AvatarGroup users={currentConversation.users} />
+          ) : (
+            <Avatar user={otherUser} />
+          )}
+          <div className="flex flex-col">
+            <div>{currentConversation.name || otherUser.username}</div>
+            <div className="text-sm font-light text-neutral-500">{statusText}</div>
           </div>
         </div>
-        <div
-          className="body px-3"
-          style={{
-            height: '80%',
-            overflow: 'auto',
-          }}
-        >
-          <div className="flex-1 overflow-y-auto">
-            {messagesState?.length !== 0 &&
-              messagesState?.map((message: any, i: any) => (
-                <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
-              ))}
-            <div className="pt-24" ref={bottomRef} />
-          </div>
+      </div>
+      <div
+        className="body px-3"
+        style={{
+          height: '80%',
+          overflow: 'auto',
+        }}
+      >
+        <div className="flex-1 overflow-y-auto">
+          {messagesState?.length !== 0 &&
+            messagesState?.map((message: any, i: any) => (
+              <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
+            ))}
+          <div className="pt-12" ref={bottomRef} />
         </div>
-      </StyleTotal>
-    </ConfigProvider>
+      </div>
+    </>
   );
 };
 
