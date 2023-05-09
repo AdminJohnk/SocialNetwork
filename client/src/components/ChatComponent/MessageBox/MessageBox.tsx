@@ -19,7 +19,7 @@ const MessageBox = (Props: MessageBoxProps) => {
     .join(', ');
 
   const container = `flex gap-3 p-4 ${isOwn && 'justify-end'}`;
-  const avatar = `${isOwn && 'order-2'}`;
+  const avatar = `mt-3 ${isOwn && 'order-2'}`;
   const body = `flex flex-col gap-2', ${isOwn && 'items-end'}`;
   const message = `text-sm w-fit overflow-hidden
     ${isOwn ? 'bg-sky-500 text-white' : 'bg-gray-100'}
@@ -31,8 +31,8 @@ const MessageBox = (Props: MessageBoxProps) => {
         <Avatar user={Props.data.sender} />
       </div>
       <div className={body}>
-        <div className="flex items-center gap-1">
-          <div className="text-sm text-gray-500">{Props.data.sender.name}</div>
+        <div className="flex items-center gap-1 mb-1">
+          <div className="text-sm text-gray-500">{Props.data.sender.lastname + " " + Props.data.sender.firstname}</div>
           <div className="text-xs text-gray-400">{format(new Date(Props?.data?.createdAt), 'p')}</div>
         </div>
         <div className={message}>
@@ -42,13 +42,7 @@ const MessageBox = (Props: MessageBoxProps) => {
               height="288"
               width="288"
               src={Props.data.image}
-              className="
-                object-cover 
-                cursor-pointer 
-                hover:scale-110 
-                transition 
-                translate
-              "
+              className="object-cover cursor-pointer hover:scale-110 transition translate"
             />
           ) : (
             <div>{Props.data.body}</div>
@@ -57,6 +51,7 @@ const MessageBox = (Props: MessageBoxProps) => {
         {Props.isLast && isOwn && seenList.length > 0 && (
           <div
             className="
+            mt-3
             text-xs 
             font-light 
             text-gray-500

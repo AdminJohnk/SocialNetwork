@@ -15,12 +15,13 @@ const ConversationBox = (Props: ConversationBoxProps) => {
   const otherUser = OtherUser(Props.data);
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
   const { themeColorSet } = getTheme();
-
   const lastMessage = useMemo(() => {
     const messages = Props.data.messages || [];
 
     return messages[messages.length - 1];
   }, [Props.data.messages]);
+
+  const isOwn = userInfo.id === lastMessage?.sender._id;
 
   const userID = useMemo(() => {
     return userInfo.id;
@@ -46,7 +47,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
 
   return (
     <div
-      className={`w-full relative flex items-center space-x-3 space-y-3 p-3 hover:bg-neutral-100rounded-lg transition cursor-pointer ${
+      className={`w-full relative flex items-center space-x-3 my-3 p-3 hover:bg-neutral-100rounded-lg transition cursor-pointer ${
         Props.selected ? themeColorSet.colorBg3 : themeColorSet.colorBg2
       }`}
     >
@@ -72,7 +73,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
             )}
           </div>
           <p className={`truncate text-sm ${hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText2}`}>
-            {lastMessageText}
+            {isOwn ? `You: ${lastMessageText}` : lastMessageText}
           </p>
         </div>
       </div>
