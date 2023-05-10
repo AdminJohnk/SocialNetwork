@@ -22,6 +22,7 @@ const Headers = () => {
   const { algorithm } = getTheme();
 
   const switchTheme = localStorage.getItem('theme') === 'dark';
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   // Switch theme
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const Headers = () => {
                     <Badge count={7}>
                       <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
                     </Badge>
-                    <NavLink to="/me">
+                    <NavLink to={`/user/${userInfo?.id}`}>
                       <Avatar className="avatarButton cursor-pointer" icon={<UserOutlined />} size="default" />
                     </NavLink>
                     {/* <Switch

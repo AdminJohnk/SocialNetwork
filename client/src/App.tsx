@@ -46,6 +46,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user/:userID" element={<MainTemplate Component={ProfileWrapper} />} />
+        <Route path="/me" element={<MainTemplate Component={ProfileWrapper} />} />
         <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
         <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
         <Route path="/community" element={<MainTemplate Component={Community} />} />

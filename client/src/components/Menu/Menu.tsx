@@ -42,7 +42,7 @@ const MenuMain = () => {
     const path = location.pathname;
     if (path === '/') {
       setKey('1');
-    } else if (path === '/me' || path === `/${userInfo?.id}`) {
+    } else if (path === '/me' || path === `/user/${userInfo?.id}`) {
       setKey('2');
     } else if (path === '/explore') {
       setKey('3');
@@ -110,7 +110,7 @@ const MenuMain = () => {
                 label: userInfo?.username,
                 title: '',
                 onClick: () => {
-                  navigate('/me');
+                  navigate(`/user/${userInfo?.id}`);
                 },
               },
               {
