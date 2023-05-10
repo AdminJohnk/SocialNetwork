@@ -85,7 +85,7 @@ const MyProfile = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("/images/TimeLinePage/cover2.jpg")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
