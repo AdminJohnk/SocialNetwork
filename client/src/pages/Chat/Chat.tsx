@@ -421,6 +421,9 @@ const Chat = () => {
     //     body: data,
     //   }),
     // );
+    if (!conversationID) return;
+    if (!data) return;
+
     await messageService.sendMessage({
       conversationID,
       body: data,

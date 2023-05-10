@@ -104,6 +104,10 @@ const MessageChat = (Props: IParams) => {
 
   useIntersectionObserver(bottomRef, seenMessage);
 
+  const styleStatus = useMemo(() => {
+    return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
+  }, [isActive]);
+
   return (
     <>
       <div
@@ -122,7 +126,15 @@ const MessageChat = (Props: IParams) => {
           )}
           <div className="flex flex-col">
             <div>{currentConversation.name || otherUser.username}</div>
-            <div className="text-sm font-light text-neutral-500">{statusText}</div>
+            <div
+              className="text-sm"
+              style={{
+                color: styleStatus,
+                fontWeight: 400,
+              }}
+            >
+              {statusText}
+            </div>
           </div>
         </div>
       </div>

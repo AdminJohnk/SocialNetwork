@@ -14,7 +14,11 @@ interface ConversationBoxProps {
 const ConversationBox = (Props: ConversationBoxProps) => {
   const otherUser = OtherUser(Props.data);
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  // Lấy theme từ LocalStorage chuyển qua css
+  const { change } = useSelector((state: any) => state.themeReducer);
+  const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
+
   const lastMessage = useMemo(() => {
     const messages = Props.data.messages || [];
 
@@ -57,7 +61,12 @@ const ConversationBox = (Props: ConversationBoxProps) => {
         <div className="focus:outline-none">
           <span className="absolute inset-0" aria-hidden="true" />
           <div className="flex justify-between items-center mb-1">
-            <p className={`text-md font-medium ${themeColorSet.colorText1} `}>
+            <p
+              className={`text-md font-medium`}
+              style={{
+                color: themeColorSet.colorText1,
+              }}
+            >
               {Props.data.name || otherUser.username}
             </p>
             {lastMessage?.createdAt && (
