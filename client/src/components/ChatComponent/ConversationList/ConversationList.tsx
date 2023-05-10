@@ -19,6 +19,7 @@ interface ConversationListProps {
   initialItems: any;
   users: [];
   title?: string;
+  selected?: string;
 }
 
 const ConversationList = (Props: ConversationListProps) => {
@@ -222,7 +223,7 @@ const ConversationList = (Props: ConversationListProps) => {
             >
               People
             </div>
-            <div className="listUser flex mt-3">
+            <div className="listUser flex mt-5">
               {Props.users.map((item: any) => {
                 return (
                   <div
@@ -255,7 +256,7 @@ const ConversationList = (Props: ConversationListProps) => {
           >
             {items.map((item: any) => (
               <NavLink to={`/message/${item._id}`}>
-                <ConversationBox key={item._id} data={item} selected={item._id === Props} />
+                <ConversationBox key={item._id} data={item} selected={item._id === Props.selected} />
               </NavLink>
             ))}
           </div>

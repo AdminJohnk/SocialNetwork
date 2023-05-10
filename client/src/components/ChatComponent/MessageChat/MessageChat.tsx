@@ -24,7 +24,7 @@ const MessageChat = (Props: IParams) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // useEffect(() => {
   //   dispatch(GET_MESSAGES_SAGA(Props.conversationId));
@@ -60,7 +60,7 @@ const MessageChat = (Props: IParams) => {
   useEffect(() => {
     if (isLoadingMessages) return;
     setMessagesState(messages);
-  }, [isLoadingMessages]);
+  }, [isLoadingMessages, messages]);
 
   useEffect(() => {
     pusherClient.subscribe(Props.conversationId);

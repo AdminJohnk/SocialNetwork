@@ -452,7 +452,7 @@ const Chat = () => {
   const { followers, isLoadingFollowers } = useFollowersData(userID);
 
   const { currentConversation, isLoadingConversation } = useCurrentConversationData(
-    conversationID ? conversationID : null,
+    conversationID ? conversationID : undefined,
   );
 
   return (
@@ -510,9 +510,14 @@ const Chat = () => {
               }}
             >
               <ConversationList
-                key={followers[followers.length - 1]?._id}
+                key={
+                  conversations[conversations.length - 1]?.messages[
+                    conversations[conversations.length - 1]?.messages?.length - 1
+                  ]?._id
+                }
                 users={followers}
                 initialItems={conversations}
+                selected={currentConversation?._id}
               />
             </div>
             <div
@@ -662,6 +667,7 @@ const Chat = () => {
                         }}
                       >
                         <Input
+                          allowClear
                           placeholder="Write a message"
                           onPressEnter={(e) => {
                             handleSubmit(e.currentTarget.value);

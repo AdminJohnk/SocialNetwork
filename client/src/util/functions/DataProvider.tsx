@@ -77,7 +77,6 @@ const useConversationsData = () => {
       const { data } = await messageService.getConversations();
       return data;
     },
-    staleTime: Infinity,
   });
 
   return { isLoadingConversations: isLoading, isError, conversations: data?.content?.conversations, isFetching };
@@ -91,7 +90,6 @@ const useCurrentConversationData = (conversationID: any) => {
       return data;
     },
     enabled: !!conversationID,
-    staleTime: Infinity,
   });
 
   return { isLoadingConversation: isLoading, isError, currentConversation: data?.content?.conversation, isFetching };
@@ -110,7 +108,6 @@ const useFollowersData = (userID: String) => {
       return data;
     },
     enabled: !!userID,
-    staleTime: Infinity,
   });
 
   return { isLoadingFollowers: isLoading, isError, followers: data?.content?.followers, isFetching };
@@ -123,7 +120,6 @@ const useMessagesData = (conversationID: any) => {
       const { data } = await messageService.getMessages(conversationID);
       return data;
     },
-    staleTime: Infinity,
   });
 
   return {

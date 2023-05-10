@@ -51,9 +51,10 @@ const ConversationBox = (Props: ConversationBoxProps) => {
 
   return (
     <div
-      className={`w-full relative flex items-center space-x-3 my-3 p-3 hover:bg-neutral-100rounded-lg transition cursor-pointer ${
-        Props.selected ? themeColorSet.colorBg3 : themeColorSet.colorBg2
-      }`}
+      className={`w-full relative flex items-center space-x-3 my-3 p-3 hover:bg-neutral-100rounded-lg transition cursor-pointer`}
+      style={{
+        backgroundColor: Props.selected ? themeColorSet.colorBg2 : themeColorSet.colorBg1,
+      }}
     >
       {Props.data.isGroup ? <AvatarGroup users={Props.data.users} /> : <Avatar user={otherUser} />}
 
