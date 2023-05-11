@@ -139,7 +139,7 @@ const PostShare = (PostProps: PostShareProps) => {
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink to={`/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                    <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
                       {PostProps.userInfo?.username}
                     </NavLink>
                   </div>
@@ -165,7 +165,7 @@ const PostShare = (PostProps: PostShareProps) => {
                   <Avatar size={50} src={PostProps.owner?.userImage} />
                   <div className="name ml-2">
                     <div className="name__top font-bold">
-                      <NavLink to={`/${PostProps.owner?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                      <NavLink to={`/user/${PostProps.owner?.id}`} style={{ color: themeColorSet.colorText1 }}>
                         {PostProps.owner?.username}
                       </NavLink>
                     </div>

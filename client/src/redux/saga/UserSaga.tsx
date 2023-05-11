@@ -1,8 +1,9 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 import { userService } from '../../services/UserService';
 import { STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
-import { REGIS_USER_SAGA, UPDATE_USER_SAGA } from '../actionSaga/UserActionSaga';
+import { GET_FOLLOWERS_SAGA, REGIS_USER_SAGA, UPDATE_USER_SAGA } from '../actionSaga/UserActionSaga';
 import { setUser } from '../Slice/UserSlice';
+import { setFollowers } from '../Slice/ActiveListSlice';
 
 // registerUser Saga
 function* registerUserSaga({ payload }: any) {
@@ -35,4 +36,24 @@ function* updateUserSaga({ payload }: any) {
 
 export function* theoDoiUpdateUserSaga() {
   yield takeLatest(UPDATE_USER_SAGA, updateUserSaga);
+}
+
+// Get Followers Saga
+function* getFollowersSaga() {
+  try {
+    const { data, status } = yield userService.getFollowers();
+    if (status === STATUS_CODE.SUCCESS) {
+      data.content.followers.forEach((follower: any) => {
+        follower.username = follower.lastname + ' ' + follower.firstname;
+      });
+      yield put(setUser(data.content));
+      yield put(setFollowers(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetFollowersSaga() {
+  yield takeLatest(GET_FOLLOWERS_SAGA, getFollowersSaga);
 }

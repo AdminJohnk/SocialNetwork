@@ -173,7 +173,7 @@ const Post = (PostProps: PostProps) => {
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
                   <div className="name__top font-bold">
-                    <NavLink to={`/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                    <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
                       {PostProps.userInfo?.username}
                     </NavLink>
                   </div>

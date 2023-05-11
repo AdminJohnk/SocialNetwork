@@ -105,7 +105,7 @@ const EditProfileForm = () => {
               <div
                 className="coverImage w-full h-72 rounded-xl"
                 style={{
-                  backgroundImage: `url("./images/TimeLinePage/cover2.jpg")`,
+                  backgroundImage: `url("/images/TimeLinePage/cover2.jpg")`,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',

@@ -416,7 +416,7 @@ const SelectFollow = () => {
               })}
             </div>
             <div className="button mt-16 mr-2 mb-10 text-right">
-              <NavLink to="/timeline">
+              <NavLink to="/">
                 <button className="btnDone px-4 py-2">Done</button>
               </NavLink>
             </div>

@@ -18,6 +18,7 @@ import PostShareWrapper from './components/Wrapper/PostShareWrapper';
 import NewFeed from './pages/NewsFeed/Newsfeed';
 import Community from './pages/Community/Community';
 import React from 'react';
+import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
 
 const App = () => {
   //Set một số tham số cần thiết trên toàn cục
@@ -34,16 +35,18 @@ const App = () => {
       <LoadingComponent />
       <DrawerHOC />
       <ModalHOC />
+      <ActiveStatus />
       <Routes>
         <Route path="/" element={<MainTemplate Component={NewFeed} />} />
-        <Route path="/message" element={<Chat />} />
+        <Route path="/message/:conversationID?" element={<Chat />} />
         <Route path="/select-interest" element={<SelectInterest />} />
         <Route path="/select-follow" element={<SelectFollow />} />
         <Route path="/select-community" element={<SelectCommunity />} />
         <Route path="/get-started" element={<GetStarted />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/:userID" element={<MainTemplate Component={ProfileWrapper} />} />
+        <Route path="/user/:userID" element={<MainTemplate Component={ProfileWrapper} />} />
+        <Route path="/me" element={<MainTemplate Component={ProfileWrapper} />} />
         <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
         <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
         <Route path="/community" element={<MainTemplate Component={Community} />} />
