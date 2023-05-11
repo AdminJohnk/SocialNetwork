@@ -513,7 +513,7 @@ const Chat = () => {
                 key={
                   conversations[conversations.length - 1]?.messages[
                     conversations[conversations.length - 1]?.messages?.length - 1
-                  ]?._id
+                  ]?._id || Math.random()
                 }
                 users={followers}
                 initialItems={conversations}
