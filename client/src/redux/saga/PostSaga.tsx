@@ -104,9 +104,9 @@ function* createPostSaga({ payload }: any) {
     const postCreate = {
       title: payload.postCreate.title,
       content: payload.postCreate.content,
+      linkImage: payload.linkImage,
     };
-    const postImage = payload.linkImage;
-    const { data, status } = yield postService.createPost(postCreate, postImage);
+    const { data, status } = yield postService.createPost(postCreate);
     if (status === STATUS_CODE.CREATED) {
       const isInProfile: boolean = yield select((state) => state.postReducer.isInProfile);
       if (isInProfile) {
