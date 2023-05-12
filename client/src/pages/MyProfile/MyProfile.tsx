@@ -65,7 +65,7 @@ const MyProfile = () => {
     if (!isNotAlreadyChanged) {
       postArrayRef.current = postArray;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
