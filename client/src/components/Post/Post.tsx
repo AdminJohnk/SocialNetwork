@@ -212,9 +212,9 @@ const Post = (PostProps: PostProps) => {
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}
               </div>
-              {PostProps.post.image ? (
+              {PostProps.post.url ? (
                 <div className="contentImage mt-3">
-                  <img src={PostProps.post.image} alt="" style={{ width: '100%' }} />
+                  <img src={PostProps.post.url} alt="" style={{ width: '100%' }} />
                 </div>
               ) : link ? (
                 <a

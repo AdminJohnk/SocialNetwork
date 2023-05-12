@@ -164,6 +164,7 @@ const MyPost = (PostProps: PostProps) => {
             title: 'Edit Post',
             component: (
               <EditPostForm
+                key={Math.random()}
                 id={PostProps.post?._id}
                 title={PostProps.post?.title}
                 content={PostProps.post?.content}

@@ -252,12 +252,13 @@ const NewPost = (Props: Props) => {
             </div>
             <div className="newPostFooter__right">
               <Button
-                type='primary'
-                className="createButton w-full font-bold px-4 py-2"
-                style={{ color: themeColorSet.colorText1 }}
+                type="primary"
+                className="createButton w-full font-bold px-6 py-2 rounded-3xl h-auto"
+                style={{ color: themeColorSet.colorText1}}
                 onClick={() => {
                   formik.handleSubmit();
                 }}
+                loading={loading}
               >
                 {loading ? 'Creating...' : 'Create'}
               </Button>
