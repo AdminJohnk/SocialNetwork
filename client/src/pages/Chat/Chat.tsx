@@ -689,11 +689,7 @@ const Chat = () => {
               }}
             >
               <ConversationList
-                key={
-                  conversations[conversations.length - 1]?.messages[
-                    conversations[conversations.length - 1]?.messages?.length - 1
-                  ]?._id || Math.random()
-                }
+                key={conversations[0]?.lastMessageAt}
                 users={followers}
                 initialItems={conversations}
                 selected={currentConversation?._id}
