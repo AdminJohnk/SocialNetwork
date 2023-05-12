@@ -235,15 +235,13 @@ const NewPost = (Props: Props) => {
                   accept="image/*"
                   maxCount={1}
                   customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
-                    //
-
                     onSuccess('ok');
                   }}
                   data={(file: any) => {
                     return {};
                   }}
                   listType="picture"
-                  onChange={handleUpload} maxCount={1}
+                  onChange={handleUpload}
                   onRemove={() => {
                     setFile(null);
                   }}
@@ -253,8 +251,8 @@ const NewPost = (Props: Props) => {
               </span>
             </div>
             <div className="newPostFooter__right">
-              <button
-                type="submit"
+              <Button
+                type='primary'
                 className="createButton w-full font-bold px-4 py-2"
                 style={{ color: themeColorSet.colorText1 }}
                 onClick={() => {
