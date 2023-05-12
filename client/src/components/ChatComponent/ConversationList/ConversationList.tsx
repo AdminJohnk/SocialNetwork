@@ -99,12 +99,22 @@ const ConversationList = (Props: ConversationListProps) => {
     if (!visible && isOpenPostDetail) {
       setIsOpenPostDetail(!isOpenPostDetail);
     }
-  }, [visible]);
+  }, [visible, isOpenPostDetail]);
   const [isLoading, setIsLoading] = useState(false);
   const [membersGroup, setMembersGroup] = useState([]);
   const [name, setName] = useState('');
 
-  const onSubmit = () => {
+  const onSubmit = (name: any, membersGroup: any) => {
+    if (name.length === 0) {
+      messageApi.error('Please enter group name');
+      return;
+    }
+
+    if (membersGroup.length < 2) {
+      messageApi.error('Please select at least 2 members');
+      return;
+    }
+
     setIsLoading(true);
 
     messageService
@@ -116,8 +126,16 @@ const ConversationList = (Props: ConversationListProps) => {
         setMembersGroup([]);
       })
       .catch(() => messageApi.error('Something went wrong!'))
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
+
+  const [key, setKey] = useState(1);
+
+  useEffect(() => {
+    setKey(Math.random());
+  }, [key, visible]);
 
   useEffect(() => {
     if (!isOpenPostDetail) return;
@@ -127,10 +145,9 @@ const ConversationList = (Props: ConversationListProps) => {
         title: 'Create a new group',
         component: (
           <GroupChatModal
-            key={Math.random()}
+            key={key}
             name={name}
             setName={setName}
-            isLoading={isLoading}
             members={membersGroup}
             setValue={setMembersGroup}
             users={Props.users}
@@ -148,14 +165,14 @@ const ConversationList = (Props: ConversationListProps) => {
             >
               Cancel
             </Button>
-            <Button disabled={isLoading} type="primary" onClick={onSubmit}>
+            <Button loading={isLoading} type="primary" onClick={() => onSubmit(name, membersGroup)}>
               Create
             </Button>
           </div>
         ),
       }),
     );
-  }, [isOpenPostDetail]);
+  }, [isOpenPostDetail, membersGroup, name, isLoading]);
 
   const formatUsername = (username: any) => {
     const MAX_LENGTH = 14; // maximum length of username on one line

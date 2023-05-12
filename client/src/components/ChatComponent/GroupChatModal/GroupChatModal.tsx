@@ -3,7 +3,6 @@ import { DefaultOptionType } from 'antd/es/select';
 
 interface GroupChatModalProps {
   users: any;
-  isLoading: boolean;
   setValue: any;
   members: any;
   name: String;
@@ -19,6 +18,7 @@ const GroupChatModal = (Props: GroupChatModalProps) => {
           <div className="mt-10 flex flex-col gap-y-8">
             <Input
               placeholder={`Group's name`}
+              allowClear
               required
               onChange={(event) => {
                 Props.setName(event.target.value);
