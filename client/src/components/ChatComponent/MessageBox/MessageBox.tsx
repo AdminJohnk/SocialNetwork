@@ -26,9 +26,11 @@ const MessageBox = (Props: MessageBoxProps) => {
   const container = `flex gap-3 p-4 ${isOwn && 'justify-end'}`;
   const avatar = `mt-3 ${isOwn && 'order-2'}`;
   const body = `flex flex-col gap-2', ${isOwn && 'items-end'}`;
-  const message = `text-sm w-fit overflow-hidden
-    ${isOwn ? 'bg-sky-500 text-white' : 'bg-gray-700 text-white'}
-    ${Props.data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'}`;
+  const message = `text-sm w-fit overflow-hidden break-all
+    ${Props.data.image ? 'rounded-md p-0' : 'rounded-full py-2 px-3'}
+    ${
+      isOwn && !Props.data.image ? 'bg-sky-500 text-white ml-7' : Props.data.image ? '' : 'bg-gray-700 text-white mr-7'
+    }`;
 
   return (
     <div className={container}>
@@ -58,10 +60,15 @@ const MessageBox = (Props: MessageBoxProps) => {
           {Props.data.image ? (
             <Image
               alt="Image"
-              height="288"
-              width="288"
+              height={288}
+              width={512}
               src={Props.data.image}
-              className="object-cover cursor-pointer hover:scale-110 transition translate"
+              draggable={false}
+              className="object-contain cursor-pointer"
+              style={{
+                borderRadius: '2rem',
+                border: '0.2px solid',
+              }}
             />
           ) : (
             <div>{Props.data.body}</div>

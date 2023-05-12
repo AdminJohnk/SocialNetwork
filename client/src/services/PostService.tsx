@@ -11,7 +11,7 @@ export class PostService extends BaseService {
   getAllPost = () => {
     return this.get(`/posts`);
   };
-  createPost = (post: any, img: any) => {
+  createPost = (post: any) => {
     return this.post(`/posts`, post);
   };
   updatePost = (id: string, post: any) => {

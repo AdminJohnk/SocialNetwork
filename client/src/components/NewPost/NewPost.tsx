@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { sha1 } from 'crypto-hash';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssNewPost';
 import ImageCompress from 'quill-image-compress';
@@ -15,6 +16,7 @@ import { useFormik } from 'formik';
 import { TOKEN } from '../../util/constants/SettingSystem';
 import { CREATE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/es/upload';
 Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
@@ -92,26 +94,74 @@ const NewPost = (Props: Props) => {
     initialValues: {
       title: '',
       content: '',
-      linkImage: null,
     },
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
-        dispatch(
-          CREATE_POST_SAGA({
-            postCreate: values,
-          }),
-        );
-        quill.root.innerHTML = '<p><br></p>';
+        setLoading(true);
+        const result = await handleUploadImage(file);
+        if (result.status === 'done') {
+          dispatch(
+            CREATE_POST_SAGA({
+              postCreate: values,
+              linkImage: result.url,
+            }),
+          );
+          setLoading(false);
+          quill.root.innerHTML = '<p><br></p>';
+          messageApi.success('Create post successfully');
+        }
       }
     },
   });
 
-  const [file, setFile]: any = useState([]);
+  const [file, setFile]: any = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
   const handleUpload = (info: any) => {
-    setFile(info.fileList[0].originFileObj);
-    formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
+    if (info.fileList.length === 0) return;
+
+    setFile(info?.fileList[0]?.originFileObj);
+  };
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async () => {
+    formik.setFieldValue('linkImage', null);
+    const formData = new FormData();
+    const public_id = file.public_id;
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    setFile(data);
   };
 
   return (
@@ -183,22 +233,39 @@ const NewPost = (Props: Props) => {
                 <FontAwesomeIcon className="item" size="lg" icon={faCode} />
               </span>
               <span>
-                <Upload listType="picture" onChange={handleUpload}>
+                <Upload
+                  accept="image/*"
+                  maxCount={1}
+                  customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
+                    //
+
+                    onSuccess('ok');
+                  }}
+                  data={(file: any) => {
+                    return {};
+                  }}
+                  listType="picture"
+                  onChange={handleUpload}
+                  onRemove={() => {
+                    setFile(null);
+                  }}
+                >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
             </div>
             <div className="newPostFooter__right">
-              <button
-                type="submit"
+              <Button
+                type="primary"
+                loading={loading}
                 className="createButton w-full font-bold px-4 py-2"
                 style={{ color: themeColorSet.colorText1 }}
                 onClick={() => {
                   formik.handleSubmit();
                 }}
               >
-                Create
-              </button>
+                {loading ? 'Creating...' : 'Create'}
+              </Button>
             </div>
           </div>
         </div>
