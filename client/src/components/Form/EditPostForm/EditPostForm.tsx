@@ -15,6 +15,10 @@ import { TOKEN } from '../../../util/constants/SettingSystem';
 import { GET_ALL_POST_BY_USERID_SAGA, UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
 import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+// import hljs from 'highlight.js/lib/core';
+// import javascript from 'highlight.js/lib/languages/javascript';
+// import 'highlight.js/styles/monokai-sublime.css';
+
 Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
@@ -22,7 +26,16 @@ var toolbarOptions = [
   [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
   ['link'],
+  ['code-block'],
 ];
+
+// hljs.registerLanguage('javascript', javascript);
+// hljs.registerLanguage('javascript', javascript);
+// hljs.registerLanguage('javascript', javascript);
+
+// hljs.configure({
+//   languages: ['javascript', 'ruby', 'python'],
+// });
 
 interface PostProps {
   id: any;
@@ -63,12 +76,13 @@ const EditPostForm = (PostProps: PostProps) => {
   });
 
   // Quill Editor
-  let [quill, setQuill]: any = useState(null);
+  let [quill, setQuill] = useState<any>(null);
 
   useEffect(() => {
     // Tạo quill
     quill = new Quill('#editorDrawer', {
       modules: {
+        syntax: true,
         toolbar: toolbarOptions,
       },
       theme: 'snow',
@@ -83,21 +97,14 @@ const EditPostForm = (PostProps: PostProps) => {
     quill.root.addEventListener('paste', (event: any) => {
       event.preventDefault();
       const text = event.clipboardData.getData('text/plain');
-      document.execCommand('insertHTML', false, text);
+
+      const textToHTMLWithTabAndSpace = text.replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/ /g, '&nbsp;');
+
+      console.log(textToHTMLWithTabAndSpace);
+
+      document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
     });
 
-    // C2
-    // quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    //   const regex = /data:image/;
-    //   if (
-    //     node.tagName === 'IMG' &&
-    //     node.getAttribute('src') &&
-    //     node.getAttribute('src').match(regex)
-    //   ) {
-    //     return delta;
-    //   }
-    //   return null;
-    // });
 
     setQuill(quill);
 
@@ -191,22 +198,12 @@ const EditPostForm = (PostProps: PostProps) => {
                   <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
-              <span className="code">
-                <FontAwesomeIcon className="item" size="lg" icon={faCode} />
-              </span>
               <span>
-                <Upload 
-                listType="picture" 
-                onChange={handleUpload} 
-                defaultFileList={[...fileList]}
-                maxCount={1}
-                >
+                <Upload listType="picture" onChange={handleUpload} defaultFileList={[...fileList]} maxCount={1}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
             </div>
-            {/* <div className="newPostFooter__right">
-            </div> */}
           </div>
         </div>
       </StyleTotal>
@@ -215,3 +212,5 @@ const EditPostForm = (PostProps: PostProps) => {
 };
 
 export default EditPostForm;
+
+

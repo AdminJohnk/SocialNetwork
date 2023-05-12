@@ -17,6 +17,10 @@ import { TOKEN } from '../../util/constants/SettingSystem';
 import { CREATE_POST_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
 import { RcFile } from 'antd/es/upload';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/monokai-sublime.css';
+
 Quill.register('modules/imageCompress', ImageCompress);
 
 var toolbarOptions = [
@@ -24,11 +28,21 @@ var toolbarOptions = [
   [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
   ['link'],
+  ['code-block'],
 ];
+
+hljs.registerLanguage('javascript', javascript);
+
+hljs.configure({
+  languages: ['javascript', 'ruby', 'python'],
+});
 
 interface Props {
   userInfo: any;
 }
+
+//===================================================
+
 const NewPost = (Props: Props) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
@@ -45,6 +59,7 @@ const NewPost = (Props: Props) => {
     quill = new Quill('#editor', {
       placeholder: 'Add a Content',
       modules: {
+        syntax: true,
         toolbar: toolbarOptions,
       },
       theme: 'snow',
@@ -60,18 +75,6 @@ const NewPost = (Props: Props) => {
       document.execCommand('insertHTML', false, text);
     });
 
-    // C2
-    // quill.clipboard.addMatcher(Node.ELEMENT_NODE, (node, delta) => {
-    //   const regex = /data:image/;
-    //   if (
-    //     node.tagName === 'IMG' &&
-    //     node.getAttribute('src') &&
-    //     node.getAttribute('src').match(regex)
-    //   ) {
-    //     return delta;
-    //   }
-    //   return null;
-    // });
 
     setQuill(quill);
   }, []);
@@ -227,9 +230,6 @@ const NewPost = (Props: Props) => {
                   <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
                 </span>
               </Popover>
-              <span className="code">
-                <FontAwesomeIcon className="item" size="lg" icon={faCode} />
-              </span>
               <span>
                 <Upload
                   accept="image/*"
@@ -254,7 +254,7 @@ const NewPost = (Props: Props) => {
               <Button
                 type="primary"
                 className="createButton w-full font-bold px-6 py-2 rounded-3xl h-auto"
-                style={{ color: themeColorSet.colorText1}}
+                style={{ color: themeColorSet.colorText1 }}
                 onClick={() => {
                   formik.handleSubmit();
                 }}

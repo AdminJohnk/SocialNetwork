@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, ConfigProvider, Divider, Dropdown, Space } from 'antd';
 import type { MenuProps } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -26,12 +26,19 @@ import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetai
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import hljs from 'highlight.js/lib/core';
+import javascript from 'highlight.js/lib/languages/javascript';
+import 'highlight.js/styles/monokai-sublime.css';
 
 interface PostProps {
   post: any;
   userInfo: any;
 }
 
+hljs.registerLanguage('javascript', javascript);
+hljs.configure({
+  languages: ['javascript', 'ruby', 'python'],
+});
 // -----------------------------------------------------
 
 const Post = (PostProps: PostProps) => {
@@ -132,12 +139,23 @@ const Post = (PostProps: PostProps) => {
     }
   }, [visible]);
 
+  // Read more, read less
+
+  function removeCode(htmlString: any): any {
+    const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+    const elements = doc.getElementsByClassName('ql-syntax');
+    while (elements.length > 0) elements[0].remove();
+    return doc.body.innerHTML;
+  }
+
   const [expanded, setExpanded] = useState(false);
 
   const displayContent =
     expanded || PostProps.post?.content?.length <= 250
       ? PostProps.post?.content
-      : PostProps.post?.content?.slice(0, 200) + '...';
+      : removeCode(PostProps.post?.content)?.slice(0, 250) + '...';
+
+  
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -198,7 +216,7 @@ const Post = (PostProps: PostProps) => {
               {/* <div
                 className="content__text"
                 dangerouslySetInnerHTML={{
-                  __html: PostProps.post?.content,
+                  __html: displayContent,
                 }}
               ></div> */}
               <div className="content__text">
@@ -206,7 +224,9 @@ const Post = (PostProps: PostProps) => {
                   value={displayContent}
                   readOnly={true}
                   theme={'bubble'}
-                  // formats={Quill.import("formats")}
+                  modules={{
+                    syntax: true,
+                  }}
                 />
                 {PostProps.post?.content?.length > 250 && (
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
