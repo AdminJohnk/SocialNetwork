@@ -4,6 +4,7 @@ import { STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
 import { GET_FOLLOWERS_SAGA, REGIS_USER_SAGA, UPDATE_USER_SAGA } from '../actionSaga/UserActionSaga';
 import { setUser } from '../Slice/UserSlice';
 import { setFollowers } from '../Slice/ActiveListSlice';
+import { setOwnerInfo } from '../Slice/PostSlice';
 
 // registerUser Saga
 function* registerUserSaga({ payload }: any) {
@@ -27,7 +28,8 @@ function* updateUserSaga({ payload }: any) {
   try {
     const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
     if (status === STATUS_CODE.SUCCESS) {
-      yield put(setUser(data.content));
+      console.log(data.content);
+      yield put(setOwnerInfo(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);

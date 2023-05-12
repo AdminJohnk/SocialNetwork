@@ -20,7 +20,7 @@ const EditProfileForm = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+  const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
 
