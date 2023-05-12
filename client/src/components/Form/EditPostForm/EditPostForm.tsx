@@ -1,4 +1,4 @@
-import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload } from 'antd';
+import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload, UploadFile } from 'antd';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import React, { useEffect, useState } from 'react';
@@ -28,9 +28,10 @@ interface PostProps {
   id: any;
   title: any;
   content: any;
+  img?: any;
 }
 
-const EditPostForm = (PostProps: any) => {
+const EditPostForm = (PostProps: PostProps) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -131,6 +132,15 @@ const EditPostForm = (PostProps: any) => {
     formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
   };
 
+  const fileList: UploadFile[] = [
+    {
+      uid: '0',
+      name: 'xxx.png',
+      status: 'done',
+      url: PostProps.img,
+    },
+  ];
+
   return (
     <ConfigProvider
       theme={{
@@ -185,7 +195,12 @@ const EditPostForm = (PostProps: any) => {
                 <FontAwesomeIcon className="item" size="lg" icon={faCode} />
               </span>
               <span>
-                <Upload listType="picture" onChange={handleUpload}>
+                <Upload 
+                listType="picture" 
+                onChange={handleUpload} 
+                defaultFileList={[...fileList]}
+                maxCount={1}
+                >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>

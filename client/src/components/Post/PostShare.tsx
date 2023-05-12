@@ -116,6 +116,7 @@ const PostShare = (PostProps: PostShareProps) => {
 
   useIntersectionObserver(postShareRef, onIntersect);
 
+
   return (
     <ConfigProvider
       theme={{

@@ -1,5 +1,5 @@
-import { Avatar, ConfigProvider, Input, Popover, Space } from 'antd';
-import React, { useEffect } from 'react';
+import { Avatar, ConfigProvider, Input, Popover, Skeleton, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssChat';
@@ -415,12 +415,6 @@ const Chat = () => {
   }, []);
 
   const handleSubmit = async (data: any) => {
-    // dispatch(
-    //   SEND_MESSAGE_SAGA({
-    //     conversationID,
-    //     body: data,
-    //   }),
-    // );
     if (!conversationID) return;
     if (!data) return;
 
@@ -430,23 +424,6 @@ const Chat = () => {
     });
   };
 
-  // React.useEffect(() => {
-  //   dispatch(GET_FOLLOWERS_SAGA());
-  //   dispatch(GET_CONVERSATIONS_SAGA());
-  // }, []);
-
-  // React.useEffect(() => {
-  //   if (!conversationID) return;
-
-  //   dispatch(GET_CONVERSATION_SAGA(conversationID));
-  // }, [conversationID]);
-
-  // const { followers } = useSelector((state: any) => state.activeListReducer);
-
-  // const { conversations } = useSelector((state: any) => state.conversationReducer);
-
-  // const { currentConversation } = useSelector((state: any) => state.conversationReducer);
-
   const { conversations, isLoadingConversations } = useConversationsData();
 
   const { followers, isLoadingFollowers } = useFollowersData(userID);
@@ -454,6 +431,8 @@ const Chat = () => {
   const { currentConversation, isLoadingConversation } = useCurrentConversationData(
     conversationID ? conversationID : undefined,
   );
+
+  const [isDisplayShare, setIsDisplayShare] = useState(false);
 
   return (
     <ConfigProvider
@@ -463,7 +442,192 @@ const Chat = () => {
     >
       <StyleTotal theme={themeColorSet}>
         {isLoadingConversations || isLoadingFollowers ? (
-          <>Loading hihi!</>
+          <div className="chat flex">
+            <div
+              className="slider flex flex-col justify-between items-center h-screen py-3"
+              style={{
+                width: '5%',
+                borderRight: '1px solid',
+                borderColor: themeColorSet.colorBg4,
+                position: 'fixed',
+                backgroundColor: themeColorSet.colorBg1,
+              }}
+            >
+              <div className="logo">
+                <Skeleton.Button active size="large" shape="circle" />
+              </div>
+              <div className="option">
+                <Space size={30} direction="vertical">
+                  <Skeleton.Button active size="large" shape="circle" />
+                  <Skeleton.Button active size="large" shape="circle" />
+                  <Skeleton.Button active size="large" shape="circle" />
+                </Space>
+              </div>
+              <div className="mode">
+                <Skeleton.Button active size="large" shape="circle" />
+              </div>
+            </div>
+            <div
+              className="insteadComponent"
+              style={{
+                marginLeft: '5%',
+                width: '23%',
+                height: '100vh',
+                position: 'fixed',
+                borderRight: '1px solid',
+                borderColor: themeColorSet.colorBg4,
+              }}
+            >
+              <div
+                className="searchChat h-screen"
+                style={{
+                  backgroundColor: themeColorSet.colorBg1,
+                }}
+              >
+                <div
+                  className="flex items-center w-full px-3 py-4"
+                  style={{
+                    borderBottom: '1px solid',
+                    borderColor: themeColorSet.colorBg4,
+                    height: '12%',
+                  }}
+                >
+                  <Skeleton avatar paragraph={{ rows: 0 }} active />
+                </div>
+                <div
+                  className="searchInput px-3 py-4 w-full flex justify-between items-center"
+                  style={{
+                    borderBottom: '1px solid',
+                    borderColor: themeColorSet.colorBg4,
+                    height: '11%',
+                  }}
+                >
+                  <Skeleton.Button active size="large" block />
+                </div>
+                <div
+                  className="userActive px-3 py-4 w-full"
+                  style={{
+                    borderBottom: '1px solid',
+                    borderColor: themeColorSet.colorBg4,
+                    height: '20%',
+                  }}
+                >
+                  <div className="listUser grid grid-cols-5 mt-5 ">
+                    <Skeleton.Button active size="large" shape="circle" />
+                    <Skeleton.Button active size="large" shape="circle" />
+                    <Skeleton.Button active size="large" shape="circle" />
+                    <Skeleton.Button active size="large" shape="circle" />
+                    <Skeleton.Button active size="large" shape="circle" />
+                  </div>
+                </div>
+                <div className="listUser px-3 py-4">
+                  <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                  <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                  <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                  <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                  <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                </div>
+              </div>
+            </div>
+            <div
+              className="chatBox flex flex-col items-center px-4 py-6"
+              style={{
+                width: '49%',
+                marginLeft: '28%',
+                height: '100vh',
+                position: 'fixed',
+                backgroundColor: themeColorSet.colorBg1,
+                borderRight: '1px solid',
+                borderColor: themeColorSet.colorBg4,
+              }}
+            >
+              <div
+                style={{
+                  height: 500,
+                  width: '100%',
+                }}
+              >
+                <Skeleton className="mt-8" active />
+                <Skeleton className="mt-8" active />
+                <Skeleton className="mt-8" active />
+                <Skeleton className="mt-8" active />
+              </div>
+            </div>
+            <div
+              className="shared"
+              style={{
+                width: '23%',
+                height: '100vh',
+                marginLeft: '77%',
+                position: 'fixed',
+                backgroundColor: themeColorSet.colorBg1,
+              }}
+            >
+              <div
+                className="extension px-3 flex items-center"
+                style={{
+                  height: '12%',
+                  borderBottom: '1px solid',
+                  borderColor: themeColorSet.colorBg4,
+                }}
+              >
+                <div className="flex justify-center items-center w-full">
+                  <div
+                    className="setting text-center"
+                    style={{
+                      width: '25%',
+                    }}
+                  >
+                    <Skeleton.Button active size="large" shape="circle" />
+                  </div>
+                  <div
+                    className="notification text-center"
+                    style={{
+                      width: '25%',
+                    }}
+                  >
+                    <Skeleton.Button active size="large" shape="circle" />
+                  </div>
+                  <div
+                    className="warning text-center"
+                    style={{
+                      width: '25%',
+                    }}
+                  >
+                    <Skeleton.Button active size="large" shape="circle" />
+                  </div>
+                  <div
+                    className="logout text-center"
+                    style={{
+                      width: '25%',
+                    }}
+                  >
+                    <Skeleton.Button active size="large" shape="circle" />
+                  </div>
+                </div>
+              </div>
+              <div className="fileShare px-3 py-4">
+                <div className="sharedMedia">
+                  <Space className="content" size={20}>
+                    <Skeleton.Image active />
+                    <Skeleton.Image active />
+                    <Skeleton.Image active />
+                  </Space>
+                </div>
+                <div className="sharedFile mt-5">
+                  <div className="flex justify-between items-center mb-3"></div>
+                  <div className="content">
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                    <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="chat flex">
             <div
@@ -523,12 +687,12 @@ const Chat = () => {
             <div
               className="chatBox"
               style={{
-                width: '49%',
+                width: isDisplayShare ? '49%' : '72%',
                 marginLeft: '28%',
                 height: '100vh',
                 position: 'fixed',
                 backgroundColor: themeColorSet.colorBg1,
-                borderRight: '1px solid',
+                borderRight: isDisplayShare ? '1px solid' : 'none',
                 borderColor: themeColorSet.colorBg4,
               }}
             >
@@ -536,99 +700,14 @@ const Chat = () => {
                 <EmptyChat key={Math.random()} />
               ) : (
                 <>
-                  <MessageChat key={currentConversation._id} conversationId={currentConversation._id} />
-                  {/* <div
-                    className="header flex justify-between items-center py-4 px-3"
-                    style={{
-                      height: '12%',
-                      borderBottom: '1px solid',
-                      borderColor: themeColorSet.colorBg4,
-                    }}
-                  >
-                    <Space className="myInfo flex items-center py-4 px-3">
-                      <div className="avatar relative">
-                        <Avatar
-                          size={50}
-                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
-                        />
-                        <span
-                          className="dot"
-                          style={{
-                            width: '7px',
-                            height: '7px',
-                            backgroundColor: commonColor.colorGreen1,
-                            display: 'inline-block',
-                            borderRadius: '50%',
-                            position: 'absolute',
-                            right: '0px',
-                            bottom: '0px',
-                          }}
-                        ></span>
-                      </div>
-                      <div className="name_career">
-                        <div
-                          className="name mb-1"
-                          style={{
-                            color: themeColorSet.colorText1,
-                            fontWeight: 600,
-                          }}
-                        >
-                          Carter Donin
-                        </div>
-                        <div
-                          className="career"
-                          style={{
-                            color: themeColorSet.colorText3,
-                          }}
-                        >
-                          Product Manager
-                        </div>
-                      </div>
-                    </Space>
-                    <Space className="extension">
-                      <div className="searchContent mr-2" style={{ color: themeColorSet.colorText3 }}>
-                        <SearchOutlined className="text-2xl" />
-                      </div>
-                      <div className="moreOption">
-                        <FontAwesomeIcon className="icon" icon={faEllipsis} size="xl" />
-                      </div>
-                    </Space>
+                  <div style={{ height: '92%' }}>
+                    <MessageChat
+                      key={currentConversation._id}
+                      conversationId={currentConversation._id}
+                      setIsDisplayShare={setIsDisplayShare}
+                      isDisplayShare={isDisplayShare}
+                    />
                   </div>
-                  <div
-                    className="body px-3"
-                    style={{
-                      height: '80%',
-                      overflow: 'auto',
-                    }}
-                  >
-                    <div className="chatContent">
-                      {messageArr.map((item: any, index: any) => {
-                        return !item.me ? (
-                          <div className="message flex items-center my-8 w-2/3" key={index}>
-                            <div className="avatar mr-3">
-                              <Avatar
-                                size={40}
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU"
-                              />
-                            </div>
-                            <div className="text">{item.text}</div>
-                          </div>
-                        ) : (
-                          <div className="message my-8 pl-60 flex justify-end">
-                            <div
-                              className="text px-4 py-2"
-                              style={{
-                                backgroundColor: commonColor.colorBlue3,
-                                borderRadius: '30px',
-                              }}
-                            >
-                              {item.text}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div> */}
                   <div
                     className="footer flex justify-between items-center"
                     style={{
@@ -692,156 +771,219 @@ const Chat = () => {
                 </>
               )}
             </div>
-            <div
-              className="shared"
-              style={{
-                width: '23%',
-                height: '100vh',
-                marginLeft: '77%',
-                position: 'fixed',
-                backgroundColor: themeColorSet.colorBg1,
-              }}
-            >
+            {isDisplayShare ? (
               <div
-                className="extension px-3 flex items-center"
+                className="shared"
                 style={{
-                  height: '12%',
-                  borderBottom: '1px solid',
-                  borderColor: themeColorSet.colorBg4,
+                  width: '23%',
+                  height: '100vh',
+                  marginLeft: '77%',
+                  position: 'fixed',
+                  backgroundColor: themeColorSet.colorBg1,
                 }}
               >
-                <div className="flex justify-center items-center w-full">
-                  <div
-                    className="setting text-center"
-                    style={{
-                      width: '25%',
-                    }}
-                  >
-                    <SettingOutlined
-                      className="extensionItem"
-                      style={{
-                        fontSize: '1.5rem',
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="notification text-center"
-                    style={{
-                      width: '25%',
-                    }}
-                  >
-                    <BellOutlined
-                      className="extensionItem"
-                      style={{
-                        fontSize: '1.5rem',
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="warning text-center"
-                    style={{
-                      width: '25%',
-                    }}
-                  >
-                    <ExclamationCircleOutlined
-                      className="extensionItem"
-                      style={{
-                        fontSize: '1.5rem',
-                      }}
-                    />
-                  </div>
-                  <div
-                    className="logout text-center"
-                    style={{
-                      width: '25%',
-                    }}
-                  >
-                    <LogoutOutlined
-                      className="extensionItem"
-                      style={{
-                        fontSize: '1.5rem',
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="fileShare px-3 py-4">
-                <div className="sharedMedia">
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="titleContent font-bold">Shared Media</div>
+                <div
+                  className="extension px-3 flex items-center"
+                  style={{
+                    height: '12%',
+                    borderBottom: '1px solid',
+                    borderColor: themeColorSet.colorBg4,
+                  }}
+                >
+                  <div className="flex justify-center items-center w-full">
                     <div
-                      className="seeAll"
+                      className="setting text-center"
                       style={{
-                        color: themeColorSet.colorText3,
-                        fontSize: '0.8rem',
-                        textDecoration: 'underline',
+                        width: '25%',
                       }}
                     >
-                      See All
+                      <SettingOutlined
+                        className="extensionItem"
+                        style={{
+                          fontSize: '1.5rem',
+                        }}
+                      />
+                    </div>
+                    <div
+                      className="notification text-center"
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      <BellOutlined
+                        className="extensionItem"
+                        style={{
+                          fontSize: '1.5rem',
+                        }}
+                      />
+                    </div>
+                    <div
+                      className="warning text-center"
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      <ExclamationCircleOutlined
+                        className="extensionItem"
+                        style={{
+                          fontSize: '1.5rem',
+                        }}
+                      />
+                    </div>
+                    <div
+                      className="logout text-center"
+                      style={{
+                        width: '25%',
+                      }}
+                    >
+                      <LogoutOutlined
+                        className="extensionItem"
+                        style={{
+                          fontSize: '1.5rem',
+                        }}
+                      />
                     </div>
                   </div>
-                  <div className="content flex justify-between items-center">
-                    {sharedMediaArr.map((item: any, index: any) => {
-                      return (
-                        <div
-                          className="imageContent p-2"
-                          key={index}
-                          style={{
-                            width: '20%',
-                          }}
-                        >
-                          <img
-                            className="w-full h-full"
-                            src={item.image}
-                            alt=""
+                </div>
+                <div className="fileShare px-3 py-4">
+                  <div className="sharedMedia">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="titleContent font-bold">Shared Media</div>
+                      <div
+                        className="seeAll"
+                        style={{
+                          color: themeColorSet.colorText3,
+                          fontSize: '0.8rem',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        See All
+                      </div>
+                    </div>
+                    <div className="content flex justify-between items-center">
+                      {sharedMediaArr.map((item: any, index: any) => {
+                        return (
+                          <div
+                            className="imageContent p-2"
+                            key={index}
                             style={{
-                              height: '4rem',
-                              borderRadius: '10px',
-                              cursor: 'pointer',
+                              width: '20%',
                             }}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="sharedFile mt-5">
-                  <div className="flex justify-between items-center mb-3">
-                    <div className="titleContent font-bold">Shared Files</div>
-                    <div
-                      className="seeAll"
-                      style={{
-                        color: themeColorSet.colorText3,
-                        fontSize: '0.8rem',
-                        textDecoration: 'underline',
-                      }}
-                    >
-                      See All
+                          >
+                            <img
+                              className="w-full h-full"
+                              src={item.image}
+                              alt=""
+                              style={{
+                                height: '4rem',
+                                borderRadius: '10px',
+                                cursor: 'pointer',
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
-                  <div className="content">
-                    {sharedFileArr.map((item: any, index: any) => {
-                      return (
-                        <div className="fileContent flex justify-between items-center mb-2 cursor-pointer">
-                          <div className="left flex justify-between items-center">
+                  <div className="sharedFile mt-5">
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="titleContent font-bold">Shared Files</div>
+                      <div
+                        className="seeAll"
+                        style={{
+                          color: themeColorSet.colorText3,
+                          fontSize: '0.8rem',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        See All
+                      </div>
+                    </div>
+                    <div className="content">
+                      {sharedFileArr.map((item: any, index: any) => {
+                        return (
+                          <div className="fileContent flex justify-between items-center mb-2 cursor-pointer">
+                            <div className="left flex justify-between items-center">
+                              <div
+                                className="image px-3 py-3 mr-2"
+                                style={{
+                                  border: '1px solid',
+                                  borderColor: themeColorSet.colorBg4,
+                                  borderRadius: '10px',
+                                }}
+                              >
+                                <img
+                                  src={item.image}
+                                  alt="file"
+                                  style={{
+                                    width: '1.8rem',
+                                    height: '1.8rem',
+                                  }}
+                                />
+                              </div>
+                              <Space className="info" direction="vertical">
+                                <div
+                                  className="name"
+                                  style={{
+                                    color: themeColorSet.colorText1,
+                                    fontWeight: '600',
+                                  }}
+                                >
+                                  {item.name}
+                                </div>
+                                <Space
+                                  style={{
+                                    color: themeColorSet.colorText3,
+                                  }}
+                                >
+                                  <div className="date">{item.dateUpload}</div>
+                                  <div className="dot">•</div>
+                                  <div className="size">{item.size}</div>
+                                </Space>
+                              </Space>
+                            </div>
+                            <div className="right">
+                              <FontAwesomeIcon icon={faDownload} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="sharedLink mt-5">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="titleContent font-bold">Shared Links</div>
+                      <div
+                        className="seeAll"
+                        style={{
+                          color: themeColorSet.colorText3,
+                          fontSize: '0.8rem',
+                          textDecoration: 'underline',
+                        }}
+                      >
+                        See All
+                      </div>
+                    </div>
+                    <div className="content">
+                      {sharedLinkArr.map((item: any, index: any) => {
+                        return (
+                          <div className="fileContent flex items-center mb-2 cursor-pointer">
                             <div
-                              className="image px-3 py-3 mr-2"
+                              className="image mr-2"
                               style={{
-                                border: '1px solid',
-                                borderColor: themeColorSet.colorBg4,
-                                borderRadius: '10px',
+                                width: '3.5rem',
                               }}
                             >
                               <img
                                 src={item.image}
-                                alt="file"
+                                alt="link"
                                 style={{
-                                  width: '1.8rem',
-                                  height: '1.8rem',
+                                  height: '3.5rem',
+                                  borderRadius: '10px',
                                 }}
                               />
                             </div>
-                            <Space className="info" direction="vertical">
+                            <Space className="link" direction="vertical">
                               <div
                                 className="name"
                                 style={{
@@ -851,85 +993,26 @@ const Chat = () => {
                               >
                                 {item.name}
                               </div>
-                              <Space
+                              <div
+                                className="linkContent"
                                 style={{
                                   color: themeColorSet.colorText3,
+                                  fontSize: '0.9rem',
                                 }}
                               >
-                                <div className="date">{item.dateUpload}</div>
-                                <div className="dot">•</div>
-                                <div className="size">{item.size}</div>
-                              </Space>
+                                {item.link?.length > 35 ? item.link?.slice(0, 35) + '...' : item.link}
+                              </div>
                             </Space>
                           </div>
-                          <div className="right">
-                            <FontAwesomeIcon icon={faDownload} />
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="sharedLink mt-5">
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="titleContent font-bold">Shared Links</div>
-                    <div
-                      className="seeAll"
-                      style={{
-                        color: themeColorSet.colorText3,
-                        fontSize: '0.8rem',
-                        textDecoration: 'underline',
-                      }}
-                    >
-                      See All
+                        );
+                      })}
                     </div>
-                  </div>
-                  <div className="content">
-                    {sharedLinkArr.map((item: any, index: any) => {
-                      return (
-                        <div className="fileContent flex items-center mb-2 cursor-pointer">
-                          <div
-                            className="image mr-2"
-                            style={{
-                              width: '3.5rem',
-                            }}
-                          >
-                            <img
-                              src={item.image}
-                              alt="link"
-                              style={{
-                                height: '3.5rem',
-                                borderRadius: '10px',
-                              }}
-                            />
-                          </div>
-                          <Space className="link" direction="vertical">
-                            <div
-                              className="name"
-                              style={{
-                                color: themeColorSet.colorText1,
-                                fontWeight: '600',
-                              }}
-                            >
-                              {item.name}
-                            </div>
-                            <div
-                              className="linkContent"
-                              style={{
-                                color: themeColorSet.colorText3,
-                                fontSize: '0.9rem',
-                              }}
-                            >
-                              {item.link?.length > 35 ? item.link?.slice(0, 35) + '...' : item.link}
-                            </div>
-                          </Space>
-                        </div>
-                      );
-                    })}
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
           </div>
         )}
       </StyleTotal>

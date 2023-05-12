@@ -34,7 +34,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
 
-interface PostProps { 
+interface PostProps {
   post: any;
   userInfo: any;
 }
@@ -163,7 +163,12 @@ const MyPost = (PostProps: PostProps) => {
           openDrawer({
             title: 'Edit Post',
             component: (
-              <EditPostForm id={PostProps.post?._id} title={PostProps.post?.title} content={PostProps.post?.content} />
+              <EditPostForm
+                id={PostProps.post?._id}
+                title={PostProps.post?.title}
+                content={PostProps.post?.content}
+                img={PostProps.post?.url}
+              />
             ),
           }),
         );
@@ -296,18 +301,14 @@ const MyPost = (PostProps: PostProps) => {
             <div className="title font-bold">{PostProps.post?.title}</div>
             <div className="content mt-3">
               <div className="content__text">
-                <ReactQuill
-                  value={displayContent}
-                  readOnly={true}
-                  theme={'bubble'}
-                />
+                <ReactQuill value={displayContent} readOnly={true} theme={'bubble'} />
                 {PostProps.post?.content?.length > 250 && (
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}
               </div>
-              {PostProps.post.image ? (
+              {PostProps.post.url ? (
                 <div className="contentImage mt-3">
-                  <img src={PostProps.post.image} alt="" style={{ width: '100%' }} />
+                  <img src={PostProps.post.url} alt="" style={{ width: '100%' }} />
                 </div>
               ) : link ? (
                 <a

@@ -105,7 +105,7 @@ const EditProfileForm = () => {
               <div
                 className="coverImage w-full h-72 rounded-xl"
                 style={{
-                  backgroundImage: `url("/images/TimeLinePage/cover2.jpg")`,
+                  backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
@@ -136,7 +136,7 @@ const EditProfileForm = () => {
           <section className="avatar mt-3 flex items-center">
             <div className="avatarImage">
               <img
-                src="https://lh3.googleusercontent.com/a/AGNmyxZvsAlaggV_fSB9ID1lO4I0urHL8s13mzmcJU-kqQ=s288"
+                src={userInfo?.userImage || '/images/TimeLinePage/avatar.jpg'}
                 alt="avatar"
                 style={{
                   width: '7rem',

@@ -85,7 +85,7 @@ const Profile = (Props: Props) => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("/images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -98,7 +98,7 @@ const Profile = (Props: Props) => {
                   />
                 </div>
               </Col>
-              <Col offset={4} span={16}>
+              <Col offset={3} span={18}>
                 <Row className="py-5">
                   <Col offset={6} span={12}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>

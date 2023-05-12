@@ -27,7 +27,6 @@ var toolbarOptions = [
 interface Props {
   userInfo: any;
 }
-
 const NewPost = (Props: Props) => {
   const dispatch = useDispatch();
   const [messageApi, contextHolder] = message.useMessage();
@@ -42,6 +41,7 @@ const NewPost = (Props: Props) => {
 
   useEffect(() => {
     quill = new Quill('#editor', {
+      placeholder: 'Add a Content',
       modules: {
         toolbar: toolbarOptions,
       },
@@ -128,7 +128,7 @@ const NewPost = (Props: Props) => {
       {contextHolder}
       <StyleTotal theme={themeColorSet} className="rounded-lg mb-4">
         <div className="newPost px-4 py-3">
-          <div className="newPostHeader text-center text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
+          <div className="newPostHeader text-center text-xl font-bold" style={{ color: themeColorSet.colorText1 }}>
             Create Post
           </div>
           <div className="newPostBody">
@@ -144,7 +144,6 @@ const NewPost = (Props: Props) => {
               </div>
             </div>
             <div className="AddTitle mt-4 z-10">
-              {/* <Form.Item name="title"> */}
               <Input
                 name="title"
                 placeholder="Add a Title"
@@ -153,7 +152,6 @@ const NewPost = (Props: Props) => {
                 maxLength={150}
                 onChange={formik.handleChange}
               ></Input>
-              {/* </Form.Item> */}
             </div>
             <div className="AddContent mt-4">
               <div id="editor" />
@@ -183,7 +181,7 @@ const NewPost = (Props: Props) => {
                 <FontAwesomeIcon className="item" size="lg" icon={faCode} />
               </span>
               <span>
-                <Upload listType="picture" onChange={handleUpload}>
+                <Upload listType="picture" onChange={handleUpload} maxCount={1}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
@@ -191,7 +189,7 @@ const NewPost = (Props: Props) => {
             <div className="newPostFooter__right">
               <button
                 type="submit"
-                className="createButton w-full font-bold px-4 py-2"
+                className="createButton w-full font-bold px-6 py-2 rounded-3xl"
                 style={{ color: themeColorSet.colorText1 }}
                 onClick={() => {
                   formik.handleSubmit();

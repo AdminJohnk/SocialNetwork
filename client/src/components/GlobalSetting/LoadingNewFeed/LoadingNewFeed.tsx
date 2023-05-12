@@ -5,7 +5,7 @@ const LoadingNewFeed = () => {
   return (
     <div className="loadingNewFeed">
       <Row>
-        <Col offset={4} span={16}>
+      <Col offset={3} span={18}>
           <div className="new-feed flex justify-between mt-10">
             <div className="new-feed-left w-8/12">
               <div className="">
@@ -19,10 +19,10 @@ const LoadingNewFeed = () => {
                 <Skeleton.Button active />
               </Space>
               <div className="post mt-10">
-                <Skeleton avatar paragraph={{ rows: 5 }} />
-                <Skeleton avatar paragraph={{ rows: 5 }} />
-                <Skeleton avatar paragraph={{ rows: 5 }} />
-                <Skeleton avatar paragraph={{ rows: 5 }} />
+                <Skeleton active avatar paragraph={{ rows: 5 }} />
+                <Skeleton active avatar paragraph={{ rows: 5 }} />
+                <Skeleton active avatar paragraph={{ rows: 5 }} />
+                <Skeleton active avatar paragraph={{ rows: 5 }} />
               </div>
             </div>
             <div className="new-feed-right w-4/12 pl-3">

@@ -13,9 +13,13 @@ import { GET_MESSAGES_SAGA, SEEN_MESSAGE_SAGA } from '../../../redux/actionSaga/
 import { useCurrentConversationData, useMessagesData } from '../../../util/functions/DataProvider';
 import { messageService } from '../../../services/MessageService';
 import useIntersectionObserver from '../../../util/functions/useIntersectionObserver';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 interface IParams {
   conversationId: string;
+  setIsDisplayShare: any;
+  isDisplayShare: boolean;
 }
 
 const MessageChat = (Props: IParams) => {
@@ -109,7 +113,7 @@ const MessageChat = (Props: IParams) => {
   }, [isActive]);
 
   return (
-    <>
+    <StyleTotal className="h-full" theme={themeColorSet}>
       <div
         className="header flex justify-between items-center py-6 px-6"
         style={{
@@ -137,6 +141,15 @@ const MessageChat = (Props: IParams) => {
             </div>
           </div>
         </div>
+        <div className="displayShare">
+          <FontAwesomeIcon
+            className="text-xl mr-0 cursor-pointer"
+            icon={faBars}
+            onClick={() => {
+              Props.setIsDisplayShare(!Props.isDisplayShare);
+            }}
+          />
+        </div>
       </div>
       <div
         className="body px-3"
@@ -153,7 +166,7 @@ const MessageChat = (Props: IParams) => {
           <div className="pt-12" ref={bottomRef} />
         </div>
       </div>
-    </>
+    </StyleTotal>
   );
 };
 

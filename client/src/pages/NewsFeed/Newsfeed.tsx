@@ -185,7 +185,7 @@ const NewFeed = () => {
           <LoadingNewFeed />
         ) : (
           <Row>
-            <Col offset={4} span={16}>
+            <Col offset={3} span={18}>
               <div className="new-feed flex justify-between mt-10">
                 <div className="new-feed-left w-8/12">
                   <div className="">
@@ -193,7 +193,7 @@ const NewFeed = () => {
                   </div>
 
                   <div className="show">
-                    <div
+                    {/* <div
                       className="select-show w-full rounded-lg mb-4"
                       style={{ backgroundColor: themeColorSet.colorBg2 }}
                     >
@@ -261,7 +261,7 @@ const NewFeed = () => {
                           Hot
                         </div>
                       </Button>
-                    </div>
+                    </div> */}
                     {postArr.map((item: any, index: number) => {
                       return (
                         <div>
@@ -288,7 +288,7 @@ const NewFeed = () => {
                   >
                     <span
                       style={{
-                        fontSize: '1.5rem',
+                        fontSize: '1.2rem',
                         fontWeight: 600,
                         color: themeColorSet.colorText1,
                       }}
@@ -379,7 +379,7 @@ const NewFeed = () => {
                                       fontSize: '0.9rem',
                                     }}
                                   >
-                                    <span>{item.title}</span>
+                                    <span>{item.title?.length > 28 ? item.title?.slice(0, 28) + '...' : item.title}</span>
                                   </div>
                                   <div className="popular-post-item-view mt-1">
                                     <FontAwesomeIcon
@@ -416,7 +416,7 @@ const NewFeed = () => {
                   >
                     <span
                       style={{
-                        fontSize: '1.5rem',
+                        fontSize: '1.2rem',
                         fontWeight: 600,
                         color: themeColorSet.colorText1,
                       }}

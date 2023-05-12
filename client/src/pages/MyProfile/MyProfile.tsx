@@ -85,7 +85,7 @@ const MyProfile = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("/images/TimeLinePage/cover2.jpg")`,
+                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
@@ -98,7 +98,7 @@ const MyProfile = () => {
                   />
                 </div>
               </Col>
-              <Col offset={4} span={16}>
+              <Col offset={3} span={18}>
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6} span={12}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
@@ -121,7 +121,7 @@ const MyProfile = () => {
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
                       <div className="editProfile">
                         <button
-                          className="btnEditProfile px-4 py-2"
+                          className="btnEditProfile px-6 py-3"
                           onClick={() => {
                             dispatch(
                               openDrawer({
