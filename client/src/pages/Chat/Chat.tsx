@@ -45,6 +45,7 @@ import { messageService } from '../../services/MessageService';
 import { setUserID } from '../../redux/Slice/AuthSlice';
 import { setUser } from '../../redux/Slice/UserSlice';
 import useMessage from 'antd/es/message/useMessage';
+import UploadComponent from '../../components/UploadComponent/UploadComponent';
 
 const Chat = () => {
   const messageArr = [
@@ -455,6 +456,20 @@ const Chat = () => {
     conversationID ? conversationID : undefined,
   );
 
+  const handleUpload = async (error: any, result: any, widget: any) => {
+    if (error) {
+      widget.close({
+        quiet: true,
+      });
+      return;
+    }
+
+    await messageService.sendMessage({
+      conversationID,
+      image: result?.info?.secure_url,
+    });
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -513,7 +528,7 @@ const Chat = () => {
                 key={
                   conversations[conversations.length - 1]?.messages[
                     conversations[conversations.length - 1]?.messages?.length - 1
-                  ]?._id || Math.random()
+                  ]?._id
                 }
                 users={followers}
                 initialItems={conversations}
@@ -681,9 +696,11 @@ const Chat = () => {
                         width: '12%',
                       }}
                     >
-                      <div className="upload">
-                        <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faPaperclip} />
-                      </div>
+                      <UploadComponent onUpload={handleUpload}>
+                        <div className="upload">
+                          <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faPaperclip} />
+                        </div>
+                      </UploadComponent>
                       <div className="micro">
                         <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faMicrophone} />
                       </div>
