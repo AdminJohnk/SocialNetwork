@@ -23,3 +23,40 @@ function* registerUserSaga({ payload }: any) {
 export function* theoDoiRegisterUserSaga() {
   yield takeLatest(REGIS_USER_SAGA, registerUserSaga);
 }
+
+// Update User Saga
+function* updateUserSaga({ payload }: any) {
+  console.log(payload);
+  try {
+    const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setUser(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiUpdateUserSaga() {
+  yield takeLatest(UPDATE_USER_SAGA, updateUserSaga);
+}
+
+// Get Followers Saga
+function* getFollowersSaga() {
+  try {
+    const { data, status } = yield userService.getFollowers();
+    if (status === STATUS_CODE.SUCCESS) {
+      data.content.followers.forEach((follower: any) => {
+        follower.username = follower.lastname + ' ' + follower.firstname;
+      });
+      yield put(setUser(data.content));
+      yield put(setFollowers(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetFollowersSaga() {
+  yield takeLatest(GET_FOLLOWERS_SAGA, getFollowersSaga);
+}
