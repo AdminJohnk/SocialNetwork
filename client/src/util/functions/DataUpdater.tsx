@@ -14,7 +14,7 @@ const createPost = () => {
 
   const { mutate, isLoading, isError, isSuccess } = useMutation(
     async (newPost: any) => {
-      const { data } = await postService.createPost(newPost, null);
+      const { data } = await postService.createPost(newPost);
       return data;
     },
     {

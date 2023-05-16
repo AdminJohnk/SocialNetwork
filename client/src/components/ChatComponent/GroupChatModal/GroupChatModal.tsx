@@ -4,8 +4,6 @@ import { DefaultOptionType } from 'antd/es/select';
 interface GroupChatModalProps {
   users: any;
   setValue: any;
-  members: any;
-  name: String;
   setName: any;
 }
 

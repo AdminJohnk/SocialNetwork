@@ -56,7 +56,11 @@ const ConversationBox = (Props: ConversationBoxProps) => {
         backgroundColor: Props.selected ? themeColorSet.colorBg2 : themeColorSet.colorBg1,
       }}
     >
-      {Props.data.isGroup ? <AvatarGroup users={Props.data.users} /> : <Avatar user={otherUser} />}
+      {Props.data.isGroup ? (
+        <AvatarGroup key={Props.data._id} users={Props.data.users} />
+      ) : (
+        <Avatar key={Props.data._id} user={otherUser} />
+      )}
 
       <div className="min-w-0 flex-1">
         <div className="focus:outline-none">

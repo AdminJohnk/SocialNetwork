@@ -7,10 +7,11 @@ import * as messageSaga from './MessageSaga';
 export function* rootSaga() {
   yield all([
     // authSaga
-    authSaga.theoDoicheckLoginSaga(),
     authSaga.theoDoiLoginSaga(),
     authSaga.theoDoiLogoutSaga(),
     authSaga.theoDoiGetUserIDSaga(),
+    authSaga.theoDoiLoginWithGoogleSaga(),
+    authSaga.theoDoiCheckLoginSaga(),
 
     // userSaga
     userSaga.theoDoiRegisterUserSaga(),

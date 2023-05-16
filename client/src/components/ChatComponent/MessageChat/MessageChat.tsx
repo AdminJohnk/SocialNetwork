@@ -104,7 +104,7 @@ const MessageChat = (Props: IParams) => {
       pusherClient.unbind('new-message', messageHandler);
       pusherClient.unbind('message-update', updateMessageHandler);
     };
-  }, [Props.conversationId, messages, messagesState]);
+  }, [Props.conversationId]);
 
   useIntersectionObserver(bottomRef, seenMessage);
 
@@ -114,58 +114,64 @@ const MessageChat = (Props: IParams) => {
 
   return (
     <StyleTotal className="h-full" theme={themeColorSet}>
-      <div
-        className="header flex justify-between items-center py-6 px-6"
-        style={{
-          height: '12%',
-          borderBottom: '1px solid',
-          borderColor: themeColorSet.colorBg4,
-        }}
-      >
-        <div className="flex gap-3 items-center">
-          {currentConversation.isGroup ? (
-            <AvatarGroup users={currentConversation.users} />
-          ) : (
-            <Avatar user={otherUser} />
-          )}
-          <div className="flex flex-col">
-            <div>{currentConversation.name || otherUser.username}</div>
-            <div
-              className="text-sm"
-              style={{
-                color: styleStatus,
-                fontWeight: 400,
-              }}
-            >
-              {statusText}
+      {isLoadingConversation ? (
+        <></>
+      ) : (
+        <>
+          <div
+            className="header flex justify-between items-center py-6 px-6"
+            style={{
+              height: '12%',
+              borderBottom: '1px solid',
+              borderColor: themeColorSet.colorBg4,
+            }}
+          >
+            <div className="flex gap-3 items-center">
+              {currentConversation.isGroup ? (
+                <AvatarGroup key={currentConversation._id} users={currentConversation.users} />
+              ) : (
+                <Avatar key={otherUser} user={otherUser} />
+              )}
+              <div className="flex flex-col">
+                <div>{currentConversation.name || otherUser.username}</div>
+                <div
+                  className="text-sm"
+                  style={{
+                    color: styleStatus,
+                    fontWeight: 400,
+                  }}
+                >
+                  {statusText}
+                </div>
+              </div>
+            </div>
+            <div className="displayShare">
+              <FontAwesomeIcon
+                className="text-xl mr-0 cursor-pointer"
+                icon={faBars}
+                onClick={() => {
+                  Props.setIsDisplayShare(!Props.isDisplayShare);
+                }}
+              />
             </div>
           </div>
-        </div>
-        <div className="displayShare">
-          <FontAwesomeIcon
-            className="text-xl mr-0 cursor-pointer"
-            icon={faBars}
-            onClick={() => {
-              Props.setIsDisplayShare(!Props.isDisplayShare);
+          <div
+            className="body px-3"
+            style={{
+              height: '80%',
+              overflow: 'auto',
             }}
-          />
-        </div>
-      </div>
-      <div
-        className="body px-3"
-        style={{
-          height: '80%',
-          overflow: 'auto',
-        }}
-      >
-        <div className="flex-1 overflow-y-auto">
-          {messagesState?.length !== 0 &&
-            messagesState?.map((message: any, i: any) => (
-              <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
-            ))}
-          <div className="pt-12" ref={bottomRef} />
-        </div>
-      </div>
+          >
+            <div className="flex-1 overflow-y-auto">
+              {messagesState?.length !== 0 &&
+                messagesState?.map((message: any, i: any) => (
+                  <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
+                ))}
+              <div className="pt-12" ref={bottomRef} />
+            </div>
+          </div>
+        </>
+      )}
     </StyleTotal>
   );
 };

@@ -20,7 +20,7 @@ const ModalHOC = () => {
   );
 
   const onClose = () => {
-    dispatch(closeModal({}));
+    dispatch(closeModal());
   };
 
   return (
