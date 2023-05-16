@@ -2,6 +2,7 @@ import CommentDetail from '../../Comment/CommentDetail';
 import { useState, useEffect } from 'react';
 import MyPostShare from '../../Post/MyPostShare';
 import MyPost from '../../Post/MyPost';
+import StyleTotal from './cssPostDetail';
 
 interface PostProps {
   post: any;
@@ -24,43 +25,51 @@ const MyPostDetail = (Props: PostProps) => {
   };
 
   return (
-    <div>
-      {Props.postShare ? (
-        <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
-      ) : (
-        <MyPost post={Props.post} userInfo={Props.userInfo} />
-      )}
-      {Props.post?.comments?.map((item: any, index: number) => {
-        return (
-          <div className="px-4">
-            {item ? (
-              <CommentDetail
-                onData={Props.onData}
-                key={index}
-                comment={item}
-                userInfo={Props.userInfo}
-                selectedCommentId={selectedCommentId}
-                onSelectComment={handleSelectComment}
-              >
-                {item.listReply?.map((item: any, index: number) => {
-                  return (
-                    <CommentDetail
-                      onData={Props.onData}
-                      key={index}
-                      comment={item}
-                      userInfo={Props.userInfo}
-                      selectedCommentId={selectedCommentId}
-                      onSelectComment={handleSelectComment}
-                      isReply={true}
-                    />
-                  );
-                })}
-              </CommentDetail>
-            ) : null}
-          </div>
-        );
-      })}
-    </div>
+    <StyleTotal>
+      <div
+        className="postDetail"
+        style={{
+          maxHeight: '78vh',
+          overflow: 'auto',
+        }}
+      >
+        {Props.postShare ? (
+          <MyPostShare post={Props.post} userInfo={Props.userInfo} owner={Props.owner} />
+        ) : (
+          <MyPost post={Props.post} userInfo={Props.userInfo} />
+        )}
+        {Props.post?.comments?.map((item: any, index: number) => {
+          return (
+            <div className="px-4">
+              {item ? (
+                <CommentDetail
+                  onData={Props.onData}
+                  key={index}
+                  comment={item}
+                  userInfo={Props.userInfo}
+                  selectedCommentId={selectedCommentId}
+                  onSelectComment={handleSelectComment}
+                >
+                  {item.listReply?.map((item: any, index: number) => {
+                    return (
+                      <CommentDetail
+                        onData={Props.onData}
+                        key={index}
+                        comment={item}
+                        userInfo={Props.userInfo}
+                        selectedCommentId={selectedCommentId}
+                        onSelectComment={handleSelectComment}
+                        isReply={true}
+                      />
+                    );
+                  })}
+                </CommentDetail>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+    </StyleTotal>
   );
 };
 

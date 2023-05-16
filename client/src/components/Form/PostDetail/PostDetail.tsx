@@ -29,8 +29,8 @@ const PostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          height: '78vh',  
-          overflow: 'auto', 
+          maxHeight: '78vh',
+          overflow: 'auto',
         }}
       >
         {Props.postShare ? (
