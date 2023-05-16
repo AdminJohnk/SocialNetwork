@@ -47,6 +47,8 @@ function* LogoutSaga() {
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.removeItem(TOKEN);
       yield put(setLogin({ login: false }));
+      const { navigate } = yield select((state) => state.functionReducer);
+      navigate('/login');
     }
   } catch (err: any) {
     console.log(err);
@@ -115,6 +117,7 @@ function* CheckLoginSaga() {
       yield put(setLogin({ login: false }));
     }
   } catch (err: any) {
+    yield put(setLogin({ login: false }));
     console.log(err);
   }
 }

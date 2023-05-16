@@ -3,8 +3,8 @@ import { DefaultOptionType } from 'antd/es/select';
 
 interface GroupChatModalProps {
   users: any;
-  setValue: any;
-  setName: any;
+  setValue: (value: []) => void;
+  setName: (name: string) => void;
 }
 
 const GroupChatModal = (Props: GroupChatModalProps) => {

@@ -1,7 +1,7 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 import { userService } from '../../services/UserService';
 import { STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
-import { GET_FOLLOWERS_SAGA, REGIS_USER_SAGA, UPDATE_USER_SAGA } from '../actionSaga/UserActionSaga';
+import { GET_FOLLOWERS_SAGA, GET_USER_INFO_SAGA, REGIS_USER_SAGA, UPDATE_USER_SAGA } from '../actionSaga/UserActionSaga';
 import { setUser } from '../Slice/UserSlice';
 import { setFollowers } from '../Slice/ActiveListSlice';
 import { setOwnerInfo } from '../Slice/PostSlice';
@@ -28,7 +28,6 @@ function* updateUserSaga({ payload }: any) {
   try {
     const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
     if (status === STATUS_CODE.SUCCESS) {
-      console.log(data.content);
       yield put(setOwnerInfo(data.content));
     }
   } catch (err: any) {
@@ -58,4 +57,20 @@ function* getFollowersSaga() {
 
 export function* theoDoiGetFollowersSaga() {
   yield takeLatest(GET_FOLLOWERS_SAGA, getFollowersSaga);
+}
+
+// Get User Info Saga
+function* getUserInfoSaga() {
+  try {
+    const { data, status } = yield userService.getUserInfo();
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(setUser(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetUserInfoSaga() {
+  yield takeLatest(GET_USER_INFO_SAGA, getUserInfoSaga);
 }

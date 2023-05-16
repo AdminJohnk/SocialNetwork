@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar, Badge, Col, ConfigProvider, Row, Space, Switch, theme } from 'antd';
+import { Avatar, Badge, Button, Col, ConfigProvider, Dropdown, Row, Space, Switch, theme } from 'antd';
+import type { MenuProps } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -13,6 +14,7 @@ import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { setTheme } from '../../redux/Slice/ThemeSlice';
 import { NavLink } from 'react-router-dom';
 import DayNightSwitch from '../Button/Day&NightSwitch';
+import { LOGOUT_SAGA } from '../../redux/actionSaga/AuthActionSaga';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -33,6 +35,49 @@ const Headers = () => {
       dispatch(setTheme({ theme: LIGHT_THEME }));
     }
   };
+
+  const handleLogout = () => {
+    dispatch(LOGOUT_SAGA());
+  };
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <NavLink to={`/user/${userInfo?.id}`}>
+          <div
+            className="myInfo flex items-center py-1 px-1"
+            style={{
+              height: '12%',
+            }}
+          >
+            <div className="avatar relative">
+              <Avatar key={userInfo.id} src={userInfo.userImage} />
+            </div>
+            <div className="name_career">
+              <div
+                className="name ml-4"
+                style={{
+                  color: themeColorSet.colorText1,
+                  fontWeight: 600,
+                }}
+              >
+                {userInfo.username}
+              </div>
+            </div>
+          </div>
+        </NavLink>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <Button className="w-full h-full " onClick={handleLogout}>
+          Log Out
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <ConfigProvider
@@ -88,9 +133,10 @@ const Headers = () => {
                     <Badge count={7}>
                       <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
                     </Badge>
-                    <NavLink to={`/user/${userInfo?.id}`}>
+                    <Dropdown menu={{ items }} trigger={['click']} placement="bottom">
                       <Avatar className="avatarButton cursor-pointer" icon={<UserOutlined />} size="default" />
-                    </NavLink>
+                    </Dropdown>
+
                     {/* <Switch
                       checkedChildren="dark"
                       unCheckedChildren="light"

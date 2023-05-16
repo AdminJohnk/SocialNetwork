@@ -144,6 +144,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             style={{
               borderColor: themeColorSet.colorText3,
             }}
+            onPressEnter={handleSubmitComment}
             maxLength={150}
             addonAfter={
               <Popover

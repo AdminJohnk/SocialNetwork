@@ -31,9 +31,6 @@ const PostWrapper = () => {
     dispatch(GET_USER_ID());
   }, []);
 
-  console.log('post', post);
-  console.log('userInfo', userInfo);
-
   if (!post || !userInfo) {
     return (
       <ConfigProvider
