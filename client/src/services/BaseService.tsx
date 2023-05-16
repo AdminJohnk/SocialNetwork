@@ -11,7 +11,6 @@ export class BaseService {
       headers: { Authorization: 'Bearer ' + localStorage.getItem(TOKEN) },
     });
   }
-
   post(url: string, model: any) {
     return axios({
       url: `${DOMAIN_NAME}${url}`,
@@ -24,7 +23,6 @@ export class BaseService {
       },
     });
   }
-
   get(url: string) {
     return axios({
       url: `${DOMAIN_NAME}${url}`,
@@ -41,5 +39,4 @@ export class BaseService {
       headers: { Authorization: 'Bearer ' + localStorage.getItem(TOKEN) },
     });
   }
-
 }

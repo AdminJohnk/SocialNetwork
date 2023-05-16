@@ -9,7 +9,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { set } from 'lodash';
-const AddTagComponent = (Props: any) => {
+const AddLinkComponent = (Props: any) => {
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
@@ -145,4 +145,4 @@ const AddTagComponent = (Props: any) => {
   );
 };
 
-export default AddTagComponent;
+export default AddLinkComponent;

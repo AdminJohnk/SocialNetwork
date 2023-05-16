@@ -1,20 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import { Button, ConfigProvider, Input, Space, message } from 'antd';
+import { ConfigProvider, Input, Space } from 'antd';
 import StyleTotal from './cssConversationList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsersLine } from '@fortawesome/free-solid-svg-icons';
 import { SearchOutlined } from '@ant-design/icons';
 import { pusherClient } from '../../../util/functions/Pusher';
 import Avatar from '../../Avatar/Avatar';
-import { find, set } from 'lodash';
+import { find } from 'lodash';
 import ConversationBox from '../ConversationBox/ConversationBox';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { messageService } from '../../../services/MessageService';
-import axios from 'axios';
-import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
-import GroupChatModal from '../GroupChatModal/GroupChatModal';
+import OpenGroupModal from '../../ActionComponent/OpenPostDetail/OpenGroupModal';
 
 interface ConversationListProps {
   initialItems: any;
@@ -28,7 +26,6 @@ const ConversationList = (Props: ConversationListProps) => {
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
-  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
 
@@ -62,6 +59,15 @@ const ConversationList = (Props: ConversationListProps) => {
           return currentConversation;
         }),
       );
+      // sort lại conversation theo thời gian
+      setItems((current: any) => {
+        return current.sort((a: any, b: any) => {
+          const aTime = a.messages.length > 0 ? a.messages[a.messages.length - 1].createdAt : a.createdAt;
+          const bTime = b.messages.length > 0 ? b.messages[b.messages.length - 1].createdAt : b.createdAt;
+
+          return new Date(bTime).getTime() - new Date(aTime).getTime();
+        });
+      });
     };
 
     const newHandler = (conversation: any) => {
@@ -71,6 +77,15 @@ const ConversationList = (Props: ConversationListProps) => {
         }
 
         return [conversation, ...current];
+      });
+      // sort lại conversation theo thời gian
+      setItems((current: any) => {
+        return current.sort((a: any, b: any) => {
+          const aTime = a.messages.length > 0 ? a.messages[a.messages.length - 1].createdAt : a.createdAt;
+          const bTime = b.messages.length > 0 ? b.messages[b.messages.length - 1].createdAt : b.createdAt;
+
+          return new Date(bTime).getTime() - new Date(aTime).getTime();
+        });
       });
     };
 
@@ -99,63 +114,7 @@ const ConversationList = (Props: ConversationListProps) => {
     if (!visible && isOpenPostDetail) {
       setIsOpenPostDetail(!isOpenPostDetail);
     }
-  }, [visible]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [membersGroup, setMembersGroup] = useState([]);
-  const [name, setName] = useState('');
-
-  const onSubmit = () => {
-    setIsLoading(true);
-
-    messageService
-      .createConversation({ users: membersGroup, name, isGroup: true })
-      .then(() => {
-        navigate('/message');
-        dispatch(closeModal());
-        setIsOpenPostDetail(false);
-        setMembersGroup([]);
-      })
-      .catch(() => messageApi.error('Something went wrong!'))
-      .finally(() => setIsLoading(false));
-  };
-
-  useEffect(() => {
-    if (!isOpenPostDetail) return;
-
-    dispatch(
-      openModal({
-        title: 'Create a new group',
-        component: (
-          <GroupChatModal
-            key={Math.random()}
-            name={name}
-            setName={setName}
-            isLoading={isLoading}
-            members={membersGroup}
-            setValue={setMembersGroup}
-            users={Props.users}
-          />
-        ),
-        footer: (
-          <div className="mt-6 flex items-center justify-end gap-x-6">
-            <Button
-              disabled={isLoading}
-              onClick={() => {
-                dispatch(closeModal());
-                setIsOpenPostDetail(false);
-                setMembersGroup([]);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button disabled={isLoading} type="primary" onClick={onSubmit}>
-              Create
-            </Button>
-          </div>
-        ),
-      }),
-    );
-  }, [isOpenPostDetail]);
+  }, [visible, isOpenPostDetail]);
 
   const formatUsername = (username: any) => {
     const MAX_LENGTH = 14; // maximum length of username on one line
@@ -190,7 +149,7 @@ const ConversationList = (Props: ConversationListProps) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        {contextHolder}
+        {isOpenPostDetail && <OpenGroupModal users={Props.users} />}
         <div className="searchChat h-screen">
           <Space
             className="myInfo flex items-center py-4 px-3"
@@ -201,7 +160,7 @@ const ConversationList = (Props: ConversationListProps) => {
             }}
           >
             <div className="avatar relative">
-              <Avatar user={userInfo} />
+              <Avatar key={userInfo.id} user={userInfo} />
             </div>
             <div className="name_career">
               <div
@@ -221,6 +180,12 @@ const ConversationList = (Props: ConversationListProps) => {
               >
                 UX/UI Designer
               </div>
+            </div>
+            <div
+              className="iconPlus relative cursor-pointer left-44"
+              onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}
+            >
+              <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
             </div>
           </Space>
           <div
@@ -259,9 +224,6 @@ const ConversationList = (Props: ConversationListProps) => {
                 />
               </ConfigProvider>
             </div>
-            <div className="iconPlus cursor-pointer" onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}>
-              <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
-            </div>
           </div>
           <div
             className="userActive px-3 py-4 w-full"
@@ -288,7 +250,7 @@ const ConversationList = (Props: ConversationListProps) => {
                     onClick={() => HandleOnClick(item._id)}
                   >
                     <div className="avatar relative">
-                      <Avatar user={item} />
+                      <Avatar key={item._id} user={item} />
                     </div>
                     <div
                       className="name text-center mt-2"

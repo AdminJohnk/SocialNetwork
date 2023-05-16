@@ -35,7 +35,7 @@ const MessageBox = (Props: MessageBoxProps) => {
   return (
     <div className={container}>
       <div className={avatar}>
-        <Avatar user={Props.data.sender} />
+        <Avatar key={Props.data.sender._id} user={Props.data.sender} />
       </div>
       <div className={body}>
         <div className="flex items-center gap-1 mb-1">

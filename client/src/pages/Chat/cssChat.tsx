@@ -96,5 +96,3 @@ const StyleTotal = styled.div`
 `;
 
 export default StyleTotal;
-
-export default StyleTotal;
