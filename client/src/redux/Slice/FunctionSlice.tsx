@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   navigate: () => {},
-  useDispatch: () => {},
+  dispatch: () => {},
   useSelector: () => {},
 };
 
@@ -11,16 +11,16 @@ const functionSlice = createSlice({
   initialState,
   reducers: {
     setNavigate: (state, action) => {
-      return { ...state, navigate: action.payload.navigate };
+      return { ...state, navigate: action.payload };
     },
-    setUseDispatch: (state, action) => {
-      return { ...state, useDispatch: action.payload.useDispatch };
+    setDispatch: (state, action) => {
+      return { ...state, dispatch: action.payload };
     },
     setUseSelector: (state, action) => {
-      return { ...state, useSelector: action.payload.useSelector };
+      return { ...state, useSelector: action.payload };
     },
   },
 });
 
-export const { setNavigate } = functionSlice.actions;
+export const { setNavigate, setDispatch, setUseSelector } = functionSlice.actions;
 export default functionSlice.reducer;

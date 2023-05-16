@@ -21,7 +21,6 @@ import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingP
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import { usePostsData } from '../../util/functions/DataProvider';
-import contactArrays from '../../util/constants/Contact';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -59,14 +58,17 @@ const MyProfile = () => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const postArrayRef = React.useRef(postArray);
+  const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) return;
+
+    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+
     if (!isNotAlreadyChanged) {
-      postArrayRef.current = postArray;
+      ownerInfoRef.current = ownerInfo;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
@@ -122,7 +124,7 @@ const MyProfile = () => {
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
                       <div className="editProfile">
                         <button
-                          className="btnEditProfile px-6 py-3"
+                          className="btnEditProfile px-6 py-3 rounded-full"
                           onClick={() => {
                             dispatch(
                               openDrawer({
@@ -206,26 +208,11 @@ const MyProfile = () => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    {contactArrays.map((item, index) => {
-                      switch (item.key) {
-                        case '0':
-                          return <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />;
-                        case '1':
-                          return <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />;
-                        case '2':
-                          return <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />;
-                        case '3':
-                          return <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />;
-                        case '4':
-                          return <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />;
-                      }
-                      return null;
-                    })}
-                    {/* <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} /> */}
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
                   </Space>
                 </div>
                 <div className="mainContain mt-5">

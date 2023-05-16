@@ -40,13 +40,13 @@ export const lightThemeSet = {
 
 export const commonColor = {
   colorBlue1: "#1f67e3",
-  colorBlue2: "#256adf",
+  colorBlue2: "#2468dc",
+  colorBlue3: "#1f57b8",
   colorGreen1: "#00ae8c",
-  colorGreen2: "#00b28c",
-  colorYellow1: "#f7b500",
-  colorWhite1: "#FFFFFF",
-  colorGray1: "#9e9e9e",
-  colorBlack1: "#000000",
+  colorRed1: "#c2032f",
+  colorRed2: "#aa052c",
+  colorWarning1: "#ff6b6b",
+
 };
 
 //--------------------------------------------

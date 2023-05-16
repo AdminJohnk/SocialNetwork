@@ -1,28 +1,32 @@
-import { BaseService } from "./BaseService";
+import { BaseService } from './BaseService';
 
 export class MessageService extends BaseService {
   constructor() {
     super();
   }
 
-  getMessageByConvID = (convID: any) => {
-    return this.get(`/messages/${convID}`);
+  getConversations = () => {
+    return this.get(`/conversations`);
   };
 
-  sendMessage = (message: any) => {
-    return this.post(`/messages`, message);
+  createConversation = (payload: any) => {
+    return this.post(`/conversations`, payload);
   };
 
-  newConversation = (data: any) => {
-    return this.post(`/conversations`, data);
+  getConversation = (payload: any) => {
+    return this.get(`/conversations/${payload}`);
   };
 
-  getConversationByUserID = (userId: any) => {
-    return this.get(`/conversations/${userId}`);
+  getMessages = (payload: any) => {
+    return this.get(`/${payload}/messages/`);
   };
 
-  getConversationByTwoUserID = ({ firstUserId, secondUserId }: any) => {
-    return this.get(`/conversations/find/${firstUserId}/${secondUserId}`);
+  seenMessage = (payload: any) => {
+    return this.post(`/conversations/${payload}/seen`, null);
+  };
+
+  sendMessage = (payload: any) => {
+    return this.post(`/messages`, payload);
   };
 }
 

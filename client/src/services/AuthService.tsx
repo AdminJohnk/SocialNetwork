@@ -13,7 +13,10 @@ export class AuthService extends BaseService {
   };
   logout = (token: any) => {
     return this.post(`/logout`, token);
-  }
+  };
+  getUserID = (token: any) => {
+    return this.get(`/getUserID`);
+  };
 }
 
 export const authService = new AuthService();

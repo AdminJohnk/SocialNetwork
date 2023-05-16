@@ -1,8 +1,8 @@
 const descArray = [
   {
-    title: 'AWS',
-    color1: '#ed0e0e',
-    color: 'magenta',
+    title: "AWS",
+    color1: "#ed0e0e",
+    color: "magenta",
     svg: (
       <svg
         aria-hidden="true"
@@ -20,9 +20,9 @@ const descArray = [
     ),
   },
   {
-    title: '6 Years Experience',
-    color1: '#009B93',
-    color: 'cyan',
+    title: "6 Years Experience",
+    color1: "#009B93",
+    color: "cyan",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -40,9 +40,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Data Analytics',
-    color1: '#f5a623',
-    color: 'lime',
+    title: "Data Analytics",
+    color1: "#f5a623",
+    color: "lime",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,9 +60,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Blockchain Developer',
-    color1: '#7B00ED',
-    color: 'volcano',
+    title: "Blockchain Developer",
+    color1: "#7B00ED",
+    color: "volcano",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -76,9 +76,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Blogger',
-    color1: '#00B0F0',
-    color: 'geekblue',
+    title: "Blogger",
+    color1: "#00B0F0",
+    color: "geekblue",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -92,9 +92,9 @@ const descArray = [
     ),
   },
   {
-    title: 'C++',
-    color1: '#7B00ED',
-    color: 'purple',
+    title: "C++",
+    color1: "#7B00ED",
+    color: "purple",
     svg: (
       <svg
         aria-hidden="true"
@@ -112,9 +112,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Cloud Engineer',
-    color1: '#FE6700',
-    color: 'gold',
+    title: "Cloud Engineer",
+    color1: "#FE6700",
+    color: "gold",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -128,9 +128,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Creator',
-    color1: '#009B93',
-    color: 'blue',
+    title: "Creator",
+    color1: "#009B93",
+    color: "blue",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -148,9 +148,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Cryptography',
-    color1: '#00BCD4',
-    color: 'orange',
+    title: "Cryptography",
+    color1: "#00BCD4",
+    color: "orange",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -168,9 +168,9 @@ const descArray = [
     ),
   },
   {
-    title: 'CSS',
-    color1: '#009B36',
-    color: 'geekblue',
+    title: "CSS",
+    color1: "#009B36",
+    color: "geekblue",
     svg: (
       <svg
         aria-hidden="true"
@@ -188,9 +188,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Data Scientist',
-    color1: '#526D7B',
-    color: 'lime',
+    title: "Data Scientist",
+    color1: "#526D7B",
+    color: "lime",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -208,9 +208,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Django',
-    color1: '#009B93',
-    color: 'cyan',
+    title: "Django",
+    color1: "#009B93",
+    color: "cyan",
     svg: (
       <svg
         aria-hidden="true"
@@ -228,9 +228,9 @@ const descArray = [
     ),
   },
   {
-    title: '.NET',
-    color1: '#009B93',
-    color: 'gold',
+    title: ".NET",
+    color1: "#009B93",
+    color: "gold",
     svg: (
       <svg
         aria-hidden="true"
@@ -248,9 +248,9 @@ const descArray = [
     ),
   },
   {
-    title: '.NET Core',
-    color1: '#009B93',
-    color: 'purple',
+    title: ".NET Core",
+    color1: "#009B93",
+    color: "purple",
     svg: (
       <svg
         aria-hidden="true"
@@ -268,9 +268,9 @@ const descArray = [
     ),
   },
   {
-    title: '.NET Framework',
-    color1: '#009B93',
-    color: 'volcano',
+    title: ".NET Framework",
+    color1: "#009B93",
+    color: "volcano",
     svg: (
       <svg
         aria-hidden="true"
@@ -288,9 +288,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Flutter',
-    color1: '#009B93',
-    color: 'magenta',
+    title: "Flutter",
+    color1: "#009B93",
+    color: "magenta",
     svg: (
       <svg
         aria-hidden="true"
@@ -308,9 +308,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Google Cloud',
-    color1: '#009B93',
-    color: 'blue',
+    title: "Google Cloud",
+    color1: "#009B93",
+    color: "blue",
     svg: (
       <svg
         aria-hidden="true"
@@ -328,9 +328,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Github Star',
-    color1: '#009B93',
-    color: 'orange',
+    title: "Github Star",
+    color1: "#009B93",
+    color: "orange",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -344,9 +344,9 @@ const descArray = [
     ),
   },
   {
-    title: 'JavaScript',
-    color1: '#009B93',
-    color: 'lime',
+    title: "JavaScript",
+    color1: "#009B93",
+    color: "lime",
     svg: (
       <svg
         aria-hidden="true"
@@ -364,9 +364,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Angular',
-    color1: '#009B93',
-    color: 'cyan',
+    title: "Angular",
+    color1: "#009B93",
+    color: "cyan",
     svg: (
       <svg
         aria-hidden="true"
@@ -384,9 +384,9 @@ const descArray = [
     ),
   },
   {
-    title: 'React',
-    color1: '#009B93',
-    color: 'geekblue',
+    title: "React",
+    color1: "#009B93",
+    color: "geekblue",
     svg: (
       <svg
         aria-hidden="true"
@@ -404,9 +404,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Vue',
-    color1: '#009B93',
-    color: 'gold',
+    title: "Vue",
+    color1: "#009B93",
+    color: "gold",
     svg: (
       <svg
         aria-hidden="true"
@@ -424,9 +424,9 @@ const descArray = [
     ),
   },
   {
-    title: 'NodeJS',
-    color1: '#009B93',
-    color: 'purple',
+    title: "NodeJS",
+    color1: "#009B93",
+    color: "purple",
     svg: (
       <svg
         aria-hidden="true"
@@ -444,9 +444,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Kotlin',
-    color1: '#009B93',
-    color: 'volcano',
+    title: "Kotlin",
+    color1: "#009B93",
+    color: "volcano",
     svg: (
       <svg
         aria-hidden="true"
@@ -464,9 +464,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Lavarel',
-    color1: '#009B93',
-    color: 'magenta',
+    title: "Lavarel",
+    color1: "#009B93",
+    color: "magenta",
     svg: (
       <svg
         aria-hidden="true"
@@ -484,9 +484,9 @@ const descArray = [
     ),
   },
   {
-    title: 'MongoDB',
-    color1: '#009B93',
-    color: 'blue',
+    title: "MongoDB",
+    color1: "#009B93",
+    color: "blue",
     svg: (
       <svg
         aria-hidden="true"
@@ -504,9 +504,9 @@ const descArray = [
     ),
   },
   {
-    title: 'MySQL',
-    color1: '#009B93',
-    color: 'orange',
+    title: "MySQL",
+    color1: "#009B93",
+    color: "orange",
     svg: (
       <svg
         aria-hidden="true"
@@ -524,9 +524,9 @@ const descArray = [
     ),
   },
   {
-    title: 'PHP',
-    color1: '#009B93',
-    color: 'lime',
+    title: "PHP",
+    color1: "#009B93",
+    color: "lime",
     svg: (
       <svg
         aria-hidden="true"
@@ -544,9 +544,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Machine Learning Engineer',
-    color1: '#009B93',
-    color: 'cyan',
+    title: "Machine Learning Engineer",
+    color1: "#009B93",
+    color: "cyan",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -560,9 +560,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Open Source',
-    color1: '#009B93',
-    color: 'geekblue',
+    title: "Open Source",
+    color1: "#009B93",
+    color: "geekblue",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -576,9 +576,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Security Engineer',
-    color1: '#009B93',
-    color: 'gold',
+    title: "Security Engineer",
+    color1: "#009B93",
+    color: "gold",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -606,9 +606,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Software Engineer',
-    color1: '#009B93',
-    color: 'purple',
+    title: "Software Engineer",
+    color1: "#009B93",
+    color: "purple",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -626,9 +626,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Software Developer',
-    color1: '#009B93',
-    color: 'volcano',
+    title: "Software Developer",
+    color1: "#009B93",
+    color: "volcano",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -646,9 +646,9 @@ const descArray = [
     ),
   },
   {
-    title: 'Web Developer',
-    color1: '#009B93',
-    color: 'magenta',
+    title: "Web Developer",
+    color1: "#009B93",
+    color: "magenta",
     svg: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

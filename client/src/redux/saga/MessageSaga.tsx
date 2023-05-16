@@ -1,120 +1,115 @@
-import { put, select, takeLatest } from "redux-saga/effects";
-import { messageService } from "../../services/MessageService";
-import { STATUS_CODE, TOKEN } from "../../util/constants/SettingSystem";
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { messageService } from '../../services/MessageService';
+import { STATUS_CODE } from '../../util/constants/SettingSystem';
 import {
-  setAllMessageByConvId,
-  setConvByUserId,
-  setConvByTwoUserId,
-} from "../Slice/MessageSlice";
-
-import {
-  GET_MESSAGE_BY_CONV_ID_SAGA,
-  SEND_MESSAGE_TO_A_USER_SAGA,
   CREATE_CONVERSATION_SAGA,
-  GET_CONVERSATION_BY_USER_ID_SAGA,
-  GET_CONVERSATION_BY_TWO_USER_ID_SAGA,
-} from "../actionSaga/MessageActionSaga";
+  GET_CONVERSATIONS_SAGA,
+  GET_CONVERSATION_SAGA,
+  GET_MESSAGES_SAGA,
+  SEEN_MESSAGE_SAGA,
+  SEND_MESSAGE_SAGA,
+} from '../actionSaga/MessageActionSaga';
+import {
+  AddConversations,
+  SetConversations,
+  SetCurrentConversation,
+  SetMessage,
+  SetMessages,
+} from '../Slice/ConversationSlice';
 
-// get Messages Saga
-function* getMessagesSaga({ payload }: any) {
+// Get conversations Saga
+export function* getConversationsSaga() {
   try {
-    const { data, status } = yield messageService.getMessageByConvID(payload);
-    // console.log(status);
-    if (status === STATUS_CODE.SUCCESS)
-      yield put(setAllMessageByConvId(data.content));
-    else yield put(setAllMessageByConvId(null));
+    const { data, status } = yield call(messageService.getConversations);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(SetConversations(data.content));
+    }
   } catch (err: any) {
     console.log(err.response.data);
   }
 }
 
-export function* theoDoiGetMessageByConversationIdSaga() {
-  yield takeLatest(GET_MESSAGE_BY_CONV_ID_SAGA, getMessagesSaga);
+export function* theoDoiGetConversationsSaga() {
+  yield takeLatest(GET_CONVERSATIONS_SAGA, getConversationsSaga);
 }
 
-// send Messages Saga
-function* sendMessagesSaga({ payload }: any) {
+// Create conversation Saga
+export function* createConversationSaga({ payload }: any) {
   try {
-    const newMessage = {
-      conservationid: payload.conversationid,
-      sender: payload.sender,
-      text: payload.text,
-    };
-    const { data, status } = yield messageService.sendMessage(newMessage);
-    if (status === STATUS_CODE.CREATED)
-      yield put(setAllMessageByConvId(data.content));
-    else yield put(setAllMessageByConvId(null));
+    const { data, status } = yield call(messageService.createConversation, payload);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(AddConversations(data.content));
+      yield put(SetCurrentConversation(data.content));
+    }
   } catch (err: any) {
     console.log(err.response.data);
+  }
+}
+
+export function* theoDoiCreateConversationSaga() {
+  yield takeLatest(CREATE_CONVERSATION_SAGA, createConversationSaga);
+}
+
+// Get conversation Saga
+export function* getConversationSaga({ payload }: any) {
+  try {
+    const { data, status } = yield call(messageService.getConversation, payload);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(SetCurrentConversation(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetConversationSaga() {
+  yield takeLatest(GET_CONVERSATION_SAGA, getConversationSaga);
+}
+
+// Get messages Saga
+export function* getMessagesSaga({ payload }: any) {
+  try {
+    const { data, status } = yield call(messageService.getMessages, payload);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(SetMessages(data.content));
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetMessagesSaga() {
+  yield takeLatest(GET_MESSAGES_SAGA, getMessagesSaga);
+}
+
+// Seen message Saga
+export function* seenMessageSaga({ payload }: any) {
+  try {
+    const { data, status } = yield call(messageService.seenMessage, payload);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(SetCurrentConversation(data.content));
+    }
+  } catch (err: any) {
+    console.log(err);
+  }
+}
+
+export function* theoDoiSeenMessageSaga() {
+  yield takeLatest(SEEN_MESSAGE_SAGA, seenMessageSaga);
+}
+
+// Send message Saga
+export function* sendMessageSaga({ payload }: any) {
+  try {
+    const { data, status } = yield call(messageService.sendMessage, payload);
+    if (status === STATUS_CODE.SUCCESS) {
+      yield put(SetMessage(data.content));
+    }
+  } catch (err: any) {
+    console.log(err);
   }
 }
 
 export function* theoDoiSendMessageSaga() {
-  yield takeLatest(SEND_MESSAGE_TO_A_USER_SAGA, sendMessagesSaga);
-}
-
-// create new conversation
-function* createNewConversationSaga({ payload }: any) {
-  try {
-    const convCreate = {
-      senderId: payload.senderId,
-      receiverId: payload.receiverId,
-    };
-    // console.log(convCreate);
-    const { data, status } = yield messageService.newConversation(convCreate);
-    if (status === STATUS_CODE.CREATED)
-      yield put(setAllMessageByConvId(data.content));
-    else yield put(setAllMessageByConvId(null));
-  } catch (err: any) {
-    console.log(err.response.data);
-  }
-}
-export function* theoDoiCreateNewConversationSaga() {
-  yield takeLatest(CREATE_CONVERSATION_SAGA, createNewConversationSaga);
-}
-
-// get conversation by user id
-function* getConversationByUserIdSaga({ payload }: any) {
-  try {
-    const { data, status } = yield messageService.getConversationByUserID(
-      payload
-    );
-    // console.log(data.content);
-    if (status === STATUS_CODE.SUCCESS)
-      yield put(setConvByUserId(data.content));
-    else yield put(setConvByUserId(null));
-  } catch (err: any) {
-    console.log(err.response.data);
-  }
-}
-export function* theoDoiGetConversationByUserIdSaga() {
-  yield takeLatest(
-    GET_CONVERSATION_BY_USER_ID_SAGA,
-    getConversationByUserIdSaga
-  );
-}
-
-// get conv includes two userId
-function* getConversationByTwoUserIdSaga({ payload }: any) {
-  try {
-    const userID = {
-      firstUserId: payload.firstUserId,
-      secondUserId: payload.secondUserId,
-    };
-    const { data, status } = yield messageService.getConversationByTwoUserID(
-      userID
-    );
-    // console.log(data.content);
-    if (status === STATUS_CODE.SUCCESS)
-      yield put(setConvByTwoUserId(data.content));
-    else yield put(setConvByTwoUserId(null));
-  } catch (err: any) {
-    console.log(err.response.data);
-  }
-}
-export function* theoDoiGetConversationByTwoUserIdSaga() {
-  yield takeLatest(
-    GET_CONVERSATION_BY_TWO_USER_ID_SAGA,
-    getConversationByTwoUserIdSaga
-  );
+  yield takeLatest(SEND_MESSAGE_SAGA, sendMessageSaga);
 }
