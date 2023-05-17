@@ -169,7 +169,7 @@ const MessageChat = (Props: IParams) => {
                 messagesState?.map((message: any, i: any) => (
                   <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
                 ))}
-              <div className="pt-2" ref={bottomRef} />
+              <div className="pt-0.5" ref={bottomRef} />
             </div>
           </div>
         </>
