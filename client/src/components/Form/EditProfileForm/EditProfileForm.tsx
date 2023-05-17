@@ -1,16 +1,30 @@
-import { ConfigProvider, Space, Tag } from 'antd';
+import { ConfigProvider, Space, Tag, Avatar, Tooltip } from 'antd';
 import React from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
+import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import AddTagComponent from '../../AddTagComponent/AddTagComponent';
+import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
 import descArray from '../../../util/constants/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
 import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+
+// const link = [
+//   {
+//     key: '0',
+//     link: 'https://www.facebook.com/',
+//   },
+//   {
+//     key: '1',
+//     link: 'https://www.github.com/',
+//   },
+// ];
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -24,10 +38,17 @@ const EditProfileForm = () => {
 
   const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
 
+  const [links, setLinks] = React.useState<any>(userInfo?.contacts);
+
   const isHaveCover = true;
 
   const [firstname, setFirstName] = React.useState(userInfo?.firstname);
+
   const [lastname, setLastName] = React.useState(userInfo?.lastname);
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   const handleChangeFirstName = (e: any) => {
     setFirstName(e.target.value);
@@ -41,11 +62,16 @@ const EditProfileForm = () => {
     setDescriptions(descriptions);
   };
 
+  const handleChangeLinks = (links: any) => {
+    setLinks(links);
+  };
+
   const onSubmit = () => {
     dispatch(
       UPDATE_USER_SAGA({
         id: userInfo?.id,
         userUpdate: {
+          contacts: links,
           description: descriptions,
           firstname: firstname,
           lastname: lastname,
@@ -56,7 +82,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [descriptions, firstname, lastname]);
+  }, [descriptions, firstname, lastname, links]);
 
   const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
@@ -159,8 +185,83 @@ const EditProfileForm = () => {
             </Space>
           </section>
           <section className="addLinks mt-3">
+            {links?.map((item: any, index: any) => {
+              switch (item.key) {
+                case '0':
+                  return (
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '1':
+                  return (
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '2':
+                  return (
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '3':
+                  return (
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                      />
+                    </Tooltip>
+                  );
+                case '4':
+                  return (
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                      />
+                    </Tooltip>
+                  );
+                default:
+                  return null;
+              }
+            })}
             <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
+              onClick={() => {
+                dispatch(
+                  openModal({
+                    title: 'Update Social Links',
+                    component: <AddLinkComponent key={Math.random()} callback={handleChangeLinks} links={links} />,
+                    footer: false,
+                  }),
+                );
+              }}
               style={{
                 border: '1px solid',
                 borderColor: themeColorSet.colorBg4,

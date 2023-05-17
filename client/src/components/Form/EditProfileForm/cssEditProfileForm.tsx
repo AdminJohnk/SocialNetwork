@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { commonColor } from "../../../util/cssVariable/cssVariable";
+import styled from 'styled-components';
+import { commonColor } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   .form__group {
@@ -100,6 +100,15 @@ const StyleTotal = styled.div`
         :hover {
           background-color: ${(props) => props.theme.colorBg4};
           transition: all 0.5s;
+        }
+      }
+      .item {
+        background-color: ${(props) => props.theme.colorBg3};
+        margin-right: 8px;
+        :hover {
+          background-color: ${(props) => props.theme.colorBg4};
+          cursor: pointer;
+          transition: all 0.3s;
         }
       }
     }

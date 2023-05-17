@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -59,6 +59,10 @@ const MyProfile = () => {
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
   const ownerInfoRef = React.useRef(ownerInfo);
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   useEffect(() => {
     if (!isNotAlreadyChanged) return;
@@ -208,11 +212,77 @@ const MyProfile = () => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
+                    {ownerInfo?.contacts?.map((item: any, index: any) => {
+                      switch (item.key) {
+                        case '0':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '1':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '2':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '3':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '4':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                              />
+                            </Tooltip>
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
+                    {/* <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} /> */}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">
