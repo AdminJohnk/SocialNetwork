@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Route, Routes } from 'react-router-dom';
-import LoadingComponent from './components/GlobalSetting/LoadingComponent/LoadingComponent';
 import DrawerHOC from './HOC/Drawer/DrawerHOC';
 import ModalHOC from './HOC/Modal/ModalHOC';
 import Chat from './pages/Chat/Chat';
@@ -19,8 +18,6 @@ import NewFeed from './pages/NewsFeed/Newsfeed';
 import Community from './pages/Community/Community';
 import React from 'react';
 import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
-import Auth from './components/ActionComponent/Authentication/Auth';
-import AlreadyAuth from './components/ActionComponent/Authentication/AlreadyAuth';
 const LazyLoadingAuth = React.lazy(() => import('./components/ActionComponent/Authentication/Auth'));
 const LazyLoadingAlreadyAuth = React.lazy(() => import('./components/ActionComponent/Authentication/AlreadyAuth'));
 import LoadingLogo from './components/GlobalSetting/LoadingLogo/LoadingLogo';
@@ -37,9 +34,8 @@ const App = () => {
 
   return (
     <>
-      <LoadingComponent />
-      <DrawerHOC />
       <ModalHOC />
+      <DrawerHOC />
       <ActiveStatus />
       <Routes>
         <Route

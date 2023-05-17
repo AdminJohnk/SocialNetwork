@@ -29,8 +29,8 @@ const PostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          height: '78vh',  
-          overflow: 'auto', 
+          maxHeight: '78vh',
+          overflow: 'auto',
         }}
       >
         {Props.postShare ? (
@@ -39,20 +39,22 @@ const PostDetail = (Props: PostProps) => {
           <Post key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
         )}
         <div className="commentTotal">
-          {Props.post?.comments?.map((item: any, index: number) => {
+          {Props.post?.comments?.map((item: any) => {
             return (
-              <div key={index}>
+              <div key={item?._id}>
                 {item ? (
                   <CommentDetail
+                    key={item?._id}
                     onData={Props.onData}
                     comment={item}
                     userInfo={Props.userInfo}
                     selectedCommentId={selectedCommentId}
                     onSelectComment={handleSelectComment}
                   >
-                    {item.listReply?.map((item: any, index: number) => {
+                    {item.listReply?.map((item: any) => {
                       return (
                         <CommentDetail
+                          key={item?._id}
                           onData={Props.onData}
                           comment={item}
                           userInfo={Props.userInfo}

@@ -1,7 +1,6 @@
 import Title from 'antd/es/typography/Title';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssLoadingLogo';
-
 import { ConfigProvider } from 'antd';
 import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
