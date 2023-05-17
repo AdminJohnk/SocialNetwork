@@ -497,7 +497,8 @@ const Chat = () => {
                 <>
                   <div style={{ height: '92%' }}>
                     <MessageChat
-                      key={conversations[0]?.lastMessageAt}
+                      // key={conversations[0]?.lastMessageAt}
+                      key={conversationID}
                       conversationId={conversationID}
                       setIsDisplayShare={setIsDisplayShare}
                       isDisplayShare={isDisplayShare}

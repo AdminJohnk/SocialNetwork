@@ -1,11 +1,13 @@
 import { Button, ConfigProvider } from 'antd';
-import { useState, useMemo, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { messageService } from '../../../services/MessageService';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupChatModal from '../../ChatComponent/GroupChatModal/GroupChatModal';
 import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
 import StyleTotal from './cssOpenPostDetailModal';
 import { getTheme } from '../../../util/functions/ThemeFunction';
+import { set } from 'lodash';
+
 interface Props {
   users: [];
 }
@@ -18,26 +20,22 @@ const OpenGroupModal = (Props: Props) => {
   const { themeColorSet } = getTheme();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [membersGroup, SetMembersGroup] = useState<any>();
-  const [name, setGroupName] = useState<any>();
+  let [membersGroup, SetMembersGroup] = useState<any>();
+  let [name, setGroupName] = useState<any>();
 
-  const handleSetName = (name: any) => {
-    if (!name) return;
-    console.log(name);
-    setGroupName(name);
+  const handleSetName = (newName: any) => {
+    setGroupName(() => {
+      name = newName;
+    });
   };
 
-  useLayoutEffect(() => {
-    console.log(name);
-  }, [name]);
-
-  const handleSetMembersGroup = (members: any) => {
-    // console.log(members);
-    SetMembersGroup(members);
+  const handleSetGroupMember = (newMembers: any) => {
+    SetMembersGroup(() => {
+      membersGroup = newMembers;
+    });
   };
 
   const onSubmit = () => {
-    // console.log(name, membersGroup);
     if (!name || !membersGroup || membersGroup.length < 2) {
       return;
     }
@@ -56,47 +54,29 @@ const OpenGroupModal = (Props: Props) => {
       });
   };
 
-  const componentMemorized = useMemo(
-    () => (
-      <GroupChatModal
-        name={name}
-        setName={handleSetName}
-        value={membersGroup}
-        setValue={handleSetMembersGroup}
-        users={Props.users}
-      />
-    ),
-    [name, membersGroup],
-  );
-
-  const footerMemorized = useMemo(
-    () => (
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <Button
-          disabled={isLoading}
-          onClick={() => {
-            dispatch(closeModal());
-          }}
-        >
-          Cancel
-        </Button>
-        <Button loading={isLoading} type="primary" onClick={onSubmit}>
-          Create
-        </Button>
-      </div>
-    ),
-    [isLoading, name, membersGroup],
-  );
-
   useLayoutEffect(() => {
     dispatch(
       openModal({
         title: 'Create a new group chat',
-        component: componentMemorized,
-        footer: footerMemorized,
+        component: <GroupChatModal setName={handleSetName} setValue={handleSetGroupMember} users={Props.users} />,
+        footer: (
+          <div className="mt-6 flex items-center justify-end gap-x-6">
+            <Button
+              disabled={isLoading}
+              onClick={() => {
+                dispatch(closeModal());
+              }}
+            >
+              Cancel
+            </Button>
+            <Button loading={isLoading} type="primary" onClick={onSubmit}>
+              Create
+            </Button>
+          </div>
+        ),
       }),
     );
-  }, [componentMemorized, footerMemorized]);
+  }, [isLoading, name, membersGroup]);
 
   return (
     <ConfigProvider
