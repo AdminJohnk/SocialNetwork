@@ -1,8 +1,9 @@
-import { ConfigProvider, Space, Tag } from 'antd';
+import { ConfigProvider, Space, Tag, Avatar } from 'antd';
 import React from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
+import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -12,17 +13,18 @@ import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
 import descArray from '../../../util/constants/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
 import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+import { icon } from '@fortawesome/fontawesome-svg-core';
 
-const link = [
-  {
-    key: '0',
-    link: 'https://www.facebook.com/',
-  },
-  {
-    key: '1',
-    link: 'https://www.github.com/',
-  },
-];
+// const link = [
+//   {
+//     key: '0',
+//     link: 'https://www.facebook.com/',
+//   },
+//   {
+//     key: '1',
+//     link: 'https://www.github.com/',
+//   },
+// ];
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -35,11 +37,18 @@ const EditProfileForm = () => {
   const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
-  const [links, setLinks] = React.useState<any>(link);
+
+  const [links, setLinks] = React.useState<any>(userInfo?.contacts);
+
   const isHaveCover = true;
 
   const [firstname, setFirstName] = React.useState(userInfo?.firstname);
+
   const [lastname, setLastName] = React.useState(userInfo?.lastname);
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   const handleChangeFirstName = (e: any) => {
     setFirstName(e.target.value);
@@ -56,6 +65,7 @@ const EditProfileForm = () => {
   const handleChangeLinks = (links: any) => {
     setLinks(links);
   };
+
   const onSubmit = () => {
     dispatch(
       UPDATE_USER_SAGA({
@@ -175,6 +185,62 @@ const EditProfileForm = () => {
             </Space>
           </section>
           <section className="addLinks mt-3">
+            {links?.map((item: any, index: any) => {
+              switch (item.key) {
+                case '0':
+                  return (
+                    <Avatar
+                      onClick={() => {
+                        openInNewTab(item.link);
+                      }}
+                      className="item"
+                      icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                    />
+                  );
+                case '1':
+                  return (
+                    <Avatar
+                      onClick={() => {
+                        openInNewTab(item.link);
+                      }}
+                      className="item"
+                      icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                    />
+                  );
+                case '2':
+                  return (
+                    <Avatar
+                      onClick={() => {
+                        openInNewTab(item.link);
+                      }}
+                      className="item"
+                      icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                    />
+                  );
+                case '3':
+                  return (
+                    <Avatar
+                      onClick={() => {
+                        openInNewTab(item.link);
+                      }}
+                      className="item"
+                      icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                    />
+                  );
+                case '4':
+                  return (
+                    <Avatar
+                      onClick={() => {
+                        openInNewTab(item.link);
+                      }}
+                      className="item"
+                      icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                    />
+                  );
+                default:
+                  return null;
+              }
+            })}
             <button
               className="addLinks mt-2 px-4 py-1 cursor-pointer"
               onClick={() => {

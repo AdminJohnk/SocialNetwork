@@ -60,6 +60,10 @@ const MyProfile = () => {
 
   const ownerInfoRef = React.useRef(ownerInfo);
 
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
+
   useEffect(() => {
     if (!isNotAlreadyChanged) return;
 
@@ -208,11 +212,67 @@ const MyProfile = () => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
+                    {ownerInfo?.contacts?.map((item: any, index: any) => {
+                      switch (item.key) {
+                        case '0':
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                            />
+                          );
+                        case '1':
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                            />
+                          );
+                        case '2':
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                            />
+                          );
+                        case '3':
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                            />
+                          );
+                        case '4':
+                          return (
+                            <Avatar
+                              onClick={() => {
+                                openInNewTab(item.link);
+                              }}
+                              className="item"
+                              icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                            />
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
+                    {/* <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
                     <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
+                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} /> */}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">

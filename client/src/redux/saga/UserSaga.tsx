@@ -28,7 +28,6 @@ function* updateUserSaga({ payload }: any) {
   try {
     const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
     if (status === STATUS_CODE.SUCCESS) {
-      console.log(data.content);
       yield put(setOwnerInfo(data.content));
     }
   } catch (err: any) {
