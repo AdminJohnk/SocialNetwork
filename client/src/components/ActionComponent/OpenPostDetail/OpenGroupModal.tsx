@@ -1,5 +1,5 @@
 import { Button, ConfigProvider } from 'antd';
-import { useState, useMemo, useLayoutEffect } from 'react';
+import { useState, useMemo, useLayoutEffect, useEffect } from 'react';
 import { messageService } from '../../../services/MessageService';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupChatModal from '../../ChatComponent/GroupChatModal/GroupChatModal';
@@ -19,11 +19,17 @@ const OpenGroupModal = (Props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [membersGroup, SetMembersGroup] = useState<any>();
-  const [name, SetName] = useState<any>();
+  const [name, setGroupName] = useState<any>();
 
-  const handleSetName = (names: any) => {
-    SetName(names);
+  const handleSetName = (name: any) => {
+    if (!name) return;
+    console.log(name);
+    setGroupName(name);
   };
+
+  useLayoutEffect(() => {
+    console.log(name);
+  }, [name]);
 
   const handleSetMembersGroup = (members: any) => {
     // console.log(members);
@@ -31,7 +37,7 @@ const OpenGroupModal = (Props: Props) => {
   };
 
   const onSubmit = () => {
-    console.log(name, membersGroup);
+    // console.log(name, membersGroup);
     if (!name || !membersGroup || membersGroup.length < 2) {
       return;
     }
