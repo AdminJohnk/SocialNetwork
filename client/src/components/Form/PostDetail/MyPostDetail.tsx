@@ -38,13 +38,13 @@ const MyPostDetail = (Props: PostProps) => {
         ) : (
           <MyPost post={Props.post} userInfo={Props.userInfo} />
         )}
-        {Props.post?.comments?.map((item: any, index: number) => {
+        {Props.post?.comments?.map((item: any) => {
           return (
-            <div className="px-4">
+            <div className="px-4" key={item._id}>
               {item ? (
                 <CommentDetail
                   onData={Props.onData}
-                  key={index}
+                  key={item._id}
                   comment={item}
                   userInfo={Props.userInfo}
                   selectedCommentId={selectedCommentId}
@@ -54,7 +54,7 @@ const MyPostDetail = (Props: PostProps) => {
                     return (
                       <CommentDetail
                         onData={Props.onData}
-                        key={index}
+                        key={item._id}
                         comment={item}
                         userInfo={Props.userInfo}
                         selectedCommentId={selectedCommentId}

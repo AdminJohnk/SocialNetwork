@@ -61,7 +61,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: post?._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -75,7 +75,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: post?._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -83,7 +83,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: post?._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -97,7 +97,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: post?._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -118,25 +118,23 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const memoizedComponent = useMemo(
     () => (
       <PostDetailModal
-        key={post?._id}
         onData={handleData}
-        post={post}
-        userInfo={userInfo}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
         data={data}
         postShare={PostProps.postShare}
         owner={PostProps.owner}
       />
     ),
-    [post, userInfo, data],
+    [PostProps.post, PostProps.userInfo, data],
   );
 
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
         <div className="input w-full">
           <Input
-            key={post?._id}
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
@@ -147,6 +145,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
               borderColor: themeColorSet.colorText3,
             }}
             maxLength={150}
+            onPressEnter={handleSubmitComment}
             addonAfter={
               <Popover
                 placement="right"
@@ -196,7 +195,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   useLayoutEffect(() => {
     dispatch(
       openModal({
-        title: 'The post of ' + userInfo?.username,
+        title: 'The post of ' + PostProps.userInfo?.username,
         component: memoizedComponent,
         footer: (
           <ConfigProvider>
