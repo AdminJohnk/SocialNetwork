@@ -28,7 +28,7 @@ const AddLinkComponent = (Props: any) => {
   // let addLinkArrTemp = [...addLinkArr];
   let addLinkArrTemp = addLinkArr.map((obj) => ({ ...obj }));
 
-  console.log(addLinkArrTemp);
+  // console.log(addLinkArrTemp);
 
   const handleSubmit = () => {
     Props.callback(addLinkArr);
