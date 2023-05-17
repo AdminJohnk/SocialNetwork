@@ -1,10 +1,11 @@
 import { Input, Select } from 'antd';
-import { DefaultOptionType } from 'antd/es/select';
 
 interface GroupChatModalProps {
   users: any;
-  setValue: (value: []) => void;
-  setName: (name: string) => void;
+  setValue: (value: any) => void;
+  setName: (name: any) => void;
+  name: string;
+  value: any;
 }
 
 const GroupChatModal = (Props: GroupChatModalProps) => {
@@ -16,15 +17,16 @@ const GroupChatModal = (Props: GroupChatModalProps) => {
           <div className="mt-10 flex flex-col gap-y-8">
             <Input
               placeholder={`Group's name`}
+              value={Props.name}
               allowClear
-              required
               onChange={(event) => {
-                Props.setName(event.target.value);
+                Props.setName(event.currentTarget.value);
               }}
             />
             <Select
               mode="multiple"
               placeholder="Select members"
+              value={Props.value}
               options={Props.users.map((user: any) => ({
                 label: user.username,
                 value: user.username,

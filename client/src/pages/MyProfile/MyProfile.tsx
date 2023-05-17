@@ -94,7 +94,7 @@ const MyProfile = () => {
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden">
+                <div className="avatar rounded-full overflow-hidden object-fill flex">
                   <img
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"

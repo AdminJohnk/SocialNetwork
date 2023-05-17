@@ -1,5 +1,5 @@
 import { Button, ConfigProvider } from 'antd';
-import { useState, useMemo, useLayoutEffect } from 'react';
+import { useState, useMemo, useLayoutEffect, useCallback } from 'react';
 import { messageService } from '../../../services/MessageService';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupChatModal from '../../ChatComponent/GroupChatModal/GroupChatModal';
@@ -22,15 +22,15 @@ const OpenGroupModal = (Props: Props) => {
   const [membersGroup, setMembersGroup] = useState([]);
   const [name, setName] = useState('');
 
-  const handleSetName = (name: string) => {
+  const handleSetName = (name: any) => {
     setName(name);
   };
 
-  const handleSetMembersGroup = (members: []) => {
+  const handleSetMembersGroup = (members: any) => {
     setMembersGroup(members);
   };
 
-  const onSubmit = () => {
+  const onSubmit = useCallback(() => {
     console.log(name, membersGroup);
     if (name.length === 0) {
       return;
@@ -53,10 +53,18 @@ const OpenGroupModal = (Props: Props) => {
       .finally(() => {
         setIsLoading(false);
       });
-  };
+  }, [name, membersGroup]);
 
   const componentMemorized = useMemo(
-    () => <GroupChatModal setName={handleSetName} setValue={handleSetMembersGroup} users={Props.users} />,
+    () => (
+      <GroupChatModal
+        name={name}
+        setName={handleSetName}
+        value={membersGroup}
+        setValue={handleSetMembersGroup}
+        users={Props.users}
+      />
+    ),
     [name, membersGroup],
   );
 

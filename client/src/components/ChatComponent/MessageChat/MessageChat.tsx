@@ -68,7 +68,7 @@ const MessageChat = (Props: IParams) => {
 
   useEffect(() => {
     pusherClient.subscribe(Props.conversationId);
-    bottomRef?.current?.scrollIntoView();
+    bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     const messageHandler = async (message: any) => {
       seenMessage();
@@ -81,7 +81,7 @@ const MessageChat = (Props: IParams) => {
         return [...current, message];
       });
 
-      bottomRef?.current?.scrollIntoView();
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -107,6 +107,8 @@ const MessageChat = (Props: IParams) => {
   }, [Props.conversationId]);
 
   useIntersectionObserver(bottomRef, seenMessage);
+
+  bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const styleStatus = useMemo(() => {
     return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
@@ -158,7 +160,7 @@ const MessageChat = (Props: IParams) => {
           <div
             className="body px-3"
             style={{
-              height: '80%',
+              height: '88%',
               overflow: 'auto',
             }}
           >
@@ -167,7 +169,7 @@ const MessageChat = (Props: IParams) => {
                 messagesState?.map((message: any, i: any) => (
                   <MessageBox isLast={i === messagesState.length - 1} key={message._id} data={message} />
                 ))}
-              <div className="pt-12" ref={bottomRef} />
+              <div className="pt-2" ref={bottomRef} />
             </div>
           </div>
         </>
