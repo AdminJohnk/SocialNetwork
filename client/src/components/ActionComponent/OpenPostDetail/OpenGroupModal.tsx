@@ -19,17 +19,16 @@ const OpenGroupModal = (Props: Props) => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [membersGroup, SetMembersGroup] = useState<any>();
-  const [name, setGroupName] = useState<any>();
+  let [name, setGroupName] = useState<any>();
 
-  const handleSetName = (name: any) => {
-    if (!name) return;
+  const handleSetName = (newName: any) => {
+    if (!newName) return;
+    console.log(newName);
+    setGroupName(() => {
+      name = newName;
+    });
     console.log(name);
-    setGroupName(name);
   };
-
-  useLayoutEffect(() => {
-    console.log(name);
-  }, [name]);
 
   const handleSetMembersGroup = (members: any) => {
     // console.log(members);
@@ -37,7 +36,7 @@ const OpenGroupModal = (Props: Props) => {
   };
 
   const onSubmit = () => {
-    // console.log(name, membersGroup);
+    console.log(name, membersGroup);
     if (!name || !membersGroup || membersGroup.length < 2) {
       return;
     }

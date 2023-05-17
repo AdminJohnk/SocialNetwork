@@ -17,7 +17,6 @@ const GroupChatModal = (Props: GroupChatModalProps) => {
           <div className="mt-10 flex flex-col gap-y-8">
             <Input
               placeholder={`Group's name`}
-              defaultValue={Props.name}
               allowClear
               onChange={(event) => {
                 Props.setName(event.currentTarget.value);
