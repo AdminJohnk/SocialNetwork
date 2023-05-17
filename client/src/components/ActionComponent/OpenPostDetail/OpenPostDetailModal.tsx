@@ -45,9 +45,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
-  const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
-
   const handleData = (data: any) => {
     setData(data);
   };
@@ -118,7 +115,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const memoizedComponent = useMemo(
     () => (
       <PostDetailModal
-        key={PostProps.post?._id}
         onData={handleData}
         post={PostProps.post}
         userInfo={PostProps.userInfo}
@@ -136,7 +132,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
         <div className="input w-full">
           <Input
-            key={PostProps.post?._id}
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
@@ -147,6 +142,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
               borderColor: themeColorSet.colorText3,
             }}
             maxLength={150}
+            onPressEnter={handleSubmitComment}
             addonAfter={
               <Popover
                 placement="right"

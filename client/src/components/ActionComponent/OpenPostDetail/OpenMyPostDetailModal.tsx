@@ -45,9 +45,6 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
-  const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
-
   const handleData = (data: any) => {
     setData(data);
   };
@@ -61,7 +58,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_POSTSHARE_SAGA({
-            id: post?._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -75,7 +72,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: post?._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -83,7 +80,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
       if (data.isReply) {
         dispatch(
           SAVE_REPLY_SAGA({
-            id: post?._id,
+            id: PostProps.post?._id,
             reply: {
               contentComment: commentContent,
               idComment: data.idComment,
@@ -97,7 +94,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             comment: {
               contentComment: commentContent,
             },
-            id: post?._id,
+            id: PostProps.post?._id,
           }),
         );
       }
@@ -119,20 +116,20 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     () => (
       <MyPostDetail
         onData={handleData}
-        post={post}
-        userInfo={userInfo}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
         data={data}
         postShare={PostProps.postShare}
         owner={PostProps.owner}
       />
     ),
-    [post, userInfo, data],
+    [PostProps.post, PostProps.userInfo, data],
   );
 
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
@@ -144,6 +141,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
             style={{
               borderColor: themeColorSet.colorText3,
             }}
+            onPressEnter={handleSubmitComment}
             maxLength={150}
             addonAfter={
               <Popover
@@ -194,7 +192,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   useLayoutEffect(() => {
     dispatch(
       openModal({
-        title: 'The post of ' + userInfo?.username,
+        title: 'The post of ' + PostProps.userInfo?.username,
         component: memoizedComponent,
         footer: (
           <ConfigProvider>

@@ -1,17 +1,10 @@
-import { Avatar, ConfigProvider, Input, Popover, Skeleton, Space } from 'antd';
+import { ConfigProvider, Input, Popover, Skeleton, Space, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssChat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faDownload,
-  faEllipsis,
-  faFaceSmile,
-  faMicrophone,
-  faPaperclip,
-  faSnowflake,
-} from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faFaceSmile, faMicrophone, faPaperclip, faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import dataEmoji from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { faSun } from '@fortawesome/free-regular-svg-icons';
@@ -25,308 +18,14 @@ import {
 } from '@ant-design/icons';
 import { NavLink, useParams } from 'react-router-dom';
 import ConversationList from '../../components/ChatComponent/ConversationList/ConversationList';
-import { commonColor } from '../../util/cssVariable/cssVariable';
-import { GET_FOLLOWERS_SAGA } from '../../redux/actionSaga/UserActionSaga';
-import {
-  GET_CONVERSATIONS_SAGA,
-  GET_CONVERSATION_SAGA,
-  SEND_MESSAGE_SAGA,
-} from '../../redux/actionSaga/MessageActionSaga';
 import EmptyChat from '../../components/ChatComponent/EmptyChat/EmptyChat';
 import MessageChat from '../../components/ChatComponent/MessageChat/MessageChat';
-import {
-  useConversationsData,
-  useCurrentConversationData,
-  useFollowersData,
-  useMessagesData,
-} from '../../util/functions/DataProvider';
+import { useConversationsData, useCurrentConversationData, useFollowersData } from '../../util/functions/DataProvider';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { messageService } from '../../services/MessageService';
-import { setUserID } from '../../redux/Slice/AuthSlice';
-import { setUser } from '../../redux/Slice/UserSlice';
-import useMessage from 'antd/es/message/useMessage';
 import UploadComponent from '../../components/UploadComponent/UploadComponent';
 
 const Chat = () => {
-  const messageArr = [
-    {
-      id: 1,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Hello Bao, I am Kien',
-    },
-    {
-      id: 2,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Hello Kien, How are you?',
-    },
-    {
-      id: 3,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-
-      text: "I'm doing well, thanks for asking. How about you?",
-    },
-    {
-      id: 4,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "I'm good too, thanks. What brings you here today?",
-    },
-    {
-      id: 5,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'I wanted to discuss the software report that we have been working on.',
-    },
-    {
-      id: 6,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Ah, yes. I remember. What would you like to know?',
-    },
-    {
-      id: 7,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'I was wondering if you could give me an update on the progress of the report?I was wondering if you could give me an update on the progress of the report?',
-    },
-    {
-      id: 8,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Sure, we are making good progress. We should have the first draft ready by the end of the week.',
-    },
-    {
-      id: 9,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "That's great news. Do you need any help with anything?",
-    },
-    {
-      id: 10,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Actually, yes. I could use some help with data analysis. Would you be interested in helping out?',
-    },
-    {
-      id: 11,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Sure, I'd be happy to help. Just let me know what you need.",
-    },
-    {
-      id: 12,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Thanks, I'll send over the data later today. Is that okay with you?",
-    },
-    {
-      id: 13,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "That's fine. I'll take a look as soon as I receive it.",
-    },
-    {
-      id: 14,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Great. Thanks for your help, Kien.',
-    },
-    {
-      id: 15,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "No problem, Bao. We're a team, and I'm happy to help out.",
-    },
-    {
-      id: 16,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "I appreciate that. We'll make sure to get this report done on time.",
-    },
-    {
-      id: 17,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Definitely. I'm looking forward to seeing the final product.",
-    },
-    {
-      id: 18,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Me too. I'll talk to you later.",
-    },
-    {
-      id: 19,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Me too. I think it will be a great addition to our portfolio.',
-    },
-    {
-      id: 20,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Agreed. Let's keep up the good work and get it done.",
-    },
-    {
-      id: 21,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'By the way, have you had a chance to look at the feedback from the beta testers?',
-    },
-    {
-      id: 22,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Not yet. I've been busy with other projects. What did they say?",
-    },
-    {
-      id: 23,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Overall, they are happy with the software, but there are a few bugs that need to be fixed.',
-    },
-    {
-      id: 24,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Okay. I can take a look at those bugs and see what we can do to fix them.',
-    },
-    {
-      id: 25,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'That would be great. We want to make sure the software is as bug-free as possible before release.',
-    },
-    {
-      id: 26,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Definitely. I'll get started on that right away.",
-    },
-    {
-      id: 27,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: 'Thanks, Kien. I appreciate your help.',
-    },
-    {
-      id: 28,
-      conversationd: 1,
-      me: true,
-      sender: 1,
-      senderName: 'Kien',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "No problem, Bao. That's what I'm here for.",
-    },
-    {
-      id: 29,
-      conversationd: 1,
-      sender: 2,
-      senderName: 'Bao',
-      senderImage:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiauApOpu95sj6IxatDeXrrAfCVznCpX41g&usqp=CAU',
-      text: "Let's touch base again next week and see where we're at with the report and the software bugs.",
-    },
-  ];
-
   const sharedMediaArr = [
     {
       id: 1,
@@ -411,9 +110,11 @@ const Chat = () => {
 
   const { userID } = useSelector((state: any) => state.authReducer);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(GET_USER_ID());
   }, []);
+
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (data: any) => {
     if (!conversationID) return;
@@ -423,6 +124,8 @@ const Chat = () => {
       conversationID,
       body: data,
     });
+
+    setMessage('');
   };
 
   const { conversations, isLoadingConversations } = useConversationsData();
@@ -692,7 +395,7 @@ const Chat = () => {
                 key={conversations[0]?.lastMessageAt}
                 users={followers}
                 initialItems={conversations}
-                selected={currentConversation?._id}
+                selected={conversationID}
               />
             </div>
             <div
@@ -707,14 +410,95 @@ const Chat = () => {
                 borderColor: themeColorSet.colorBg4,
               }}
             >
-              {!conversationID || !currentConversation ? (
+              {!conversationID ? (
                 <EmptyChat key={Math.random()} />
+              ) : isLoadingConversation ? (
+                <>
+                  <Skeleton className="mt-8" active />
+                  <Skeleton className="mt-8" active />
+                  <Skeleton className="mt-8" active />
+                  <Skeleton className="mt-8" active />
+                  <div
+                    className="shared"
+                    style={{
+                      width: '23%',
+                      height: '100vh',
+                      marginLeft: '77%',
+                      position: 'fixed',
+                      backgroundColor: themeColorSet.colorBg1,
+                    }}
+                  >
+                    <div
+                      className="extension px-3 flex items-center"
+                      style={{
+                        height: '12%',
+                        borderBottom: '1px solid',
+                        borderColor: themeColorSet.colorBg4,
+                      }}
+                    >
+                      <div className="flex justify-center items-center w-full">
+                        <div
+                          className="setting text-center"
+                          style={{
+                            width: '25%',
+                          }}
+                        >
+                          <Skeleton.Button active size="large" shape="circle" />
+                        </div>
+                        <div
+                          className="notification text-center"
+                          style={{
+                            width: '25%',
+                          }}
+                        >
+                          <Skeleton.Button active size="large" shape="circle" />
+                        </div>
+                        <div
+                          className="warning text-center"
+                          style={{
+                            width: '25%',
+                          }}
+                        >
+                          <Skeleton.Button active size="large" shape="circle" />
+                        </div>
+                        <div
+                          className="logout text-center"
+                          style={{
+                            width: '25%',
+                          }}
+                        >
+                          <Skeleton.Button active size="large" shape="circle" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="fileShare px-3 py-4">
+                      <div className="sharedMedia">
+                        <Space className="content" size={20}>
+                          <Skeleton.Image active />
+                          <Skeleton.Image active />
+                          <Skeleton.Image active />
+                        </Space>
+                      </div>
+                      <div className="sharedFile mt-5">
+                        <div className="flex justify-between items-center mb-3"></div>
+                        <div className="content">
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                          <Skeleton className="mb-3" active avatar paragraph={{ rows: 1 }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
               ) : (
                 <>
                   <div style={{ height: '92%' }}>
                     <MessageChat
-                      key={currentConversation._id}
-                      conversationId={currentConversation._id}
+                      key={conversations[0]?.lastMessageAt}
+                      conversationId={conversationID}
                       setIsDisplayShare={setIsDisplayShare}
                       isDisplayShare={isDisplayShare}
                     />
@@ -759,6 +543,10 @@ const Chat = () => {
                         <Input
                           allowClear
                           placeholder="Write a message"
+                          value={message}
+                          onChange={(e) => {
+                            setMessage(e.currentTarget.value);
+                          }}
                           onPressEnter={(e) => {
                             handleSubmit(e.currentTarget.value);
                           }}
