@@ -1,12 +1,11 @@
 import { Button, ConfigProvider } from 'antd';
-import { useState, useMemo, useLayoutEffect, useCallback } from 'react';
+import { useState, useMemo, useLayoutEffect } from 'react';
 import { messageService } from '../../../services/MessageService';
 import { useDispatch, useSelector } from 'react-redux';
 import GroupChatModal from '../../ChatComponent/GroupChatModal/GroupChatModal';
 import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
 import StyleTotal from './cssOpenPostDetailModal';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-
 interface Props {
   users: [];
 }
@@ -19,24 +18,21 @@ const OpenGroupModal = (Props: Props) => {
   const { themeColorSet } = getTheme();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [membersGroup, setMembersGroup] = useState([]);
-  const [name, setName] = useState('');
+  const [membersGroup, SetMembersGroup] = useState<any>();
+  const [name, SetName] = useState<any>();
 
-  const handleSetName = (name: any) => {
-    setName(name);
+  const handleSetName = (names: any) => {
+    SetName(names);
   };
 
   const handleSetMembersGroup = (members: any) => {
-    setMembersGroup(members);
+    // console.log(members);
+    SetMembersGroup(members);
   };
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = () => {
     console.log(name, membersGroup);
-    if (name.length === 0) {
-      return;
-    }
-
-    if (membersGroup.length < 2) {
+    if (!name || !membersGroup || membersGroup.length < 2) {
       return;
     }
 
@@ -47,13 +43,12 @@ const OpenGroupModal = (Props: Props) => {
       .then(() => {
         setIsLoading(false);
         dispatch(closeModal());
-        setMembersGroup([]);
       })
       .catch(() => console.log('error'))
       .finally(() => {
         setIsLoading(false);
       });
-  }, [name, membersGroup]);
+  };
 
   const componentMemorized = useMemo(
     () => (
@@ -75,7 +70,6 @@ const OpenGroupModal = (Props: Props) => {
           disabled={isLoading}
           onClick={() => {
             dispatch(closeModal());
-            setMembersGroup([]);
           }}
         >
           Cancel

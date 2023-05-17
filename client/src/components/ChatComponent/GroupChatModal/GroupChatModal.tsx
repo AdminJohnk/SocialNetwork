@@ -17,7 +17,7 @@ const GroupChatModal = (Props: GroupChatModalProps) => {
           <div className="mt-10 flex flex-col gap-y-8">
             <Input
               placeholder={`Group's name`}
-              value={Props.name}
+              defaultValue={Props.name}
               allowClear
               onChange={(event) => {
                 Props.setName(event.currentTarget.value);
@@ -26,7 +26,7 @@ const GroupChatModal = (Props: GroupChatModalProps) => {
             <Select
               mode="multiple"
               placeholder="Select members"
-              value={Props.value}
+              defaultValue={Props.value}
               options={Props.users.map((user: any) => ({
                 label: user.username,
                 value: user.username,

@@ -45,9 +45,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
-  const post = useSelector((state: any) => state.postReducer.post);
-  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
-
   const handleData = (data: any) => {
     setData(data);
   };

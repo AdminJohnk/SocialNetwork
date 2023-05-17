@@ -75,6 +75,7 @@ const EditProfileForm = () => {
           description: descriptions,
           firstname: firstname,
           lastname: lastname,
+          username: lastname + ' ' + firstname,
         },
       }),
     );
