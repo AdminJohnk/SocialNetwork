@@ -58,14 +58,17 @@ const Profile = (Props: Props) => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const postArrayRef = React.useRef(postArray);
+  const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) return;
+
+    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+
     if (!isNotAlreadyChanged) {
-      postArrayRef.current = postArray;
+      ownerInfoRef.current = ownerInfo;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
 
@@ -122,7 +125,7 @@ const Profile = (Props: Props) => {
                       <div className="chat px-2 py-2 text-base rounded-full">
                         <FontAwesomeIcon className="icon" icon={faComments} />
                       </div>
-                      <div className="follow px-4 py-2">
+                      <div className="follow px-4 py-2 rounded-full">
                         <span>Follow</span>
                       </div>
                     </div>

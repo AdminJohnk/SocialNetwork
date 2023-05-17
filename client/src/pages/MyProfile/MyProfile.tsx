@@ -58,14 +58,17 @@ const MyProfile = () => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const postArrayRef = React.useRef(postArray);
+  const ownerInfoRef = React.useRef(ownerInfo);
 
   useEffect(() => {
-    setIsNotAlreadyChanged(postArrayRef.current === postArray);
+    if (!isNotAlreadyChanged) return;
+
+    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+
     if (!isNotAlreadyChanged) {
-      postArrayRef.current = postArray;
+      ownerInfoRef.current = ownerInfo;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef]);
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
@@ -121,7 +124,7 @@ const MyProfile = () => {
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
                       <div className="editProfile">
                         <button
-                          className="btnEditProfile px-6 py-3"
+                          className="btnEditProfile px-6 py-3 rounded-full"
                           onClick={() => {
                             dispatch(
                               openDrawer({

@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import { Badge, ConfigProvider, Input, Space } from 'antd';
+import { Button, ConfigProvider, Input, Space, message } from 'antd';
 import StyleTotal from './cssConversationList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faCheckDouble, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { commonColor } from '../../../util/cssVariable/cssVariable';
+import { faUsersLine } from '@fortawesome/free-solid-svg-icons';
 import { SearchOutlined } from '@ant-design/icons';
 import { pusherClient } from '../../../util/functions/Pusher';
 import Avatar from '../../Avatar/Avatar';
-import { find } from 'lodash';
-import { CREATE_CONVERSATION_SAGA } from '../../../redux/actionSaga/MessageActionSaga';
+import { find, set } from 'lodash';
 import ConversationBox from '../ConversationBox/ConversationBox';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { messageService } from '../../../services/MessageService';
+import axios from 'axios';
+import { closeModal, openModal } from '../../../redux/Slice/ModalHOCSlice';
+import GroupChatModal from '../GroupChatModal/GroupChatModal';
 
 interface ConversationListProps {
   initialItems: any;
@@ -27,10 +28,11 @@ const ConversationList = (Props: ConversationListProps) => {
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
-
-  // const dispatch = useDispatch();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
@@ -83,24 +85,77 @@ const ConversationList = (Props: ConversationListProps) => {
     pusherClient.bind('conversation-remove', removeHandler);
   }, [pusherKey]);
 
-  // const { currentConversation } = useSelector((state: any) => state.conversationReducer);
-
   const HandleOnClick = async (item: any) => {
-    // dispatch(
-    //   CREATE_CONVERSATION_SAGA({
-    //     users: [item, userInfo.id],
-    //   }),
-    // );
-
     const { data } = await messageService.createConversation({ users: [item, userInfo.id] });
     navigate(`/message/${data.content.conversation._id}`);
   };
 
-  // useEffect(() => {
-  //   if (currentConversation?._id) {
-  //     navigate(`/message/${currentConversation._id}`);
-  //   }
-  // }, [currentConversation?._id]);
+  // Open PostDetailModal
+  const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
+
+  const { visible } = useSelector((state: any) => state.modalHOCReducer);
+
+  useEffect(() => {
+    if (!visible && isOpenPostDetail) {
+      setIsOpenPostDetail(!isOpenPostDetail);
+    }
+  }, [visible]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [membersGroup, setMembersGroup] = useState([]);
+  const [name, setName] = useState('');
+
+  const onSubmit = () => {
+    setIsLoading(true);
+
+    messageService
+      .createConversation({ users: membersGroup, name, isGroup: true })
+      .then(() => {
+        navigate('/message');
+        dispatch(closeModal());
+        setIsOpenPostDetail(false);
+        setMembersGroup([]);
+      })
+      .catch(() => messageApi.error('Something went wrong!'))
+      .finally(() => setIsLoading(false));
+  };
+
+  useEffect(() => {
+    if (!isOpenPostDetail) return;
+
+    dispatch(
+      openModal({
+        title: 'Create a new group',
+        component: (
+          <GroupChatModal
+            key={Math.random()}
+            name={name}
+            setName={setName}
+            isLoading={isLoading}
+            members={membersGroup}
+            setValue={setMembersGroup}
+            users={Props.users}
+          />
+        ),
+        footer: (
+          <div className="mt-6 flex items-center justify-end gap-x-6">
+            <Button
+              disabled={isLoading}
+              onClick={() => {
+                dispatch(closeModal());
+                setIsOpenPostDetail(false);
+                setMembersGroup([]);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type="primary" onClick={onSubmit}>
+              Create
+            </Button>
+          </div>
+        ),
+      }),
+    );
+  }, [isOpenPostDetail]);
 
   const formatUsername = (username: any) => {
     const MAX_LENGTH = 14; // maximum length of username on one line
@@ -135,6 +190,7 @@ const ConversationList = (Props: ConversationListProps) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
+        {contextHolder}
         <div className="searchChat h-screen">
           <Space
             className="myInfo flex items-center py-4 px-3"
@@ -203,8 +259,8 @@ const ConversationList = (Props: ConversationListProps) => {
                 />
               </ConfigProvider>
             </div>
-            <div className="iconPlus">
-              <FontAwesomeIcon className="text-xl" icon={faPlus} />
+            <div className="iconPlus cursor-pointer" onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}>
+              <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
             </div>
           </div>
           <div
@@ -254,11 +310,14 @@ const ConversationList = (Props: ConversationListProps) => {
               overflow: 'auto',
             }}
           >
-            {items.map((item: any) => (
-              <NavLink to={`/message/${item._id}`}>
-                <ConversationBox key={item._id} data={item} selected={item._id === Props.selected} />
-              </NavLink>
-            ))}
+            {items.map(
+              (item: any) =>
+                (item.messages.length > 0 || item.isGroup) && (
+                  <NavLink to={`/message/${item._id}`}>
+                    <ConversationBox key={item._id} data={item} selected={item._id === Props.selected} />
+                  </NavLink>
+                ),
+            )}
           </div>
           <div className="listUser"></div>
         </div>
