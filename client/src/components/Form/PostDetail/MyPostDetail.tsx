@@ -29,7 +29,7 @@ const MyPostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          maxHeight: '78vh',
+          maxHeight: '73vh',
           overflow: 'auto',
         }}
       >
@@ -40,11 +40,11 @@ const MyPostDetail = (Props: PostProps) => {
         )}
         {Props.post?.comments?.map((item: any) => {
           return (
-            <div className="px-4" key={item._id}>
+            <div className="px-4" key={item?._id}>
               {item ? (
                 <CommentDetail
                   onData={Props.onData}
-                  key={item._id}
+                  key={item?._id}
                   comment={item}
                   userInfo={Props.userInfo}
                   selectedCommentId={selectedCommentId}
@@ -54,7 +54,7 @@ const MyPostDetail = (Props: PostProps) => {
                     return (
                       <CommentDetail
                         onData={Props.onData}
-                        key={item._id}
+                        key={item?._id}
                         comment={item}
                         userInfo={Props.userInfo}
                         selectedCommentId={selectedCommentId}

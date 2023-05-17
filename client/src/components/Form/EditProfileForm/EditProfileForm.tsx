@@ -38,7 +38,7 @@ const EditProfileForm = () => {
 
   const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
 
-  const [links, setLinks] = React.useState<any>(userInfo?.contacts);
+  const [links, setLinks] = React.useState<any>(userInfo?.contacts || []);
 
   const isHaveCover = true;
 

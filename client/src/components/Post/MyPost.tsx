@@ -33,6 +33,7 @@ import OpenMyPostDetailModal from '../ActionComponent/OpenPostDetail/OpenMyPostD
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import 'highlight.js/styles/monokai-sublime.css';
 
 interface PostProps {
   post: any;
@@ -147,7 +148,7 @@ const MyPost = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post?._id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/post/${PostProps.post?._id}`);
       },
     },
     {
@@ -209,12 +210,19 @@ const MyPost = (PostProps: PostProps) => {
     }
   }, [visible]);
 
+  function removeCode(htmlString: any): any {
+    const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+    const elements = doc.getElementsByClassName('ql-syntax');
+    while (elements.length > 0) elements[0].remove();
+    return doc.body.innerHTML;
+  }
+
   const [expanded, setExpanded] = useState(false);
 
   const displayContent =
     expanded || PostProps.post?.content?.length <= 250
       ? PostProps.post?.content
-      : PostProps.post?.content?.slice(0, 200) + '...';
+      : removeCode(PostProps.post?.content)?.slice(0, 250) + '...';
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -302,7 +310,14 @@ const MyPost = (PostProps: PostProps) => {
             <div className="title font-bold">{PostProps.post?.title}</div>
             <div className="content mt-3">
               <div className="content__text">
-                <ReactQuill value={displayContent} readOnly={true} theme={'bubble'} />
+                <ReactQuill
+                  value={displayContent}
+                  readOnly={true}
+                  theme={'bubble'}
+                  modules={{
+                    syntax: true,
+                  }}
+                />
                 {PostProps.post?.content?.length > 250 && (
                   <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                 )}

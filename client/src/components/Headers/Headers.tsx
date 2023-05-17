@@ -99,6 +99,7 @@ const Headers = () => {
             left: 0,
             zIndex: 1000,
             width: '100%',
+            height: "5rem"
           }}
         >
           <Row align="middle">
