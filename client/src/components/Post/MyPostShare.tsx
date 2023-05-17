@@ -264,11 +264,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
               <div className="title font-bold">{PostProps.post?.title}</div>
               <div className="content mt-3">
                 <div className="content__text">
-                  <ReactQuill
-                    value={displayContent}
-                    readOnly={true}
-                    theme={'bubble'}
-                  />
+                  <ReactQuill value={displayContent} readOnly={true} theme={'bubble'} />
                   {PostProps.post?.content?.length > 250 && (
                     <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
                   )}
@@ -286,7 +282,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
                     }}
                   >
                     <div
-                      className="contentLink flex mt-5 px-3 py-3 cursor-pointer"
+                      className="contentLink flex justify-between mt-5 px-3 py-3 cursor-pointer"
                       style={{ backgroundColor: themeColorSet.colorBg4 }}
                     >
                       <div className="left w-4/5 p-2">
@@ -297,7 +293,14 @@ const MyPostShare = (PostProps: PostShareProps) => {
                           {link.description?.length > 100 ? link.description.slice(0, 100) + '...' : link.description}
                         </div>
                       </div>
-                      <img src={link.image} alt="" className="w-1/5" />
+                      <img
+                        src={link.image}
+                        alt=""
+                        className="w-1/5"
+                        style={{
+                          maxWidth: '120px',
+                        }}
+                      />
                     </div>
                   </a>
                 ) : (

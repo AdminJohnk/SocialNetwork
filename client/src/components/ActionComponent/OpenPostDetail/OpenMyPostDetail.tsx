@@ -187,7 +187,7 @@ const OpenMyPostDetail = (Props: Props) => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
-        <Row className="py-10">
+        <Row className="py-4">
           <Col offset={3} span={18}>
             <div
               style={{

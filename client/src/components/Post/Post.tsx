@@ -250,7 +250,14 @@ const Post = (PostProps: PostProps) => {
                         {link.description?.length > 100 ? link.description.slice(0, 100) + '...' : link.description}
                       </div>
                     </div>
-                    <img src={link.image} alt="" className="w-1/5" />
+                    <img
+                      src={link.image}
+                      alt=""
+                      className="w-1/5"
+                      style={{
+                        maxWidth: '120px',
+                      }}
+                    />
                   </div>
                 </a>
               ) : (

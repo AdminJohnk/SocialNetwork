@@ -28,7 +28,6 @@ var toolbarOptions = [
   [{ list: 'ordered' }, { list: 'bullet' }],
   [{ align: [] }],
   ['link'],
-  ['code-block'],
 ];
 
 hljs.registerLanguage('javascript', javascript);
