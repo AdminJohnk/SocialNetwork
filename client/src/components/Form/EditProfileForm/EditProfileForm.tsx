@@ -1,4 +1,4 @@
-import { ConfigProvider, Space, Tag, Avatar } from 'antd';
+import { ConfigProvider, Space, Tag, Avatar, Tooltip } from 'antd';
 import React from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -189,53 +189,63 @@ const EditProfileForm = () => {
               switch (item.key) {
                 case '0':
                   return (
-                    <Avatar
-                      onClick={() => {
-                        openInNewTab(item.link);
-                      }}
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
-                    />
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                      />
+                    </Tooltip>
                   );
                 case '1':
                   return (
-                    <Avatar
-                      onClick={() => {
-                        openInNewTab(item.link);
-                      }}
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faGithub)} />}
-                    />
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                      />
+                    </Tooltip>
                   );
                 case '2':
                   return (
-                    <Avatar
-                      onClick={() => {
-                        openInNewTab(item.link);
-                      }}
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
-                    />
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                      />
+                    </Tooltip>
                   );
                 case '3':
                   return (
-                    <Avatar
-                      onClick={() => {
-                        openInNewTab(item.link);
-                      }}
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
-                    />
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                      />
+                    </Tooltip>
                   );
                 case '4':
                   return (
-                    <Avatar
-                      onClick={() => {
-                        openInNewTab(item.link);
-                      }}
-                      className="item"
-                      icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
-                    />
+                    <Tooltip title={item.tooltip}>
+                      <Avatar
+                        onClick={() => {
+                          openInNewTab(item.link);
+                        }}
+                        className="item"
+                        icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                      />
+                    </Tooltip>
                   );
                 default:
                   return null;

@@ -52,6 +52,7 @@ const AddLinkComponent = (Props: any) => {
         addLinkArrTemp[index].tooltip = contactArray[4].label;
         break;
     }
+    console.log(addLinkArrTemp[index].tooltip);
     setAddLinkArr(addLinkArrTemp);
   };
 
@@ -83,9 +84,6 @@ const AddLinkComponent = (Props: any) => {
   function handleEditTooltip(index: any) {
     setAddTooltips(!addTooltips);
   }
-
-  useEffect(() => {
-  }, [addLinkArr]);
 
   useEffect(() => {
     setSave(false);

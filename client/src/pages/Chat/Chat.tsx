@@ -1,4 +1,4 @@
-import { ConfigProvider, Input, Popover, Skeleton, Space } from 'antd';
+import { ConfigProvider, Input, Popover, Skeleton, Space, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../util/functions/ThemeFunction';
@@ -110,9 +110,11 @@ const Chat = () => {
 
   const { userID } = useSelector((state: any) => state.authReducer);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(GET_USER_ID());
   }, []);
+
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (data: any) => {
     if (!conversationID) return;
@@ -122,6 +124,8 @@ const Chat = () => {
       conversationID,
       body: data,
     });
+
+    setMessage('');
   };
 
   const { conversations, isLoadingConversations } = useConversationsData();
@@ -539,6 +543,10 @@ const Chat = () => {
                         <Input
                           allowClear
                           placeholder="Write a message"
+                          value={message}
+                          onChange={(e) => {
+                            setMessage(e.currentTarget.value);
+                          }}
                           onPressEnter={(e) => {
                             handleSubmit(e.currentTarget.value);
                           }}

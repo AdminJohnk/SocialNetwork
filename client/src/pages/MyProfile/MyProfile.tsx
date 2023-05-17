@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -98,7 +98,7 @@ const MyProfile = () => {
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden">
+                <div className="avatar rounded-full overflow-hidden object-fill flex">
                   <img
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
@@ -216,53 +216,63 @@ const MyProfile = () => {
                       switch (item.key) {
                         case '0':
                           return (
-                            <Avatar
-                              onClick={() => {
-                                openInNewTab(item.link);
-                              }}
-                              className="item"
-                              icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
-                            />
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                              />
+                            </Tooltip>
                           );
                         case '1':
                           return (
-                            <Avatar
-                              onClick={() => {
-                                openInNewTab(item.link);
-                              }}
-                              className="item"
-                              icon={<FontAwesomeIcon icon={icon(faGithub)} />}
-                            />
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                              />
+                            </Tooltip>
                           );
                         case '2':
                           return (
-                            <Avatar
-                              onClick={() => {
-                                openInNewTab(item.link);
-                              }}
-                              className="item"
-                              icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
-                            />
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                              />
+                            </Tooltip>
                           );
                         case '3':
                           return (
-                            <Avatar
-                              onClick={() => {
-                                openInNewTab(item.link);
-                              }}
-                              className="item"
-                              icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
-                            />
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                              />
+                            </Tooltip>
                           );
                         case '4':
                           return (
-                            <Avatar
-                              onClick={() => {
-                                openInNewTab(item.link);
-                              }}
-                              className="item"
-                              icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
-                            />
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                              />
+                            </Tooltip>
                           );
                         default:
                           return null;
