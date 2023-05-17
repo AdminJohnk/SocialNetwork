@@ -108,7 +108,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://127.0.0.1:3000/postshare/${PostProps.post?._id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/postshare/${PostProps.post?._id}`);
       },
     },
     {

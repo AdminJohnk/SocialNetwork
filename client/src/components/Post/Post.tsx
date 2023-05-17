@@ -35,10 +35,6 @@ interface PostProps {
   userInfo: any;
 }
 
-hljs.registerLanguage('javascript', javascript);
-hljs.configure({
-  languages: ['javascript', 'ruby', 'python'],
-});
 // -----------------------------------------------------
 
 const Post = (PostProps: PostProps) => {
@@ -123,7 +119,7 @@ const Post = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://127.0.0.1:3000/post/${PostProps.post?._id}`);
+        navigator.clipboard.writeText(`http://localhost:3000/post/${PostProps.post?._id}`);
       },
     },
   ];
@@ -154,8 +150,6 @@ const Post = (PostProps: PostProps) => {
     expanded || PostProps.post?.content?.length <= 250
       ? PostProps.post?.content
       : removeCode(PostProps.post?.content)?.slice(0, 250) + '...';
-
-  
 
   const toggleExpanded = () => {
     setExpanded(!expanded);

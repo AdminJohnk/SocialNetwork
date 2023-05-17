@@ -14,6 +14,7 @@ const StyleTotal = styled.div`
   }
   .ql-editor {
     font-size: 14px;
+    -webkit-user-modify: "read-write-plaintext-only";
   }
   .newPostBody{
     .name_avatar{
