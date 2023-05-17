@@ -119,13 +119,11 @@ const Chat = () => {
   const handleSubmit = async (data: any) => {
     if (!conversationID) return;
     if (!data) return;
-
+    setMessage('');
     await messageService.sendMessage({
       conversationID,
       body: data,
     });
-
-    setMessage('');
   };
 
   const { conversations, isLoadingConversations } = useConversationsData();

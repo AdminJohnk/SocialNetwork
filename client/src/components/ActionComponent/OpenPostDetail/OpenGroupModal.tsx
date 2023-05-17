@@ -20,6 +20,7 @@ const OpenGroupModal = (Props: Props) => {
   const { themeColorSet } = getTheme();
 
   const [isLoading, setIsLoading] = useState(false);
+
   let [membersGroup, SetMembersGroup] = useState<any>();
   let [name, setGroupName] = useState<any>();
 

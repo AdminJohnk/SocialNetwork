@@ -180,7 +180,7 @@ const ConversationList = (Props: ConversationListProps) => {
               </div>
             </div>
             <div
-              className="iconPlus relative cursor-pointer left-44"
+              className="iconPlus relative cursor-pointer left-36"
               onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}
             >
               <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
