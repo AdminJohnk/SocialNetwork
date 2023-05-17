@@ -92,7 +92,7 @@ const MyProfile = () => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
+                    backgroundImage: `url("${ownerInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',

@@ -60,14 +60,14 @@ const MessageBox = (Props: MessageBoxProps) => {
           {Props.data.image ? (
             <Image
               alt="Image"
-              height={288}
-              width={512}
               src={Props.data.image}
               draggable={false}
               className="object-contain cursor-pointer"
               style={{
                 borderRadius: '2rem',
                 border: '0.2px solid',
+                maxHeight: '288px',
+                maxWidth: '512px',
               }}
             />
           ) : (

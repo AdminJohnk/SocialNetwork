@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
-import { ConfigProvider } from 'antd';
 import StyleTotal from './cssMessageChat';
 import AvatarGroup from '../../Avatar/AvatarGroup';
 import OtherUser from '../../../util/functions/OtherUser';
@@ -9,7 +8,6 @@ import Avatar from '../../Avatar/Avatar';
 import MessageBox from '../MessageBox/MessageBox';
 import { pusherClient } from '../../../util/functions/Pusher';
 import { find } from 'lodash';
-import { GET_MESSAGES_SAGA, SEEN_MESSAGE_SAGA } from '../../../redux/actionSaga/MessageActionSaga';
 import { useCurrentConversationData, useMessagesData } from '../../../util/functions/DataProvider';
 import { messageService } from '../../../services/MessageService';
 import useIntersectionObserver from '../../../util/functions/useIntersectionObserver';
@@ -44,6 +42,8 @@ const MessageChat = (Props: IParams) => {
 
   const otherUser = OtherUser(currentConversation);
 
+  const [count, setCount] = useState(0);
+
   const isActive = members?.indexOf(otherUser?._id!) !== -1;
 
   const statusText = useMemo(() => {
@@ -68,7 +68,6 @@ const MessageChat = (Props: IParams) => {
 
   useEffect(() => {
     pusherClient.subscribe(Props.conversationId);
-    bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     const messageHandler = async (message: any) => {
       seenMessage();
@@ -80,8 +79,6 @@ const MessageChat = (Props: IParams) => {
 
         return [...current, message];
       });
-
-      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -108,7 +105,17 @@ const MessageChat = (Props: IParams) => {
 
   useIntersectionObserver(bottomRef, seenMessage);
 
-  bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  useEffect(() => {
+    if (messagesState.length === 0) return;
+    if (count > 0) return;
+    bottomRef?.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    setCount(count + 1);
+  }, [messagesState]);
+
+  useEffect(() => {
+    if (count === 0) return;
+    bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [messagesState]);
 
   const styleStatus = useMemo(() => {
     return isActive ? themeColorSet.colorText2 : themeColorSet.colorText3;
