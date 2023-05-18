@@ -1,5 +1,5 @@
-import React from 'react';
-import { Avatar, Badge, Button, Col, ConfigProvider, Dropdown, Row, Space, Switch, theme } from 'antd';
+import React, { useEffect, useMemo } from 'react';
+import { Avatar, Badge, Button, Col, ConfigProvider, Dropdown, Row, Space, Switch, notification, theme } from 'antd';
 import type { MenuProps } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,9 +12,14 @@ import Search from 'antd/es/transfer/search';
 import { BellOutlined, CommentOutlined, UserOutlined } from '@ant-design/icons';
 import { DARK_THEME, LIGHT_THEME } from '../../util/constants/SettingSystem';
 import { setTheme } from '../../redux/Slice/ThemeSlice';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import DayNightSwitch from '../Button/Day&NightSwitch';
 import { LOGOUT_SAGA } from '../../redux/actionSaga/AuthActionSaga';
+import { useConversationsData } from '../../util/functions/DataProvider';
+import { pusherClient } from '../../util/functions/Pusher';
+import { format } from 'date-fns';
+import AvatarGroup from '../Avatar/AvatarGroup';
+import AvatarMessage from '../Avatar/Avatar';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -79,6 +84,98 @@ const Headers = () => {
     },
   ];
 
+  const [api, contextHolder] = notification.useNotification();
+  const navigate = useNavigate();
+
+  const [countUnseen, setCountUnseen] = React.useState(0);
+  const [countNoti, setCountNoti] = React.useState(0);
+
+  const { conversations, isLoadingConversations } = useConversationsData();
+
+  const [messages, setMessages] = React.useState<any[]>([]);
+
+  useEffect(() => {
+    if (isLoadingConversations) return;
+
+    setMessages(conversations);
+  }, [conversations, isLoadingConversations]);
+
+  useEffect(() => {
+    if (isLoadingConversations) return;
+
+    const unseenConversations = messages.filter((conversation: any) => {
+      if (conversation.messages?.length === 0) return false;
+      const seenList = conversation.messages[conversation.messages.length - 1].seen || [];
+      return !seenList.some((user: any) => user._id === userInfo.id);
+    });
+
+    if (unseenConversations.length > 0) {
+      document.title = `(${unseenConversations.length}) DevHub`;
+      setCountUnseen(unseenConversations.length);
+    } else {
+      document.title = `DevHub`;
+      setCountUnseen(0);
+    }
+  }, [messages, isLoadingConversations]);
+
+  const pusherKey = useMemo(() => {
+    return userInfo?.id;
+  }, [userInfo]);
+
+  const popupNotification = (message: any, conversation: any) => {
+    api.open({
+      message: message.sender.username + ' ' + format(new Date(message.createdAt), 'p'),
+      description: message.body,
+      duration: 5,
+      icon: conversation.isGroup ? (
+        <AvatarGroup key={conversation._id} users={conversation.users} />
+      ) : (
+        <AvatarMessage key={conversation._id} user={message.sender} />
+      ),
+      placement: 'bottomRight',
+      btn: (
+        <Button
+          type="primary"
+          size="small"
+          onClick={() => {
+            navigate(`/message/${conversation._id}`);
+          }}
+        >
+          Go to message
+        </Button>
+      ),
+    });
+  };
+
+  useEffect(() => {
+    if (!pusherKey) return;
+
+    pusherClient.subscribe(pusherKey);
+
+    const updateHandler = (conversation: any) => {
+      setMessages((current: any) =>
+        current.map((currentConversation: any) => {
+          if (currentConversation._id === conversation.id) {
+            popupNotification(conversation.messages[conversation.messages.length - 1], currentConversation);
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+
+          return currentConversation;
+        }),
+      );
+    };
+
+    pusherClient.bind('conversation-update-header', updateHandler);
+
+    return () => {
+      pusherClient.unbind('conversation-update-header', updateHandler);
+      pusherClient.unsubscribe(pusherKey);
+    };
+  }, [pusherKey]);
+
   return (
     <ConfigProvider
       theme={{
@@ -90,6 +187,7 @@ const Headers = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
+        {contextHolder}
         <Header
           className="header"
           style={{
@@ -99,7 +197,7 @@ const Headers = () => {
             left: 0,
             zIndex: 1000,
             width: '100%',
-            height: "5rem"
+            height: '5rem',
           }}
         >
           <Row align="middle">
@@ -113,13 +211,13 @@ const Headers = () => {
                       style={{ color: themeColorSet.colorText1 }}
                     />
                     <Title level={2} className="title inline-block ml-2" style={{ color: themeColorSet.colorText1 }}>
-                      <div className='animated-word'>
-                        <div className='letter'>D</div>
-                        <div className='letter'>e</div>
-                        <div className='letter'>v</div>
-                        <div className='letter'>H</div>
-                        <div className='letter'>u</div>
-                        <div className='letter'>b</div>
+                      <div className="animated-word">
+                        <div className="letter">D</div>
+                        <div className="letter">e</div>
+                        <div className="letter">v</div>
+                        <div className="letter">H</div>
+                        <div className="letter">u</div>
+                        <div className="letter">b</div>
                       </div>
                     </Title>
                   </NavLink>
@@ -130,7 +228,7 @@ const Headers = () => {
                 <Col span={5} className="pl-3">
                   <Space size={25}>
                     <NavLink to="/message">
-                      <Badge count={5}>
+                      <Badge count={countUnseen}>
                         <Avatar
                           className="messageButton cursor-pointer"
                           shape="circle"
@@ -138,7 +236,7 @@ const Headers = () => {
                         />
                       </Badge>
                     </NavLink>
-                    <Badge count={7}>
+                    <Badge count={countNoti}>
                       <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
                     </Badge>
                     <Dropdown menu={{ items }} trigger={['click']} placement="bottom">
