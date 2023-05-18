@@ -28,6 +28,18 @@ const StyleTotal = styled.div`
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .ant-notification-notice-icon {
+  }
+
+  .ant-notification-notice-message {
+  }
+
+  .ant-notification-notice-description {
+  }
+
+  .ant-notification-notice-btn {
+  }
 `;
 
 export default StyleTotal;

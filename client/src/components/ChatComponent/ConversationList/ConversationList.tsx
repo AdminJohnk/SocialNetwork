@@ -157,7 +157,7 @@ const ConversationList = (Props: ConversationListProps) => {
               height: '12%',
             }}
           >
-            <div className='flex'>
+            <div className="flex">
               <div className="avatar mr-3">
                 <Avatar key={userInfo.id} user={userInfo} />
               </div>
