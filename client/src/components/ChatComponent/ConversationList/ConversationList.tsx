@@ -152,39 +152,38 @@ const ConversationList = (Props: ConversationListProps) => {
         {isOpenPostDetail && <OpenGroupModal users={Props.users} />}
         <div className="searchChat h-screen">
           <Space
-            className="myInfo flex items-center py-4 px-3"
+            className="myInfo flex justify-between items-center py-4 px-3"
             style={{
               borderBottom: '1px solid',
               borderColor: themeColorSet.colorBg4,
               height: '12%',
             }}
           >
-            <div className="avatar relative">
-              <Avatar key={userInfo.id} user={userInfo} />
-            </div>
-            <div className="name_career">
-              <div
-                className="name mb-1"
-                style={{
-                  color: themeColorSet.colorText1,
-                  fontWeight: 600,
-                }}
-              >
-                {userInfo.username}
+            <div className='flex'>
+              <div className="avatar mr-3">
+                <Avatar key={userInfo.id} user={userInfo} />
               </div>
-              <div
-                className="career"
-                style={{
-                  color: themeColorSet.colorText3,
-                }}
-              >
-                UX/UI Designer
+              <div className="name_career">
+                <div
+                  className="name mb-1"
+                  style={{
+                    color: themeColorSet.colorText1,
+                    fontWeight: 600,
+                  }}
+                >
+                  {userInfo.username}
+                </div>
+                <div
+                  className="career"
+                  style={{
+                    color: themeColorSet.colorText3,
+                  }}
+                >
+                  UX/UI Designer
+                </div>
               </div>
             </div>
-            <div
-              className="iconPlus relative cursor-pointer left-44"
-              onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}
-            >
+            <div className="iconPlus cursor-pointer" onClick={() => setIsOpenPostDetail(!isOpenPostDetail)}>
               <FontAwesomeIcon className="text-xl" icon={faUsersLine} />
             </div>
           </Space>

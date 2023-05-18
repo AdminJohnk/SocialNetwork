@@ -108,7 +108,7 @@ const MessageChat = (Props: IParams) => {
   useEffect(() => {
     if (messagesState.length === 0) return;
     if (count > 0) return;
-    bottomRef?.current?.scrollIntoView({ behavior: 'instant', block: 'start' });
+    bottomRef?.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
     setCount(count + 1);
   }, [messagesState]);
 
