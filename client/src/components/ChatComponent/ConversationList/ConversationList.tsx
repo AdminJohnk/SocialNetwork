@@ -96,14 +96,6 @@ const ConversationList = (Props: ConversationListProps) => {
     pusherClient.bind('conversation-update', updateHandler);
     pusherClient.bind('new-conversation', newHandler);
     pusherClient.bind('conversation-remove', removeHandler);
-
-    return () => {
-      pusherClient.unbind('conversation-update', updateHandler);
-      pusherClient.unbind('new-conversation', newHandler);
-      pusherClient.unbind('conversation-remove', removeHandler);
-
-      pusherClient.unsubscribe(pusherKey);
-    };
   }, [pusherKey]);
 
   const HandleOnClick = async (item: any) => {

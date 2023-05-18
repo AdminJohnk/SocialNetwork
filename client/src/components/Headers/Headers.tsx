@@ -169,11 +169,6 @@ const Headers = () => {
     };
 
     pusherClient.bind('conversation-update-header', updateHandler);
-
-    return () => {
-      pusherClient.unbind('conversation-update-header', updateHandler);
-      pusherClient.unsubscribe(pusherKey);
-    };
   }, [pusherKey]);
 
   return (
