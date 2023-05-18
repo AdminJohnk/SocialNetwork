@@ -119,13 +119,11 @@ const Chat = () => {
   const handleSubmit = async (data: any) => {
     if (!conversationID) return;
     if (!data) return;
-
+    setMessage('');
     await messageService.sendMessage({
       conversationID,
       body: data,
     });
-
-    setMessage('');
   };
 
   const { conversations, isLoadingConversations } = useConversationsData();
@@ -497,7 +495,8 @@ const Chat = () => {
                 <>
                   <div style={{ height: '92%' }}>
                     <MessageChat
-                      key={conversations[0]?.lastMessageAt}
+                      // key={conversations[0]?.lastMessageAt}
+                      key={conversationID}
                       conversationId={conversationID}
                       setIsDisplayShare={setIsDisplayShare}
                       isDisplayShare={isDisplayShare}

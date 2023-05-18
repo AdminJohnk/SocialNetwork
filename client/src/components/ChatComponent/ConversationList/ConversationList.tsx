@@ -29,8 +29,6 @@ const ConversationList = (Props: ConversationListProps) => {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   const { members } = useSelector((state: any) => state.activeListReducer);

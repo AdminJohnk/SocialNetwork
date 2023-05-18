@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import contactArrays from '../../util/constants/Contact';
 import { ConfigProvider, Tag, Dropdown, Button, Input, Avatar, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,8 @@ import { DownOutlined } from '@ant-design/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan, faPlus, faInfo } from '@fortawesome/free-solid-svg-icons';
 import { forEach, set } from 'lodash';
+import { a } from '../../util/functions/UtilFunction';
+import { hover } from '@testing-library/user-event/dist/hover';
 const AddLinkComponent = (Props: any) => {
   const dispatch = useDispatch();
 
@@ -19,52 +21,72 @@ const AddLinkComponent = (Props: any) => {
 
   const contactArray = [...contactArrays];
 
-  const [addLinkArr, setAddLinkArr] = React.useState([...Props.links]);
+  //add links
+  const [addLinkArr, setAddLinkArr] = useState([...Props.links]);
 
-  const [addTooltips, setAddTooltips] = React.useState(false);
-
-  const [save, setSave] = React.useState<boolean>(false);
-
-  // let addLinkArrTemp = [...addLinkArr];
   let addLinkArrTemp = addLinkArr.map((obj) => ({ ...obj }));
 
-  console.log(addLinkArrTemp);
+  //add tooltips
+  const [addTooltips, setAddTooltips] = useState([...Props.links]);
+
+  let addTooltipsTemp = addTooltips.map((obj) => ({ ...obj }));
+
+  //save
+  const [save, setSave] = useState<boolean>(false);
 
   const handleSubmit = () => {
     Props.callback(addLinkArr);
   };
   const handleDropClick = (e: any, index: any) => {
-    addLinkArrTemp[index].key = e.key;
-    switch (e.key) {
-      case '0':
-        addLinkArrTemp[index].tooltip = contactArray[0].label;
-        break;
-      case '1':
-        addLinkArrTemp[index].tooltip = contactArray[1].label;
-        break;
-      case '2':
-        addLinkArrTemp[index].tooltip = contactArray[2].label;
-        break;
-      case '3':
-        addLinkArrTemp[index].tooltip = contactArray[3].label;
-        break;
-      case '4':
-        addLinkArrTemp[index].tooltip = contactArray[4].label;
-        break;
+    if (addTooltipsTemp[index].tooltip === contactArray[parseInt(addTooltipsTemp[index].key)].label) {
+      switch (e.key) {
+        case '0':
+          addTooltipsTemp[index].tooltip = contactArray[0].label;
+          break;
+        case '1':
+          addTooltipsTemp[index].tooltip = contactArray[1].label;
+          break;
+        case '2':
+          addTooltipsTemp[index].tooltip = contactArray[2].label;
+          break;
+        case '3':
+          addTooltipsTemp[index].tooltip = contactArray[3].label;
+          break;
+        case '4':
+          addTooltipsTemp[index].tooltip = contactArray[4].label;
+          break;
+      }
+      addTooltipsTemp[index].key = e.key;
     }
-    console.log(addLinkArrTemp[index].tooltip);
+
+    addLinkArrTemp[index].key = addTooltipsTemp[index].key;
+    addLinkArrTemp[index].tooltip = addTooltipsTemp[index].tooltip;
+
+    // if (handleAddLink(addLinkArrTemp[index].link, e.key)) {
     setAddLinkArr(addLinkArrTemp);
+    setAddTooltips(addTooltipsTemp);
+    // } else {
+    // addLinkArrTemp[index].link = '';
+    // setAddLinkArr(addLinkArrTemp);
+    // }
   };
 
   const handleDelete = (index: any) => {
     addLinkArrTemp.splice(index, 1);
     setAddLinkArr(addLinkArrTemp);
+
+    addTooltipsTemp.splice(index, 1);
+    setAddTooltips(addTooltipsTemp);
   };
 
-  const handleEnterLink = (e: any, index: any) => {
+  const handleEnterLink = (e: any, index: any, key: any) => {
     if (isValidLink(e.target.value)) {
       addLinkArrTemp[index].link = e.target.value;
+      // addLinkArrTemp[index].tooltip = addTooltipsTemp[index].tooltip;
+
+      // if (handleAddLink(addLinkArrTemp[index].link, key)) {
       setAddLinkArr(addLinkArrTemp);
+      // }
     }
   };
 
@@ -77,12 +99,24 @@ const AddLinkComponent = (Props: any) => {
     }
   };
 
-  const handleClickSubmit = () => {
-    addLinkArrTemp = addLinkArrTemp.filter((item: any) => isValidLink(item.link));
+  const handleAddLink = (link: any, key: any) => {
+    if (!link) return false;
+    if (
+      link.startsWith(contactArray[parseInt(key)].linkDefault) &&
+      link.length > contactArray[parseInt(key)].linkDefault.length
+    ) {
+      return true;
+    }
+    return false;
   };
 
-  function handleEditTooltip(index: any) {
-    setAddTooltips(!addTooltips);
+  const handleClickSubmit = () => {
+    addLinkArrTemp = addLinkArrTemp.filter((item: any) => isValidLink(item.link) && handleAddLink(item.link, item.key));
+  };
+
+  function handleShowTooltip(index: any) {
+    addTooltipsTemp[index].state = !addTooltipsTemp[index].state;
+    setAddTooltips(addTooltipsTemp);
   }
 
   useEffect(() => {
@@ -129,11 +163,11 @@ const AddLinkComponent = (Props: any) => {
               <Input
                 key={index}
                 className="w-full ml-2 pl-2 inputlink"
-                placeholder="eg. https://example.com"
+                placeholder={contactArray[parseInt(item.key)].linkDefault}
                 defaultValue={addLinkArr[index]?.link}
                 inputMode="url"
                 onChange={(e) => {
-                  handleEnterLink(e, index);
+                  handleEnterLink(e, index, item.key);
                 }}
                 style={{
                   height: 38,
@@ -144,15 +178,19 @@ const AddLinkComponent = (Props: any) => {
                   borderRadius: 8,
                 }}
               />
-
               <Input
                 key={index}
-                className={addTooltips ? 'w-full ml-2 pl-2 inputlink' : 'w-full ml-2 pl-2 inputlink hidden'}
+                className={
+                  addTooltips[index].state ? 'w-full ml-2 pl-2 inputlink' : 'w-full ml-2 pl-2 inputlink hidden'
+                }
                 inputMode="text"
-                defaultValue={addLinkArr[index]?.tooltip}
+                value={addTooltips[index]?.tooltip}
                 onChange={(e) => {
-                  addLinkArrTemp[index].tooltip = e.target.value;
-                  // setAddLinkArr(addLinkArrTemp);
+                  addTooltipsTemp[index].tooltip = e.target.value;
+                  setAddTooltips(addTooltipsTemp);
+
+                  addLinkArrTemp[index].tooltip = addTooltipsTemp[index].tooltip;
+                  setAddLinkArr(addLinkArrTemp);
                 }}
                 style={{
                   height: 38,
@@ -163,20 +201,19 @@ const AddLinkComponent = (Props: any) => {
                   borderRadius: 8,
                 }}
               />
-
               <Tooltip title="Click to edit tooltip">
                 <Button
                   className="icon-edit-tooltip ml-3"
                   shape="circle"
                   style={{ border: 'none', backgroundColor: themeColorSet.colorBg3 }}
                   onClick={() => {
-                    handleEditTooltip(index);
+                    handleShowTooltip(index);
                   }}
                 >
                   <FontAwesomeIcon icon={faInfo} className="w-4 h-4" />
                 </Button>
               </Tooltip>
-              <Tooltip title="Remove" style={{ transition: 'all 1.5s' }}>
+              <Tooltip title="Remove" autoAdjustOverflow style={{ transition: 'all 1.5s' }}>
                 <Button
                   className="icon-trash"
                   style={{ border: 'none' }}
@@ -194,6 +231,11 @@ const AddLinkComponent = (Props: any) => {
             onClick={() => {
               setAddLinkArr([...addLinkArr, { key: '0', tooltip: 'Facebook', link: '' }]);
               addLinkArrTemp = [...addLinkArr, { key: '0', tooltip: 'Facebook', link: '' }];
+              // console.log(addTooltips, addTooltipsTemp);
+
+              setAddTooltips([...addTooltips, { key: '0', tooltip: 'Facebook', state: false }]);
+              addTooltipsTemp = [...addTooltips, { key: '0', tooltip: 'Facebook', state: false }];
+              // console.log(addTooltips, addTooltipsTemp);
             }}
           >
             <FontAwesomeIcon icon={faPlus} className="mr-2" />
