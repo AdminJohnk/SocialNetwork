@@ -113,7 +113,14 @@ const Headers = () => {
                       style={{ color: themeColorSet.colorText1 }}
                     />
                     <Title level={2} className="title inline-block ml-2" style={{ color: themeColorSet.colorText1 }}>
-                      DevHub
+                      <div className='animated-word'>
+                        <div className='letter'>D</div>
+                        <div className='letter'>e</div>
+                        <div className='letter'>v</div>
+                        <div className='letter'>H</div>
+                        <div className='letter'>u</div>
+                        <div className='letter'>b</div>
+                      </div>
                     </Title>
                   </NavLink>
                 </Col>

@@ -86,8 +86,12 @@ const ConversationBox = (Props: ConversationBoxProps) => {
               </p>
             )}
           </div>
-          <p className={`truncate text-sm ${hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText2}`}>
-            {isOwn ? `You: ${lastMessageText}` : lastMessageText}
+          <p
+            className={`truncate text-sm ${
+              hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText2 + 'font-semibold'
+            }`}
+          >
+            {isOwn ? `You: ${lastMessageText}` : lastMessageText}z
           </p>
         </div>
       </div>

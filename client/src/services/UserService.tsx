@@ -17,6 +17,9 @@ export class UserService extends BaseService {
   getUserInfo = () => {
     return this.get(`/users/me`);
   };
+  followUser = (userID: any) => {
+    return this.post(`/users/${userID}/follow`, '');
+  }
 }
 
 export const userService = new UserService();
