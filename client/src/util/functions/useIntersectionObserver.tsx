@@ -12,7 +12,7 @@ const useIntersectionObserver = (targetRef: any, onIntersect: any) => {
             intersectTimeoutID = setInterval(() => {
               if (Date.now() - intersectTime >= 5000) {
                 clearInterval(intersectTimeoutID);
-                onIntersect();
+                onIntersect(entry.target);
               }
             }, 100);
           } else {

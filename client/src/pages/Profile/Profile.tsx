@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import TabPane from 'antd/es/tabs/TabPane';
@@ -16,7 +16,8 @@ import PostShare from '../../components/Post/PostShare';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
-import { usePostsData } from '../../util/functions/DataProvider';
+import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
+import { messageService } from '../../services/MessageService';
 
 interface Props {
   userID: any;
@@ -24,6 +25,7 @@ interface Props {
 
 const Profile = (Props: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { userID } = Props;
 
@@ -71,6 +73,23 @@ const Profile = (Props: Props) => {
   }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
+
+  // isShared
+  const [isFollowing, setIsFollowing] = useState(true);
+  useEffect(() => {
+    setIsFollowing(ownerInfo.isFollowing);
+  }, [ownerInfo]);
+
+  const HandleOnClick = async (user: any) => {
+    if (!isFollowing) return;
+
+    const { data } = await messageService.createConversation({ users: [user, userInfo.id] });
+    navigate(`/message/${data.content.conversation._id}`);
+  };
+
+  const openInNewTab = (url: any) => {
+    window.open(url, '_blank', 'noreferrer');
+  };
 
   return (
     <ConfigProvider
@@ -122,11 +141,23 @@ const Profile = (Props: Props) => {
                   </Col>
                   <Col span={6}>
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
-                      <div className="chat px-2 py-2 text-base rounded-full">
+                      <div
+                        className={`chat px-2 py-2 text-base rounded-full`}
+                        onClick={() => {
+                          HandleOnClick(ownerInfo.id);
+                        }}
+                        hidden={!isFollowing}
+                      >
                         <FontAwesomeIcon className="icon" icon={faComments} />
                       </div>
-                      <div className="follow px-4 py-2 rounded-full">
-                        <span>Follow</span>
+                      <div
+                        className="follow px-4 py-2 rounded-full"
+                        onClick={() => {
+                          setIsFollowing(!isFollowing);
+                          dispatch(FOLLOW_USER_SAGA(ownerInfo.id));
+                        }}
+                      >
+                        <span>{isFollowing ? 'Following' : 'Follow'}</span>
                       </div>
                     </div>
                   </Col>
@@ -139,7 +170,7 @@ const Profile = (Props: Props) => {
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
-                    Joined Jun 2020
+                    Joined {ownerInfo.dayJoined}
                   </span>
                 </div>
                 <Col span={18} className="mt-5">
@@ -166,13 +197,16 @@ const Profile = (Props: Props) => {
                 </Col>
                 <div className="follow mt-5">
                   <span className="follower item mr-2">
-                    <span className="mr-1">{2710}</span> Follower
+                    <span className="mr-1">{ownerInfo.followers.length}</span>{' '}
+                    {ownerInfo.followers.length > 1 ? 'Followers' : 'Follower'}
                   </span>
                   <span className="following item mr-2">
-                    <span className="mr-1">{78}</span> Following
+                    <span className="mr-1">{ownerInfo.following.length}</span>{' '}
+                    {ownerInfo.following.length > 1 ? 'Followings' : 'Following'}
                   </span>
                   <span className="post mr-2">
-                    <span className="mr-1">{56}</span> Post
+                    <span className="mr-1">{ownerInfo.posts.length}</span>{' '}
+                    {ownerInfo.posts.length > 1 ? 'Posts' : 'Post'}
                   </span>
                 </div>
                 <div className="experience mt-5">
@@ -199,11 +233,72 @@ const Profile = (Props: Props) => {
                 </div>
                 <div className="contact mt-5">
                   <Space>
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} />
+                    {ownerInfo?.contacts?.map((item: any, index: any) => {
+                      switch (item.key) {
+                        case '0':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faFacebookF)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '1':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faGithub)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '2':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faTwitter)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '3':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faInstagram)} />}
+                              />
+                            </Tooltip>
+                          );
+                        case '4':
+                          return (
+                            <Tooltip title={item.tooltip}>
+                              <Avatar
+                                onClick={() => {
+                                  openInNewTab(item.link);
+                                }}
+                                className="item"
+                                icon={<FontAwesomeIcon icon={icon(faLinkedin)} />}
+                              />
+                            </Tooltip>
+                          );
+                        default:
+                          return null;
+                      }
+                    })}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">

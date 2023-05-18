@@ -152,7 +152,7 @@ const MyProfile = () => {
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
-                    Joined Jun 2020
+                    Joined {ownerInfo.dayJoined}
                   </span>
                 </div>
                 <Col span={18} className="mt-5">
@@ -179,13 +179,16 @@ const MyProfile = () => {
                 </Col>
                 <div className="follow mt-5">
                   <span className="follower item mr-2">
-                    <span className="mr-1">{2710}</span> Follower
+                    <span className="mr-1">{ownerInfo.followers.length}</span>{' '}
+                    {ownerInfo.followers.length > 1 ? 'Followers' : 'Follower'}
                   </span>
                   <span className="following item mr-2">
-                    <span className="mr-1">{78}</span> Following
+                    <span className="mr-1">{ownerInfo.following.length}</span>{' '}
+                    {ownerInfo.following.length > 1 ? 'Followings' : 'Following'}
                   </span>
                   <span className="post mr-2">
-                    <span className="mr-1">{56}</span> Post
+                    <span className="mr-1">{ownerInfo.posts.length}</span>{' '}
+                    {ownerInfo.posts.length > 1 ? 'Posts' : 'Post'}
                   </span>
                 </div>
                 <div className="experience mt-5">
@@ -278,11 +281,6 @@ const MyProfile = () => {
                           return null;
                       }
                     })}
-                    {/* <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faFacebookF)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faGithub)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faTwitter)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faInstagram)} />} />
-                    <Avatar className="item" icon={<FontAwesomeIcon icon={icon(faLinkedin)} />} /> */}
                   </Space>
                 </div>
                 <div className="mainContain mt-5">

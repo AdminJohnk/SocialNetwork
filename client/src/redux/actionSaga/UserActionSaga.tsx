@@ -11,3 +11,7 @@ export const UPDATE_USER_SAGA = createAction('UPDATE_USER_SAGA', (data) => ({
 export const GET_FOLLOWERS_SAGA = createAction('GET_FOLLOWERS_SAGA');
 
 export const GET_USER_INFO_SAGA = createAction('GET_USER_INFO_SAGA');
+
+export const FOLLOW_USER_SAGA = createAction('FOLLOW_USER_SAGA', (data) => ({
+  payload: data,
+}));

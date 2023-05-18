@@ -18,6 +18,7 @@ export function* rootSaga() {
     userSaga.theoDoiUpdateUserSaga(),
     userSaga.theoDoiGetFollowersSaga(),
     userSaga.theoDoiGetUserInfoSaga(),
+    userSaga.theoDoiFollowUserSaga(),
 
     // postSaga
     postSaga.theoDoiCreatePostSaga(),
