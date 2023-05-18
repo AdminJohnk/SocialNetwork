@@ -1,7 +1,7 @@
 import {
   faBookmark,
   faComment,
-  faCopy,
+  faUpRightFromSquare,
   faEllipsis,
   faHeart,
   faPenToSquare,
@@ -143,12 +143,12 @@ const MyPost = (PostProps: PostProps) => {
       key: '1',
       label: (
         <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faCopy} />
-          <span className="ml-2">Copy Link Post</span>
+          <FontAwesomeIcon className="icon" icon={faUpRightFromSquare} />
+          <span className="ml-2">Open post in new tab</span>
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://localhost:3000/post/${PostProps.post?._id}`);
+        window.open(`http://localhost:3000/post/${PostProps.post?._id}`, '_blank')?.focus();
       },
     },
     {

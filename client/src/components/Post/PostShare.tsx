@@ -1,4 +1,4 @@
-import { faComment, faCopy, faEllipsis, faHeart, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faUpRightFromSquare, faEllipsis, faHeart, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, ConfigProvider, Dropdown, Space } from 'antd';
 import type { MenuProps } from 'antd';
@@ -71,12 +71,12 @@ const PostShare = (PostProps: PostShareProps) => {
       key: '1',
       label: (
         <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faCopy} />
-          <span className="ml-2">Copy Link Post</span>
+          <FontAwesomeIcon className="icon" icon={faUpRightFromSquare} />
+          <span className="ml-2">Open post in new tab</span>
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://localhost:3000/postshare/${PostProps.post?._id}`);
+        window.open(`/postshare/${PostProps.post?._id}`, '_blank')?.focus();
       },
     },
   ];
@@ -115,7 +115,6 @@ const PostShare = (PostProps: PostShareProps) => {
   };
 
   useIntersectionObserver(postShareRef, onIntersect);
-
 
   return (
     <ConfigProvider
