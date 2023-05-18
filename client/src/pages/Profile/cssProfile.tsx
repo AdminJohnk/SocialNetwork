@@ -27,11 +27,10 @@ const StyleTotal = styled.div`
       }
     }
     .follow {
-      border: 1px solid ${(props) => props.theme.colorText1};
       color: ${(props) => props.theme.colorText1};
+      background-color: ${(props) => props.theme.colorBg2};
       :hover {
-        color: ${commonColor.colorBlue2};
-        border: 1px solid ${commonColor.colorBlue2};
+        color: ${commonColor.colorBlue1};
         cursor: pointer;
         transition: all 0.5s;
       }

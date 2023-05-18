@@ -9,6 +9,7 @@ import drawerHOCReducer from './Slice/DrawerHOCSlice';
 import modalHOCReducer from './Slice/ModalHOCSlice';
 import activeListReducer from './Slice/ActiveListSlice';
 import conversationReducer from './Slice/ConversationSlice';
+import getStartedReducer from './Slice/GetStartedSlice';
 
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './saga/rootSaga';
@@ -28,6 +29,7 @@ export default configureStore({
     modalHOCReducer,
     activeListReducer,
     conversationReducer,
+    getStartedReducer,
   },
   middleware,
 });

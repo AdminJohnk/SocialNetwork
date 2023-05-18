@@ -8,7 +8,7 @@ import {
   faShareNodes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, ConfigProvider, Divider, Dropdown, Space } from 'antd';
+import { Avatar, ConfigProvider, Divider, Dropdown, Popover, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,6 +29,8 @@ import useIntersectionObserver from '../../util/functions/useIntersectionObserve
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
+import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
+import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 
 interface PostProps {
   post: any;
@@ -168,6 +170,13 @@ const Post = (PostProps: PostProps) => {
 
   useIntersectionObserver(postRef, onIntersect);
 
+  // Get my userID
+  useEffect(() => {
+    dispatch(GET_USER_ID());
+  }, []);
+
+  const { userID } = useSelector((state: any) => state.authReducer);
+
   return (
     <ConfigProvider
       theme={{
@@ -184,11 +193,18 @@ const Post = (PostProps: PostProps) => {
               <div className="name_avatar flex">
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
-                  <div className="name__top font-bold">
-                    <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
-                      {PostProps.userInfo?.username}
-                    </NavLink>
-                  </div>
+                  <Popover
+                    overlayInnerStyle={{
+                      border: `1px solid ${themeColorSet.colorBg3}`,
+                    }}
+                    content={<PopupInfoUser userInfo={PostProps.userInfo} isMe={userID} />}
+                  >
+                    <div className="name__top font-bold">
+                      <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                        {PostProps.userInfo?.username}
+                      </NavLink>
+                    </div>
+                  </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
                     <span>{'Data Analyst'} • </span>
                     <span>{date}</span>

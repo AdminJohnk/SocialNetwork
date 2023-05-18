@@ -34,10 +34,10 @@ export const LoadingProfileComponent = () => {
             <Skeleton className="pt-4" active paragraph={{ rows: 4 }} />
           </Col>
           <div className="mainContain mt-16">
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
-            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
+            <Skeleton className="mt-5" avatar paragraph={{ rows: 4 }} active />
           </div>
         </Col>
       </Row>
