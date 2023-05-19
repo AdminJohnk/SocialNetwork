@@ -4,6 +4,7 @@ import * as authSaga from './AuthSaga';
 import * as postSaga from './PostSaga';
 import * as messageSaga from './MessageSaga';
 import * as getStartedSaga from './GetStartedSaga';
+import * as communitySaga from './CommunitySaga';
 
 export function* rootSaga() {
   yield all([
@@ -53,5 +54,8 @@ export function* rootSaga() {
     getStartedSaga.theoDoiChooseGetInterestSaga(),
     getStartedSaga.theoDoigetShouldFollowSaga(),
     getStartedSaga.theoDoichooseShouldFollowerSaga(),
+
+    // communitySaga
+    communitySaga.theoDoiGetCommunityByIDSaga(),
   ]);
 }

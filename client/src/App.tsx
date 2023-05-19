@@ -65,7 +65,7 @@ const App = () => {
           <Route path="/me" element={<MainTemplate Component={ProfileWrapper} />} />
           <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
           <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
-          <Route path="/community" element={<MainTemplate Component={Community} />} />
+          <Route path="/community/:communityID" element={<MainTemplate Component={Community} />} />
         </Route>
       </Routes>
     </>
