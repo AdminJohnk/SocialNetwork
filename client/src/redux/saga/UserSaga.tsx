@@ -35,6 +35,7 @@ function* updateUserSaga({ payload }: any) {
     const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setOwnerInfo(data.content));
+      yield put(setUser(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -96,4 +97,3 @@ function* followUserSaga({ payload }: any) {
 export function* theoDoiFollowUserSaga() {
   yield takeLatest(FOLLOW_USER_SAGA, followUserSaga);
 }
-

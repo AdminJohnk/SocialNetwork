@@ -141,11 +141,6 @@ const EditProfileForm = () => {
 
   const onSubmit = async () => {
     const formData = new FormData();
-    formData.append('firstname', firstname);
-    formData.append('lastname', lastname);
-    formData.append('tags', tags);
-    formData.append('contacts', JSON.stringify(links));
-    formData.append('username', lastname + ' ' + firstname);
     if (fileAvatar) {
       const res = await handleUploadImage(fileAvatar);
       formData.append('userImage', res.url);
@@ -159,7 +154,15 @@ const EditProfileForm = () => {
     dispatch(
       UPDATE_USER_SAGA({
         id: userInfo?.id,
-        userUpdate: formData,
+        userUpdate: {
+          lastname: lastname,
+          firstname: firstname,
+          username: lastname + ' ' + firstname,
+          userImage: fileAvatar ? formData.get('userImage') : undefined,
+          coverImage: fileCover ? formData.get('coverImage') : undefined,
+          tags: tags,
+          contacts: links,
+        },
       }),
     );
   };
@@ -183,7 +186,7 @@ const EditProfileForm = () => {
           {title}
         </div>
         <div className="tags" style={{ color: themeColorSet.colorText3 }}>
-          {tags}
+          {description}
         </div>
         <button
           className="btnContent mt-4 px-4 py-2"
