@@ -11,11 +11,16 @@ const Avatar = (Props: AvatarProps) => {
 
   return (
     <div className="relative">
-      <div className="relative inline-block rounded-full overflow-hidden h-9 w-9 md:h-11 md:w-11">
+      <div className="relative rounded-full overflow-hidden h-9 w-9 md:h-11 md:w-11 flex">
         <Image
           preview={false}
           src={Props.user?.userImage || './images/DefaultAvatar/default_avatar.png'}
           alt="Avatar"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
         />
       </div>
       {isActive ? (

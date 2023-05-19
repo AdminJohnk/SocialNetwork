@@ -1,5 +1,5 @@
-import { ConfigProvider, Space, Tag, Avatar, Tooltip } from 'antd';
-import React from 'react';
+import { ConfigProvider, Space, Tag, Avatar, Tooltip, Upload, Image, message } from 'antd';
+import React, { useCallback, useMemo } from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -14,6 +14,8 @@ import descArray from '../../../util/constants/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
 import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
 import { icon } from '@fortawesome/fontawesome-svg-core';
+import { RcFile } from 'antd/es/upload';
+import { sha1 } from 'crypto-hash';
 
 // const link = [
 //   {
@@ -34,6 +36,8 @@ const EditProfileForm = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const [tags, setTags] = React.useState(userInfo?.tags);
@@ -45,6 +49,75 @@ const EditProfileForm = () => {
   const [firstname, setFirstName] = React.useState(userInfo?.firstname);
 
   const [lastname, setLastName] = React.useState(userInfo?.lastname);
+
+  const [avatar, setAvatar] = React.useState(userInfo?.userImage || '/images/TimeLinePage/avatar.jpg');
+  const [fileAvatar, setFileAvatar] = React.useState<any>(null);
+
+  const [cover, setCover] = React.useState(userInfo?.coverImage || '/images/ProfilePage/cover.jpg');
+  const [fileCover, setFileCover] = React.useState<any>(null);
+
+  const initialAvatar = useMemo(() => {
+    return userInfo?.userImage || null;
+  }, [userInfo?.userImage]);
+
+  const initialCover = useMemo(() => {
+    return userInfo?.coverImage || null;
+  }, [userInfo?.coverImage]);
+
+  const handleChangeAvatar = useCallback((image: any) => {
+    setAvatar(URL.createObjectURL(image));
+    setFileAvatar(image);
+  }, []);
+
+  const handleChangeCover = useCallback((image: any) => {
+    setCover(URL.createObjectURL(image));
+    setFileCover(image);
+  }, []);
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').shift();
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
 
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer');
@@ -66,24 +139,42 @@ const EditProfileForm = () => {
     setLinks(links);
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
+    const formData = new FormData();
+    formData.append('firstname', firstname);
+    formData.append('lastname', lastname);
+    formData.append('tags', tags);
+    formData.append('contacts', JSON.stringify(links));
+    formData.append('username', lastname + ' ' + firstname);
+    if (fileAvatar) {
+      const res = await handleUploadImage(fileAvatar);
+      formData.append('userImage', res.url);
+      handleRemoveImage(initialAvatar);
+    }
+    if (fileCover) {
+      const res = await handleUploadImage(fileCover);
+      formData.append('coverImage', res.url);
+      handleRemoveImage(initialCover);
+    }
     dispatch(
       UPDATE_USER_SAGA({
         id: userInfo?.id,
-        userUpdate: {
-          contacts: links,
-          tags: tags,
-          firstname: firstname,
-          lastname: lastname,
-          username: lastname + ' ' + firstname,
-        },
+        userUpdate: formData,
       }),
     );
   };
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover]);
+
+  const beforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 3;
+    if (!isLt2M) {
+      messageApi.error('Image must smaller than 3MB!');
+    }
+    return isLt2M;
+  };
 
   const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
@@ -115,6 +206,7 @@ const EditProfileForm = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
+        {contextHolder}
         <div className="editProfileForm">
           <section className="coverSection">
             <div
@@ -127,27 +219,33 @@ const EditProfileForm = () => {
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 4MB)</div>
-            <div className="cover relative">
-              <div
-                className="coverImage w-full h-72 rounded-xl"
+            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 3MB)</div>
+            <div className="cover relative flex w-full h-72 mb-8 justify-center">
+              <Image
+                className="coverImage rounded-xl"
+                src={cover}
                 style={{
-                  backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
+                  objectFit: 'cover',
+                  maxHeight: '18rem',
+                  width: '100%',
                 }}
-              ></div>
+              ></Image>
               <Space className="coverButton absolute bottom-8 right-5">
-                <button
+                <Upload
                   className="btnChangeCover px-4 py-2"
+                  customRequest={() => {}}
+                  maxCount={1}
+                  accept="image/*"
+                  onChange={(file) => handleChangeCover(file.file.originFileObj)}
+                  showUploadList={false}
                   style={{
                     backgroundColor: commonColor.colorBlue2,
                     fontWeight: 600,
                   }}
+                  beforeUpload={beforeUpload}
                 >
                   Change Cover Image
-                </button>
+                </Upload>
                 <button
                   className="btnRemove px-4 py-2"
                   style={{
@@ -162,27 +260,34 @@ const EditProfileForm = () => {
           </section>
           <section className="avatar mt-3 flex items-center">
             <div className="avatarImage">
-              <img
-                src={userInfo?.userImage || '/images/TimeLinePage/avatar.jpg'}
+              <Image
+                src={avatar}
                 alt="avatar"
+                preview={false}
                 style={{
                   width: '7rem',
                   height: '7rem',
                   borderRadius: '50%',
+                  objectFit: 'cover',
                 }}
               />
             </div>
             <Space className="changeAvatar ml-3" direction="vertical">
               <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Set profile photo</div>
-              <button
-                className="btnChange px-4 py-2"
+              <Upload
+                accept="image/*"
+                customRequest={() => {}}
+                maxCount={1}
+                onChange={(file) => handleChangeAvatar(file.file.originFileObj)}
+                showUploadList={false}
+                className="btnChange px-4 py-2 cursor-pointer"
                 style={{
                   backgroundColor: commonColor.colorBlue2,
                   fontWeight: 600,
                 }}
               >
-                Change photo
-              </button>
+                Change Avatar
+              </Upload>
             </Space>
           </section>
           <section className="addLinks mt-3">

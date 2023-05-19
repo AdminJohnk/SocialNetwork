@@ -342,7 +342,7 @@ const Community = () => {
                       <div className="content">
                         {community.admins.map((item: any, index: number) => {
                           return (
-                            <div className="item flex items-center px-2 py-2" key={index}>
+                            <NavLink key={index} to={`/user/${item._id}`} className="item flex items-center px-2 py-2">
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -355,7 +355,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </div>
+                            </NavLink>
                           );
                         })}
                       </div>
@@ -370,7 +370,7 @@ const Community = () => {
                       <div className="content">
                         {community.members.map((item: any, index: number) => {
                           return (
-                            <div className="item flex items-center px-2 py-2">
+                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -384,7 +384,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </div>
+                            </NavLink>
                           );
                         })}
                       </div>
@@ -416,7 +416,7 @@ const Community = () => {
                       <div className="content">
                         {community.recentlyJoined.map((item: any, index: number) => {
                           return (
-                            <div className="item flex items-center px-2 py-2">
+                            <NavLink key={index} className="item flex items-center px-2 py-2" to={`/user/${item._id}`}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -430,7 +430,7 @@ const Community = () => {
                                 </span>
                                 <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
-                            </div>
+                            </NavLink>
                           );
                         })}
                       </div>

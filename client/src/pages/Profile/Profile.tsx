@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -113,10 +113,15 @@ const Profile = (Props: Props) => {
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden object-fill flex">
-                  <img
+                <div className="avatar rounded-full overflow-hidden object-cover flex">
+                  <Image
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </Col>
