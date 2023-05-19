@@ -269,7 +269,7 @@ const Community = () => {
                           return (
                             <div key={index}>
                               {item.PostShared && (
-                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
+                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.owner} />
                               )}
                               {!item.PostShared && <MyPost key={item._id} post={item} userInfo={userInfo} />}
                             </div>
