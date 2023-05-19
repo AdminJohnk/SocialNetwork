@@ -10,6 +10,7 @@ import modalHOCReducer from './Slice/ModalHOCSlice';
 import activeListReducer from './Slice/ActiveListSlice';
 import conversationReducer from './Slice/ConversationSlice';
 import getStartedReducer from './Slice/GetStartedSlice';
+import communityReducer from './Slice/CommunitySlide';
 
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './saga/rootSaga';
@@ -30,6 +31,7 @@ export default configureStore({
     activeListReducer,
     conversationReducer,
     getStartedReducer,
+    communityReducer,
   },
   middleware,
 });

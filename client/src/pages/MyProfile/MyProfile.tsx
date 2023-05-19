@@ -308,7 +308,7 @@ const MyProfile = () => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <MyPost key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>

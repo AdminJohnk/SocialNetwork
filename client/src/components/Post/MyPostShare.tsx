@@ -220,7 +220,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
           postShare={true}
           post={PostProps.post}
           userInfo={PostProps.userInfo}
-          owner={PostProps.post?.user}
+          owner={PostProps.owner}
         />
       ) : null}
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>

@@ -44,6 +44,8 @@ import { useParams } from 'react-router-dom';
 import { openDrawer } from '../../redux/Slice/DrawerHOCSlice';
 import EditProfileForm from '../../components/Form/EditProfileForm/EditProfileForm';
 import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
+import { GET_COMMUNITY_BYID_SAGA } from '../../redux/actionSaga/CommunityActionSaga';
+import { isThisWeek, isThisYear, isToday, format } from 'date-fns';
 
 const { Panel } = Collapse;
 
@@ -156,8 +158,7 @@ const recentlyJoinedArr = [
 
 const Community = () => {
   const dispatch = useDispatch();
-
-  const { userID } = useParams<{ userID: string }>();
+  const { communityID } = useParams();
 
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
@@ -170,14 +171,16 @@ const Community = () => {
         userId: 'me',
       }),
     );
-  }, []);
 
-  useEffect(() => {
+    dispatch(GET_COMMUNITY_BYID_SAGA(communityID));
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
   }, []);
+
+  const community = useSelector((state: any) => state.communityReducer.community);
 
   const postArraySlice = useSelector((state: any) => state.postReducer.postArr);
   const userInfoSlice = useSelector((state: any) => state.userReducer.userInfo);
@@ -192,6 +195,7 @@ const Community = () => {
   useEffect(() => {
     setIsNotAlreadyChanged(userInfoRef.current === userInfo);
   }, [userInfo, isNotAlreadyChanged, userInfoRef]);
+
   return (
     <ConfigProvider
       theme={{
@@ -225,13 +229,10 @@ const Community = () => {
                 <Row className="py-5 name_Editprofile">
                   <Col offset={6}>
                     <div className="text-2xl font-bold" style={{ color: themeColorSet.colorText1 }}>
-                      React.JS
+                      {community.name}
                     </div>
                     <div className="description mt-2">
-                      <span style={{ color: themeColorSet.colorText2 }}>
-                        Let's get together and discuss all things React! You can talk about your latest project, React
-                        perf, React testing, anything!
-                      </span>
+                      <span style={{ color: themeColorSet.colorText2 }}>{community.description}</span>
                     </div>
                     <Space className="subInformation mt-2" size={15}>
                       <div className="unknow" style={{ color: themeColorSet.colorText3 }}>
@@ -240,11 +241,11 @@ const Community = () => {
                       </div>
                       <div className="createDate" style={{ color: themeColorSet.colorText3 }}>
                         <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">Created Jun 2021</span>
+                        <span className="ml-2">{format(new Date(community.createdAt), 'MMM, d, yyyy')}</span>
                       </div>
                       <div className="members" style={{ color: themeColorSet.colorText3 }}>
                         <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">16,918 Members</span>
+                        <span className="ml-2">{community.memberLength} Members</span>
                       </div>
                     </Space>
                   </Col>
@@ -264,11 +265,11 @@ const Community = () => {
                             description={<span>No post</span>}
                           />
                         )}
-                        {postArray.map((item: any, index: any) => {
+                        {community.posts.map((item: any, index: any) => {
                           return (
                             <div key={index}>
                               {item.PostShared && (
-                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
+                                <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.owner} />
                               )}
                               {!item.PostShared && <MyPost key={item._id} post={item} userInfo={userInfo} />}
                             </div>
@@ -298,7 +299,7 @@ const Community = () => {
                         About
                       </div>
                       <div className="content mb-1" style={{ color: themeColorSet.colorText2 }}>
-                        🟨 Official JavaScript community 💛 Here to learn, share or ask for help ! 🧑‍💻👩‍💻
+                        {community.about}
                       </div>
                       <div
                         className="seeMore block mb-3 hover:underline cursor-pointer"
@@ -308,10 +309,10 @@ const Community = () => {
                       </div>
                       <div className="createDate mb-5" style={{ color: themeColorSet.colorText3 }}>
                         <FontAwesomeIcon className="icon" icon={faCalendar} />
-                        <span className="ml-2">Created Jun 2021</span>
+                        <span className="ml-2">Created {format(new Date(community.createdAt), 'MMM, d, yyyy')}</span>
                       </div>
                       <div className="numberMember text-xl" style={{ fontWeight: 600 }}>
-                        11,396
+                        {community.memberLength}
                       </div>
                       <div className="titleMembers" style={{ color: themeColorSet.colorText3 }}>
                         Members
@@ -322,8 +323,12 @@ const Community = () => {
                         Tags
                       </div>
                       <div className="content flex flex-wrap">
-                        {tagArr.map((item: any, index: number) => {
-                          return <span className="tagItem px-4 py-2 mr-2">{item.name}</span>;
+                        {community.tags.map((item: any, index: number) => {
+                          return (
+                            <span className="tagItem px-4 py-2 mr-2" key={index}>
+                              {item}
+                            </span>
+                          );
                         })}
                       </div>
                     </div>
@@ -335,9 +340,9 @@ const Community = () => {
                         Admins
                       </div>
                       <div className="content">
-                        {adminArr.map((item: any, index: number) => {
+                        {community.admins.map((item: any, index: number) => {
                           return (
-                            <div className="item flex items-center px-2 py-2">
+                            <div className="item flex items-center px-2 py-2" key={index}>
                               <Avatar src={item.userImage} />
                               <Space
                                 size={1}
@@ -345,8 +350,10 @@ const Community = () => {
                                 className="ml-2"
                                 style={{ color: themeColorSet.colorText2 }}
                               >
-                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>{item.name}</span>
-                                <span style={{ color: themeColorSet.colorText3 }}>{item.userName}</span>
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
                             </div>
                           );
@@ -361,7 +368,7 @@ const Community = () => {
                         Members
                       </div>
                       <div className="content">
-                        {memberArr.map((item: any, index: number) => {
+                        {community.members.map((item: any, index: number) => {
                           return (
                             <div className="item flex items-center px-2 py-2">
                               <Avatar src={item.userImage} />
@@ -371,8 +378,11 @@ const Community = () => {
                                 className="ml-2"
                                 style={{ color: themeColorSet.colorText2 }}
                               >
-                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>{item.name}</span>
-                                <span style={{ color: themeColorSet.colorText3 }}>{item.userName}</span>
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {' '}
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
                             </div>
                           );
@@ -387,24 +397,13 @@ const Community = () => {
                         Rules
                       </div>
                       <Collapse>
-                        <Panel header="1. About Data Analytics community" key="1">
-                          <p>
-                            A home of Data Analytics. Everything from data engineering, analytics engineering, data
-                            warehousing, event tracking plan, BI platforms, visualizations, building report.
-                          </p>
-                        </Panel>
-                        <Panel header="2. Rules of the community" key="2">
-                          <p>
-                            1. Stimulate conversation, and be respectful of others’ views. 2. We're a global dev
-                            community: while the language for online discussions may be English (unless otherwise
-                            specified), remember not everybody is a native English speaker/writer. 3. Don't take
-                            yourself too seriously, we're here to have fun, learn, create, and explore the world of
-                            community together. 4. Assume people hold good intentions 5. Seek to understand 6. Treat
-                            others the way we wish to be treated. Above all, we work to keep conversation here kind,
-                            educational, helpful, and resourceful — if we feel like something is putting the sanctity of
-                            the community at risk, we will do our best to remove it.
-                          </p>
-                        </Panel>
+                        {community.rules.map((item: any, index: number) => {
+                          return (
+                            <Panel header={index + 1 + '. ' + item.title} key={index}>
+                              <p>{item.content}</p>
+                            </Panel>
+                          );
+                        })}
                       </Collapse>
                     </div>
                     <div
@@ -415,7 +414,7 @@ const Community = () => {
                         Recently Joined
                       </div>
                       <div className="content">
-                        {recentlyJoinedArr.map((item: any, index: number) => {
+                        {community.recentlyJoined.map((item: any, index: number) => {
                           return (
                             <div className="item flex items-center px-2 py-2">
                               <Avatar src={item.userImage} />
@@ -425,8 +424,11 @@ const Community = () => {
                                 className="ml-2"
                                 style={{ color: themeColorSet.colorText2 }}
                               >
-                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>{item.name}</span>
-                                <span style={{ color: themeColorSet.colorText3 }}>{item.userName}</span>
+                                <span style={{ fontWeight: 600, color: themeColorSet.colorText1 }}>
+                                  {' '}
+                                  {item.lastname + ' ' + item.firstname}
+                                </span>
+                                <span style={{ color: themeColorSet.colorText3 }}>{item.email.split('@')[0]}</span>
                               </Space>
                             </div>
                           );

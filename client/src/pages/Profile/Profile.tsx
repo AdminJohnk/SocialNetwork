@@ -314,7 +314,7 @@ const Profile = (Props: Props) => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>

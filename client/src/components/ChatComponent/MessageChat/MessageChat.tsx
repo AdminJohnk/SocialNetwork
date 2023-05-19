@@ -26,15 +26,7 @@ const MessageChat = (Props: IParams) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   dispatch(GET_MESSAGES_SAGA(Props.conversationId));
-  // }, [Props.conversationId]);
-
   const { members } = useSelector((state: any) => state.activeListReducer);
-  // const { currentConversation } = useSelector((state: any) => state.conversationReducer);
-  // const { messages } = useSelector((state: any) => state.conversationReducer);
 
   const { currentConversation, isLoadingConversation } = useCurrentConversationData(Props.conversationId);
 
@@ -133,7 +125,7 @@ const MessageChat = (Props: IParams) => {
           <div
             className="header flex justify-between items-center py-6 px-6"
             style={{
-              height: '12%',
+              height: '13%',
               borderBottom: '1px solid',
               borderColor: themeColorSet.colorBg4,
             }}
