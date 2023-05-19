@@ -10,7 +10,7 @@ import { pusherClient } from '../../../util/functions/Pusher';
 import { find } from 'lodash';
 import { useCurrentConversationData, useMessagesData } from '../../../util/functions/DataProvider';
 import { messageService } from '../../../services/MessageService';
-import useIntersectionObserver from '../../../util/functions/useIntersectionObserver';
+import useIntersectionObserverNow from '../../../util/functions/useIntersectionObserverNow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
@@ -103,7 +103,7 @@ const MessageChat = (Props: IParams) => {
     };
   }, [Props.conversationId]);
 
-  useIntersectionObserver(bottomRef, seenMessage);
+  useIntersectionObserverNow(bottomRef, seenMessage);
 
   useEffect(() => {
     if (messagesState.length === 0) return;

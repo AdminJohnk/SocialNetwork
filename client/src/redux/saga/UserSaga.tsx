@@ -96,3 +96,4 @@ function* followUserSaga({ payload }: any) {
 export function* theoDoiFollowUserSaga() {
   yield takeLatest(FOLLOW_USER_SAGA, followUserSaga);
 }
+

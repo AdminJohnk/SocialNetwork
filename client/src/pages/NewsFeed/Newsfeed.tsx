@@ -264,7 +264,7 @@ const NewFeed = () => {
                     </div> */}
                     {postArr.map((item: any, index: number) => {
                       return (
-                        <div>
+                        <div key={index}>
                           {!item.hasOwnProperty('PostShared') && (
                             <Post key={item._id} post={item} userInfo={item.user} />
                           )}
@@ -342,7 +342,7 @@ const NewFeed = () => {
                         return '';
                       } else {
                         return (
-                          <>
+                          <div key={index}>
                             <NavLink to={`/post/${item._id}`}>
                               <div
                                 className="popular-post-item flex items-center pt-3 pb-3"
@@ -401,7 +401,7 @@ const NewFeed = () => {
                                 </div>
                               </div>
                             </NavLink>
-                          </>
+                          </div>
                         );
                       }
                     })}

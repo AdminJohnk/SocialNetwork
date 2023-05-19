@@ -1,6 +1,6 @@
-import { faComment, faCopy, faEllipsis, faHeart, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faComment, faUpRightFromSquare, faEllipsis, faHeart, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, ConfigProvider, Dropdown, Space } from 'antd';
+import { Avatar, ConfigProvider, Dropdown, Popover, Space } from 'antd';
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +13,8 @@ import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetai
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
+import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
+import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 
 interface PostShareProps {
   post: any;
@@ -71,12 +73,12 @@ const PostShare = (PostProps: PostShareProps) => {
       key: '1',
       label: (
         <div className="item flex items-center px-4 py-2">
-          <FontAwesomeIcon className="icon" icon={faCopy} />
-          <span className="ml-2">Copy Link Post</span>
+          <FontAwesomeIcon className="icon" icon={faUpRightFromSquare} />
+          <span className="ml-2">Open post in new tab</span>
         </div>
       ),
       onClick: () => {
-        navigator.clipboard.writeText(`http://localhost:3000/postshare/${PostProps.post?._id}`);
+        window.open(`/postshare/${PostProps.post?._id}`, '_blank')?.focus();
       },
     },
   ];
@@ -116,6 +118,12 @@ const PostShare = (PostProps: PostShareProps) => {
 
   useIntersectionObserver(postShareRef, onIntersect);
 
+  // Get my userID
+  useEffect(() => {
+    dispatch(GET_USER_ID());
+  }, []);
+
+  const { userID } = useSelector((state: any) => state.authReducer);
 
   return (
     <ConfigProvider
@@ -139,14 +147,24 @@ const PostShare = (PostProps: PostShareProps) => {
               <div className="name_avatar flex">
                 <Avatar size={50} src={PostProps.userInfo?.userImage} />
                 <div className="name ml-2">
-                  <div className="name__top font-bold">
-                    <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
-                      {PostProps.userInfo?.username}
-                    </NavLink>
-                  </div>
+                  <Popover
+                    overlayInnerStyle={{
+                      border: `1px solid ${themeColorSet.colorBg3}`,
+                    }}
+                    mouseEnterDelay={0.7}
+                    content={<PopupInfoUser userInfo={PostProps.userInfo} isMe={userID} />}
+                  >
+                    <div className="name__top font-bold">
+                      <NavLink to={`/user/${PostProps.userInfo?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                        {PostProps.userInfo?.username}
+                      </NavLink>
+                    </div>
+                  </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
-                    <span>{'Data Analyst'} • </span>
-                    <span>{date}</span>
+                    <NavLink to={`/postshare/${PostProps.post?._id}`} style={{ color: themeColorSet.colorText3 }}>
+                      <span>{'Data Analyst'} • </span>
+                      <span>{date}</span>
+                    </NavLink>
                   </div>
                 </div>
               </div>
@@ -165,14 +183,24 @@ const PostShare = (PostProps: PostShareProps) => {
                 <div className="name_avatar flex">
                   <Avatar size={50} src={PostProps.owner?.userImage} />
                   <div className="name ml-2">
-                    <div className="name__top font-bold">
-                      <NavLink to={`/user/${PostProps.owner?.id}`} style={{ color: themeColorSet.colorText1 }}>
-                        {PostProps.owner?.username}
-                      </NavLink>
-                    </div>
+                    <Popover
+                      overlayInnerStyle={{
+                        border: `1px solid ${themeColorSet.colorBg3}`,
+                      }}
+                      mouseEnterDelay={0.7}
+                      content={<PopupInfoUser userInfo={PostProps.owner} isMe={userID} />}
+                    >
+                      <div className="name__top font-bold">
+                        <NavLink to={`/user/${PostProps.owner?.id}`} style={{ color: themeColorSet.colorText1 }}>
+                          {PostProps.owner?.username}
+                        </NavLink>
+                      </div>
+                    </Popover>
                     <div className="time" style={{ color: themeColorSet.colorText3 }}>
+                    <NavLink to={`/post/${PostProps.post?.postID}`} style={{color: themeColorSet.colorText3}}>
                       <span>{'Data Analyst'} • </span>
                       <span>{postDate}</span>
+                    </NavLink>
                     </div>
                   </div>
                 </div>

@@ -264,9 +264,9 @@ const Community = () => {
                             description={<span>No post</span>}
                           />
                         )}
-                        {postArray.map((item: any, index: number) => {
+                        {postArray.map((item: any, index: any) => {
                           return (
-                            <div>
+                            <div key={index}>
                               {item.PostShared && (
                                 <MyPostShare key={item._id} post={item} userInfo={userInfo} owner={item.user} />
                               )}

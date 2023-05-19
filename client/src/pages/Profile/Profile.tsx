@@ -142,15 +142,6 @@ const Profile = (Props: Props) => {
                   <Col span={6}>
                     <div className="chat_Follow flex justify-around items-center w-full h-full">
                       <div
-                        className={`chat px-2 py-2 text-base rounded-full`}
-                        onClick={() => {
-                          HandleOnClick(ownerInfo.id);
-                        }}
-                        hidden={!isFollowing}
-                      >
-                        <FontAwesomeIcon className="icon" icon={faComments} />
-                      </div>
-                      <div
                         className="follow px-4 py-2 rounded-full"
                         onClick={() => {
                           setIsFollowing(!isFollowing);
@@ -174,9 +165,9 @@ const Profile = (Props: Props) => {
                   </span>
                 </div>
                 <Col span={18} className="mt-5">
-                  <div className="description flex flex-wrap">
+                  <div className="tags flex flex-wrap">
                     {descArray.map((item, index) => {
-                      if (ownerInfo?.descriptions?.indexOf(item.title) !== -1) {
+                      if (ownerInfo?.tags?.indexOf(item.title) !== -1) {
                         return (
                           <Tag
                             className="item mx-2 my-2 px-4 py-1"

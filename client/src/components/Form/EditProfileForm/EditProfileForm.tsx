@@ -36,7 +36,7 @@ const EditProfileForm = () => {
 
   const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
-  const [descriptions, setDescriptions] = React.useState(userInfo?.descriptions);
+  const [tags, setTags] = React.useState(userInfo?.tags);
 
   const [links, setLinks] = React.useState<any>(userInfo?.contacts || []);
 
@@ -58,8 +58,8 @@ const EditProfileForm = () => {
     setLastName(e.target.value);
   };
 
-  const handleChangeDescriptions = (descriptions: any) => {
-    setDescriptions(descriptions);
+  const handleChangeTags = (tags: any) => {
+    setTags(tags);
   };
 
   const handleChangeLinks = (links: any) => {
@@ -72,7 +72,7 @@ const EditProfileForm = () => {
         id: userInfo?.id,
         userUpdate: {
           contacts: links,
-          description: descriptions,
+          tags: tags,
           firstname: firstname,
           lastname: lastname,
           username: lastname + ' ' + firstname,
@@ -83,7 +83,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [descriptions, firstname, lastname, links]);
+  }, [tags, firstname, lastname, links]);
 
   const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
@@ -91,8 +91,8 @@ const EditProfileForm = () => {
         <div className="title mb-3" style={{ fontSize: '1.1rem', fontWeight: 600 }}>
           {title}
         </div>
-        <div className="description" style={{ color: themeColorSet.colorText3 }}>
-          {description}
+        <div className="tags" style={{ color: themeColorSet.colorText3 }}>
+          {tags}
         </div>
         <button
           className="btnContent mt-4 px-4 py-2"
@@ -358,9 +358,9 @@ const EditProfileForm = () => {
             >
               Expertise
             </div>
-            <div className="description flex flex-wrap">
+            <div className="tags flex flex-wrap">
               {descArray.map((item, index) => {
-                if (descriptions?.indexOf(item.title) !== -1) {
+                if (tags?.indexOf(item.title) !== -1) {
                   return (
                     <Tag
                       className="item mx-2 my-2 px-4 py-1"
@@ -387,13 +387,7 @@ const EditProfileForm = () => {
                   dispatch(
                     openModal({
                       title: 'Add Tags',
-                      component: (
-                        <AddTagComponent
-                          key={Math.random()}
-                          callback={handleChangeDescriptions}
-                          descriptions={descriptions}
-                        />
-                      ),
+                      component: <AddTagComponent key={Math.random()} callback={handleChangeTags} tags={tags} />,
                       footer: true,
                     }),
                   );

@@ -3,6 +3,7 @@ import * as userSaga from './UserSaga';
 import * as authSaga from './AuthSaga';
 import * as postSaga from './PostSaga';
 import * as messageSaga from './MessageSaga';
+import * as getStartedSaga from './GetStartedSaga';
 
 export function* rootSaga() {
   yield all([
@@ -46,5 +47,11 @@ export function* rootSaga() {
     messageSaga.theoDoiGetMessagesSaga(),
     messageSaga.theoDoiSeenMessageSaga(),
     messageSaga.theoDoiSendMessageSaga(),
+
+    // getStartedSaga
+    getStartedSaga.theoDoiChooseGetStartedSaga(),
+    getStartedSaga.theoDoiChooseGetInterestSaga(),
+    getStartedSaga.theoDoigetShouldFollowSaga(),
+    getStartedSaga.theoDoichooseShouldFollowerSaga(),
   ]);
 }

@@ -91,7 +91,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
               hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText2 + 'font-semibold'
             }`}
           >
-            {isOwn ? `You: ${lastMessageText}` : lastMessageText}z
+            {isOwn ? `You: ${lastMessageText}` : lastMessageText}
           </p>
         </div>
       </div>
