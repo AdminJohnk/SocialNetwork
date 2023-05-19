@@ -80,13 +80,6 @@ const Profile = (Props: Props) => {
     setIsFollowing(ownerInfo.isFollowing);
   }, [ownerInfo]);
 
-  const HandleOnClick = async (user: any) => {
-    if (!isFollowing) return;
-
-    const { data } = await messageService.createConversation({ users: [user, userInfo.id] });
-    navigate(`/message/${data.content.conversation._id}`);
-  };
-
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer');
   };
@@ -107,7 +100,7 @@ const Profile = (Props: Props) => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
+                    backgroundImage: `url("${ownerInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
