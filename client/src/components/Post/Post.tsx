@@ -197,6 +197,7 @@ const Post = (PostProps: PostProps) => {
                     overlayInnerStyle={{
                       border: `1px solid ${themeColorSet.colorBg3}`,
                     }}
+                    mouseEnterDelay={0.7}
                     content={<PopupInfoUser userInfo={PostProps.userInfo} isMe={userID} />}
                   >
                     <div className="name__top font-bold">
@@ -206,8 +207,10 @@ const Post = (PostProps: PostProps) => {
                     </div>
                   </Popover>
                   <div className="time" style={{ color: themeColorSet.colorText3 }}>
-                    <span>{'Data Analyst'} • </span>
-                    <span>{date}</span>
+                    <NavLink to={`/post/${PostProps.post?._id}`} style={{color: themeColorSet.colorText3}}>
+                      <span>{'Data Analyst'} • </span>
+                      <span>{date}</span>
+                    </NavLink>
                   </div>
                 </div>
               </div>

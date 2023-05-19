@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faEllipsis, faSnowflake } from '@fortawesome/free-solid-svg-icons';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
+import { NavLink } from 'react-router-dom';
 
 const PopupInfoUser = ({ userInfo, isMe }: any) => {
   const dispatch = useDispatch();
@@ -23,22 +24,26 @@ const PopupInfoUser = ({ userInfo, isMe }: any) => {
         token: themeColor,
       }}
     >
-      <StyleTotal theme={themeColorSet} className="flex justify-center" >
+      <StyleTotal theme={themeColorSet} className="flex justify-center">
         <div className="popupInfoUser flex" style={{ width: '95%' }}>
-          <div className="popupInfoUser__avatar mr-5 mt-3">
-            <Avatar size={70} src={userInfo?.userImage} />
-          </div>
-          <div className="popupInfoUser__content">
-            <div
-              className="name"
-              style={{
-                color: themeColorSet.colorText1,
-                fontWeight: 600,
-                fontSize: '1.3rem',
-              }}
-            >
-              {userInfo.username}
+          <NavLink to={`/user/${userInfo?.id}`}>
+            <div className="popupInfoUser__avatar mr-5 mt-3">
+              <Avatar size={70} src={userInfo?.userImage} />
             </div>
+          </NavLink>
+          <div className="popupInfoUser__content">
+            <NavLink to={`/user/${userInfo?.id}`}>
+              <div
+                className="name"
+                style={{
+                  color: themeColorSet.colorText1,
+                  fontWeight: 600,
+                  fontSize: '1.3rem',
+                }}
+              >
+                {userInfo.username}
+              </div>
+            </NavLink>
             <div className="position mt-2">
               <FontAwesomeIcon className="icon" icon={faSnowflake} />
               <span style={{ color: themeColorSet.colorText3 }} className="ml-2">
@@ -47,15 +52,15 @@ const PopupInfoUser = ({ userInfo, isMe }: any) => {
             </div>
             <div className="follow mt-5">
               <span className="follower item mr-2">
-                <span className="mr-1">{userInfo.followers.length}</span>{' '}
-                {userInfo.followers.length > 1 ? 'Followers' : 'Follower'}
+                <span className="mr-1">{userInfo.followers?.length}</span>{' '}
+                {userInfo.followers?.length > 1 ? 'Followers' : 'Follower'}
               </span>
               <span className="following item mr-2">
-                <span className="mr-1">{userInfo.following.length}</span>{' '}
-                {userInfo.following.length > 1 ? 'Followings' : 'Following'}
+                <span className="mr-1">{userInfo.following?.length}</span>{' '}
+                {userInfo.following?.length > 1 ? 'Followings' : 'Following'}
               </span>
               <span className="post mr-2">
-                <span className="mr-1">{userInfo.posts.length}</span> {userInfo.posts.length > 1 ? 'Posts' : 'Post'}
+                <span className="mr-1">{userInfo.posts?.length}</span> {userInfo.posts?.length > 1 ? 'Posts' : 'Post'}
               </span>
             </div>
             <div className="experience mt-5 mb-5">
