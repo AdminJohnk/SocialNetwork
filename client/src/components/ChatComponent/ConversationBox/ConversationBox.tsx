@@ -38,8 +38,10 @@ const ConversationBox = (Props: ConversationBoxProps) => {
 
     if (!userID) return false;
 
-    return seenArr.indexOf(userID) !== -1;
+    return seenArr.some((user: any) => user._id === userID);
   }, [lastMessage, userID]);
+
+  console.log('hasSeen', hasSeen);
 
   const lastMessageText = useMemo(() => {
     if (lastMessage?.image) return 'Sent an image';
@@ -88,7 +90,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
           </div>
           <p
             className={`truncate text-sm ${
-              hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText2 + 'font-semibold'
+              hasSeen ? themeColorSet.colorText1 : themeColorSet.colorText1 + ' shadow-xl font-extrabold'
             }`}
           >
             {isOwn ? `You: ${lastMessageText}` : lastMessageText}
