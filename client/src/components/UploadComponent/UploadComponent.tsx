@@ -35,7 +35,7 @@ const UploadComponent = (Props: UploadComponentProps) => {
       uploadPreset: 'mysoslzj',
       sources: ['local'],
       showAdvancedOptions: false,
-      cropping: false,
+      cropping: true,
       multiple: false,
       defaultSource: 'local',
       styles: {
