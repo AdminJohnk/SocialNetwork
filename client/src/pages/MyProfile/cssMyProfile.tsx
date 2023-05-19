@@ -40,7 +40,7 @@ const StyleTotal = styled.div`
       }
     }
   }
-  .description {
+  .tags {
     .item {
       border: 2px solid ${(props) => props.theme.colorText3};
       border-radius: 0.8rem;
