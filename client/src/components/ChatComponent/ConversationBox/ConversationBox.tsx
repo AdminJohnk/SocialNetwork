@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import OtherUser from '../../../util/functions/OtherUser';
 import { useMemo } from 'react';
-import { format } from 'date-fns';
+import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
 import AvatarGroup from '../../Avatar/AvatarGroup';
 import Avatar from '../../Avatar/Avatar';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -41,8 +41,6 @@ const ConversationBox = (Props: ConversationBoxProps) => {
     return seenArr.some((user: any) => user._id === userID);
   }, [lastMessage, userID]);
 
-  console.log('hasSeen', hasSeen);
-
   const lastMessageText = useMemo(() => {
     if (lastMessage?.image) return 'Sent an image';
 
@@ -50,6 +48,18 @@ const ConversationBox = (Props: ConversationBoxProps) => {
 
     return 'Start a conversation';
   }, [lastMessage, userID]);
+
+  const formatDateTime = (date: any) => {
+    if (isToday(date)) {
+      return format(date, 'p'); // Display only time for today
+    } else if (isThisWeek(date)) {
+      return format(date, 'iiii p'); // Display full day of the week and time for this week
+    } else if (isThisYear(date)) {
+      return format(date, 'eeee, MMM d, p'); // Display full day of the week, date, and time for this year
+    } else {
+      return format(date, 'eeee, MMM d, yyyy, p'); // Display full day of the week, date, year, and time for other cases
+    }
+  };
 
   return (
     <div
@@ -84,7 +94,7 @@ const ConversationBox = (Props: ConversationBoxProps) => {
                   font-light
                 "
               >
-                {format(new Date(lastMessage.createdAt), 'p')}
+                {formatDateTime(new Date(lastMessage.createdAt))}
               </p>
             )}
           </div>
