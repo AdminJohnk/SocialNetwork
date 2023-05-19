@@ -56,9 +56,9 @@ const AddLinkComponent = (Props: any) => {
           addTooltipsTemp[index].tooltip = contactArray[4].label;
           break;
       }
-      addTooltipsTemp[index].key = e.key;
     }
 
+    addTooltipsTemp[index].key = e.key;
     addLinkArrTemp[index].key = addTooltipsTemp[index].key;
     addLinkArrTemp[index].tooltip = addTooltipsTemp[index].tooltip;
 

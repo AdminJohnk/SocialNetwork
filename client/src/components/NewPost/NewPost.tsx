@@ -74,7 +74,6 @@ const NewPost = (Props: Props) => {
       document.execCommand('insertHTML', false, text);
     });
 
-
     setQuill(quill);
   }, []);
 

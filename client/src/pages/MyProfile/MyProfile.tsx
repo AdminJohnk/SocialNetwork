@@ -219,7 +219,7 @@ const MyProfile = () => {
                       switch (item.key) {
                         case '0':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -231,7 +231,7 @@ const MyProfile = () => {
                           );
                         case '1':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -243,7 +243,7 @@ const MyProfile = () => {
                           );
                         case '2':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -255,7 +255,7 @@ const MyProfile = () => {
                           );
                         case '3':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -267,7 +267,7 @@ const MyProfile = () => {
                           );
                         case '4':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
