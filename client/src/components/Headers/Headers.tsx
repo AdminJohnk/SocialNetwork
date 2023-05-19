@@ -20,6 +20,7 @@ import { pusherClient } from '../../util/functions/Pusher';
 import { format } from 'date-fns';
 import AvatarGroup from '../Avatar/AvatarGroup';
 import AvatarMessage from '../Avatar/Avatar';
+import soundNotiMessage from '../../../public/sounds/sound-noti-message.wav';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -122,6 +123,8 @@ const Headers = () => {
     return userInfo?.id;
   }, [userInfo]);
 
+  const playNotiMessage = new Audio(soundNotiMessage);
+
   const popupNotification = (message: any, conversation: any) => {
     api.open({
       message: message.sender.username + ' ' + format(new Date(message.createdAt), 'p'),
@@ -156,6 +159,7 @@ const Headers = () => {
       setMessages((current: any) =>
         current.map((currentConversation: any) => {
           if (currentConversation._id === conversation.id) {
+            playNotiMessage.play();
             popupNotification(conversation.messages[conversation.messages.length - 1], currentConversation);
             return {
               ...currentConversation,
