@@ -33,6 +33,8 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+
   const [commentContent, setCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
@@ -126,7 +128,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}

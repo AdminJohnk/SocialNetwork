@@ -36,6 +36,8 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const [commentContent, setCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+
   useLayoutEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
@@ -126,7 +128,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
