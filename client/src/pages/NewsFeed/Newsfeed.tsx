@@ -357,6 +357,7 @@ const NewFeed = () => {
                                     height: 50,
                                     borderRadius: 50,
                                     marginLeft: 10,
+                                    objectFit: 'cover',
                                   }}
                                   className="popular-post-item-image"
                                   src={`${item?.user?.userImage}`}
@@ -379,7 +380,9 @@ const NewFeed = () => {
                                       fontSize: '0.9rem',
                                     }}
                                   >
-                                    <span>{item.title?.length > 28 ? item.title?.slice(0, 28) + '...' : item.title}</span>
+                                    <span>
+                                      {item.title?.length > 28 ? item.title?.slice(0, 28) + '...' : item.title}
+                                    </span>
                                   </div>
                                   <div className="popular-post-item-view mt-1">
                                     <FontAwesomeIcon

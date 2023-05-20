@@ -159,12 +159,12 @@ const EditProfileForm = () => {
     if (fileAvatar) {
       const res = await handleUploadImage(fileAvatar);
       formData.append('userImage', res.url);
-      await handleRemoveImage(initialAvatar);
+      if (initialAvatar) await handleRemoveImage(initialAvatar);
     }
     if (fileCover) {
       const res = await handleUploadImage(fileCover);
       formData.append('coverImage', res.url);
-      await handleRemoveImage(initialCover);
+      if (initialCover) await handleRemoveImage(initialCover);
     }
     dispatch(
       UPDATE_USER_SAGA({
