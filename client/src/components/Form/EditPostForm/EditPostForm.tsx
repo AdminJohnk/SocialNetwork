@@ -115,7 +115,7 @@ const EditPostForm = (PostProps: PostProps) => {
         if (isChanged > 0) {
           const result = await handleUploadImage(file);
           values.linkImage = result.url;
-          await handleRemoveImage(PostProps.img);
+          if (PostProps.img) await handleRemoveImage(PostProps.img);
         }
         dispatch(
           UPDATE_POST_SAGA({
