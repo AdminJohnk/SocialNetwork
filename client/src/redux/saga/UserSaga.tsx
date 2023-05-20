@@ -11,6 +11,7 @@ import {
 import { setUser } from '../Slice/UserSlice';
 import { setFollowers } from '../Slice/ActiveListSlice';
 import { setOwnerInfo } from '../Slice/PostSlice';
+import { closeDrawer, setLoading } from '../Slice/DrawerHOCSlice';
 
 // registerUser Saga
 function* registerUserSaga({ payload }: any) {
@@ -36,6 +37,8 @@ function* updateUserSaga({ payload }: any) {
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setOwnerInfo(data.content));
       yield put(setUser(data.content));
+      yield put(setLoading(false));
+      yield put(closeDrawer({}));
     }
   } catch (err: any) {
     console.log(err.response.data);

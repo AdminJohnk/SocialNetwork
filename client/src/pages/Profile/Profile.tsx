@@ -152,10 +152,10 @@ const Profile = (Props: Props) => {
                   </Col>
                 </Row>
                 <div className="id_address_join">
-                  <span className="id item mr-2">@tianrongliew</span>
+                  <span className="id item mr-2">@{ownerInfo.alias ? ownerInfo.alias : 'user'}</span>
                   <span className="address item mr-2">
                     <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
-                    Global
+                    {ownerInfo.location ? ownerInfo.location : 'Global'}
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />

@@ -12,7 +12,7 @@ import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
 import descArray from '../../../util/constants/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
-import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import { RcFile } from 'antd/es/upload';
 import { sha1 } from 'crypto-hash';
@@ -50,11 +50,17 @@ const EditProfileForm = () => {
 
   const [lastname, setLastName] = React.useState(userInfo?.lastname);
 
+  const [alias, setAlias] = React.useState(userInfo?.alias || '');
+
+  const [location, setLocation] = React.useState(userInfo?.location || '');
+
   const [avatar, setAvatar] = React.useState(userInfo?.userImage || '/images/TimeLinePage/avatar.jpg');
   const [fileAvatar, setFileAvatar] = React.useState<any>(null);
 
   const [cover, setCover] = React.useState(userInfo?.coverImage || '/images/ProfilePage/cover.jpg');
   const [fileCover, setFileCover] = React.useState<any>(null);
+
+  const { loading } = useSelector((state: any) => state.drawerHOCReducer);
 
   const initialAvatar = useMemo(() => {
     return userInfo?.userImage || null;
@@ -99,7 +105,7 @@ const EditProfileForm = () => {
     const duplicateName = nameSplit.pop();
 
     // Remove .
-    const public_id = duplicateName?.split('.').shift();
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
 
     const formData = new FormData();
     formData.append('api_key', '235531261932754');
@@ -139,17 +145,26 @@ const EditProfileForm = () => {
     setLinks(links);
   };
 
+  const handleChangeAlias = (e: any) => {
+    setAlias(e.target.value);
+  };
+
+  const handleChangeLocation = (e: any) => {
+    setLocation(e.target.value);
+  };
+
   const onSubmit = async () => {
+    dispatch(setLoading(true));
     const formData = new FormData();
     if (fileAvatar) {
       const res = await handleUploadImage(fileAvatar);
       formData.append('userImage', res.url);
-      handleRemoveImage(initialAvatar);
+      await handleRemoveImage(initialAvatar);
     }
     if (fileCover) {
       const res = await handleUploadImage(fileCover);
       formData.append('coverImage', res.url);
-      handleRemoveImage(initialCover);
+      await handleRemoveImage(initialCover);
     }
     dispatch(
       UPDATE_USER_SAGA({
@@ -158,6 +173,8 @@ const EditProfileForm = () => {
           lastname: lastname,
           firstname: firstname,
           username: lastname + ' ' + firstname,
+          alias: alias,
+          location: location,
           userImage: fileAvatar ? formData.get('userImage') : undefined,
           coverImage: fileCover ? formData.get('coverImage') : undefined,
           tags: tags,
@@ -169,7 +186,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links, fileAvatar, fileCover]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location]);
 
   const beforeUpload = (file: any) => {
     const isLt2M = file.size / 1024 / 1024 < 3;
@@ -223,7 +240,7 @@ const EditProfileForm = () => {
               Update Profile Cover Image
             </div>
             <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 3MB)</div>
-            <div className="cover relative flex w-full h-72 mb-8 justify-center">
+            <div className="cover relative flex w-full h-72 mb-8 justify-center items-center bg-black rounded-lg">
               <Image
                 className="coverImage rounded-xl"
                 src={cover}
@@ -238,13 +255,9 @@ const EditProfileForm = () => {
                   className="btnChangeCover px-4 py-2"
                   customRequest={() => {}}
                   maxCount={1}
-                  accept="image/*"
+                  accept="image/png, image/jpeg, image/jpg"
                   onChange={(file) => handleChangeCover(file.file.originFileObj)}
                   showUploadList={false}
-                  style={{
-                    backgroundColor: commonColor.colorBlue2,
-                    fontWeight: 600,
-                  }}
                   beforeUpload={beforeUpload}
                 >
                   Change Cover Image
@@ -266,7 +279,6 @@ const EditProfileForm = () => {
               <Image
                 src={avatar}
                 alt="avatar"
-                preview={false}
                 style={{
                   width: '7rem',
                   height: '7rem',
@@ -278,16 +290,12 @@ const EditProfileForm = () => {
             <Space className="changeAvatar ml-3" direction="vertical">
               <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Set profile photo</div>
               <Upload
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg"
                 customRequest={() => {}}
                 maxCount={1}
                 onChange={(file) => handleChangeAvatar(file.file.originFileObj)}
                 showUploadList={false}
-                className="btnChange px-4 py-2 cursor-pointer"
-                style={{
-                  backgroundColor: commonColor.colorBlue2,
-                  fontWeight: 600,
-                }}
+                className="btnChange px-4 py-2"
               >
                 Change Avatar
               </Upload>
@@ -392,24 +400,10 @@ const EditProfileForm = () => {
               Information
             </div>
             <div className="line1 flex justify-between items-center mb-5">
-              <div className="firstName form__group field" style={{ width: '48%' }}>
-                <input
-                  defaultValue={userInfo?.firstname}
-                  type="input"
-                  className="form__field"
-                  placeholder="First Name"
-                  name="firstname"
-                  id="firstname"
-                  required
-                  onChange={handleChangeFirstName}
-                />
-                <label htmlFor="name" className="form__label">
-                  First Name
-                </label>
-              </div>
               <div className="LastName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue={userInfo?.lastname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
                   placeholder="Last Name"
@@ -417,36 +411,59 @@ const EditProfileForm = () => {
                   id="lastname"
                   required
                   onChange={handleChangeLastName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Last Name
                 </label>
               </div>
-            </div>
-            <div className="line2 flex justify-between items-center">
               <div className="firstName form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="@nguyenhoanghai"
+                  defaultValue={userInfo?.firstname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
-                  placeholder="User ID"
-                  name="userID"
-                  id="userID"
+                  placeholder="First Name"
+                  name="firstname"
+                  id="firstname"
                   required
+                  onChange={handleChangeFirstName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
-                  User ID
+                  First Name
                 </label>
               </div>
-              <div className="LastName form__group field" style={{ width: '48%' }}>
+            </div>
+            <div className="line2 flex justify-between items-center">
+              <div className="alias form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="Ninh Hòa- Khánh Hòa - Việt Nam"
+                  defaultValue={userInfo?.alias}
                   type="input"
                   className="form__field"
-                  placeholder="Location"
-                  name="name"
-                  id="name"
+                  placeholder="ex: johndoe"
+                  name="alias"
+                  id="alias"
                   required
+                  onChange={handleChangeAlias}
+                  autoComplete="off"
+                />
+                <label htmlFor="name" className="form__label">
+                  Alias
+                </label>
+              </div>
+              <div className="location form__group field" style={{ width: '48%' }}>
+                <input
+                  defaultValue={userInfo?.location}
+                  pattern="[A-Za-z ]*"
+                  type="input"
+                  className="form__field"
+                  placeholder="ex: Viet Nam"
+                  name="location"
+                  id="location"
+                  required
+                  onChange={handleChangeLocation}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Location
