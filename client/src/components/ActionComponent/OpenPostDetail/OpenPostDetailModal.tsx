@@ -132,6 +132,11 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
+            onKeyUp={(e) => {
+              // get cursor position
+              const cursorPosition = e.currentTarget.selectionStart;
+              setCursor(cursorPosition || 0);
+            }}
             onClick={(e) => {
               const cursor = e.currentTarget.selectionStart;
               setCursor(cursor || 0);

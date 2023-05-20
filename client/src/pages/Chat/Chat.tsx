@@ -397,6 +397,11 @@ const Chat = () => {
                           allowClear
                           placeholder="Write a message"
                           value={message}
+                          onKeyUp={(e) => {
+                            // get cursor position
+                            const cursorPosition = e.currentTarget.selectionStart;
+                            setCursor(cursorPosition || 0);
+                          }}
                           onClick={(e) => {
                             // get cursor position
                             const cursorPosition = e.currentTarget.selectionStart;
