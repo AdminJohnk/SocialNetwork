@@ -214,7 +214,6 @@ const EditPostForm = (PostProps: PostProps) => {
     setIsChanged(isChanged + 1);
     setFile(info?.file?.originFileObj);
     formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
-    console.log(file);
   };
 
   const fileList: UploadFile[] = [
