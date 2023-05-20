@@ -113,8 +113,10 @@ const EditPostForm = (PostProps: PostProps) => {
       } else {
         dispatch(setLoading(true));
         if (isChanged > 0) {
-          const result = await handleUploadImage(file);
-          values.linkImage = result.url;
+          if (file) {
+            const result = await handleUploadImage(file);
+            values.linkImage = result.url;
+          }
           if (PostProps.img) await handleRemoveImage(PostProps.img);
         }
         dispatch(
@@ -210,8 +212,9 @@ const EditPostForm = (PostProps: PostProps) => {
   const [file, setFile]: any = useState([]);
   const handleUpload = (info: any) => {
     setIsChanged(isChanged + 1);
-    setFile(info.file.originFileObj);
+    setFile(info?.file?.originFileObj);
     formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
+    console.log(file);
   };
 
   const fileList: UploadFile[] = [

@@ -256,7 +256,7 @@ const EditProfileForm = () => {
                   customRequest={() => {}}
                   maxCount={1}
                   accept="image/png, image/jpeg, image/jpg"
-                  onChange={(file) => handleChangeCover(file.file.originFileObj)}
+                  onChange={(file) => handleChangeCover(file?.file?.originFileObj)}
                   showUploadList={false}
                   beforeUpload={beforeUpload}
                 >
@@ -293,7 +293,7 @@ const EditProfileForm = () => {
                 accept="image/png, image/jpeg, image/jpg"
                 customRequest={() => {}}
                 maxCount={1}
-                onChange={(file) => handleChangeAvatar(file.file.originFileObj)}
+                onChange={(file) => handleChangeAvatar(file?.file?.originFileObj)}
                 showUploadList={false}
                 className="btnChange px-4 py-2"
               >
