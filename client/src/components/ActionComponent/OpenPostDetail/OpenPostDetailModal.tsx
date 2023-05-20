@@ -34,6 +34,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
+  const [cursor, setCursor] = useState(0);
 
   useEffect(() => {
     if (PostProps.postShare) {
@@ -47,10 +48,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const handleData = (data: any) => {
     setData(data);
-  };
-
-  const handleComment = (content: any) => {
-    setCommentContent(content);
   };
 
   const handleSubmitComment = () => {
@@ -135,8 +132,14 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
+            onClick={(e) => {
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
             onChange={(e) => {
-              handleComment(e.target.value);
+              setCommentContent(e.currentTarget.value);
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
             }}
             style={{
               borderColor: themeColorSet.colorText3,
@@ -152,7 +155,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -186,7 +189,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         </div>
       </div>
     ),
-    [commentContent],
+    [commentContent, cursor],
   );
 
   useLayoutEffect(() => {

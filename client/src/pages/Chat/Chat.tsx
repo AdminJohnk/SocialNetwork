@@ -18,6 +18,7 @@ import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { messageService } from '../../services/MessageService';
 import UploadComponent from '../../components/UploadComponent/UploadComponent';
 import SharedMedia from '../../components/ChatComponent/SharedMedia/SharedMedia';
+import { set } from 'lodash';
 
 const Chat = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -36,6 +37,7 @@ const Chat = () => {
   }, []);
 
   const [message, setMessage] = useState('');
+  const [cursor, setCursor] = useState(0);
 
   const handleSubmit = async (data: any) => {
     if (!conversationID) return;
@@ -363,7 +365,14 @@ const Chat = () => {
                         placement="top"
                         trigger="click"
                         title={'Emoji'}
-                        content={<Picker data={dataEmoji} onEmojiSelect={(emoji: any) => {}} />}
+                        content={
+                          <Picker
+                            data={dataEmoji}
+                            onEmojiSelect={(emoji: any) => {
+                              setMessage(message.slice(0, cursor) + emoji.native + message.slice(cursor));
+                            }}
+                          />
+                        }
                       >
                         <span className="emoji">
                           <FontAwesomeIcon className="item mr-3 ml-3" size="lg" icon={faFaceSmile} />
@@ -388,8 +397,16 @@ const Chat = () => {
                           allowClear
                           placeholder="Write a message"
                           value={message}
+                          onClick={(e) => {
+                            // get cursor position
+                            const cursorPosition = e.currentTarget.selectionStart;
+                            setCursor(cursorPosition || 0);
+                          }}
                           onChange={(e) => {
                             setMessage(e.currentTarget.value);
+                            // get cursor position
+                            const cursorPosition = e.currentTarget.selectionStart;
+                            setCursor(cursorPosition || 0);
                           }}
                           onPressEnter={(e) => {
                             handleSubmit(e.currentTarget.value);
