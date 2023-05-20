@@ -30,7 +30,16 @@ const AvatarGroup = (Props: AvatarProps) => {
             positionMap[index as keyof typeof positionMap]
           }`}
         >
-          <Image preview={false} src={user?.userImage || './images/DefaultAvatar/default_avatar.png'} alt="Avatar" />
+          <Image
+            preview={false}
+            src={user?.userImage || './images/DefaultAvatar/default_avatar.png'}
+            alt="Avatar"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
         </div>
       ))}
       {isActive.indexOf(true) !== -1 ? (

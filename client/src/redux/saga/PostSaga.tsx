@@ -22,6 +22,7 @@ import {
 } from '../actionSaga/PostActionSaga';
 import { setAllPost, setOwnerInfo, setPost, setPostArr, updatePosts } from '../Slice/PostSlice';
 import { setUser } from '../Slice/UserSlice';
+import { closeDrawer, setLoading } from '../Slice/DrawerHOCSlice';
 
 // Get All Post By User ID Saga
 export function* getAllPostByUserIDSaga({ payload }: any) {
@@ -138,6 +139,8 @@ export function* updatePostSaga({ payload }: any) {
           userId: 'me',
         }),
       );
+      yield put(setLoading(false));
+      yield put(closeDrawer({}));
     }
   } catch (err: any) {
     console.log(err.response.data);

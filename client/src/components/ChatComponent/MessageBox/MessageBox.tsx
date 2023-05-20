@@ -72,7 +72,7 @@ const MessageBox = (Props: MessageBoxProps) => {
                   alt="Image"
                   src={Props.data.image}
                   draggable={false}
-                  className="object-contain cursor-pointer"
+                  className="object-cover cursor-pointer"
                   style={{
                     borderRadius: '2rem',
                     border: '0.2px solid',
