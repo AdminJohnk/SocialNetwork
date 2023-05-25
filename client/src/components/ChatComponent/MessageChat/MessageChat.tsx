@@ -71,6 +71,11 @@ const MessageChat = (Props: IParams) => {
 
         return [...current, message];
       });
+
+      // call 3 lần để đảm bảo scroll đến cuối =))))
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     const updateMessageHandler = (newMessage: any) => {
@@ -102,14 +107,6 @@ const MessageChat = (Props: IParams) => {
     if (count > 0) return;
     bottomRef?.current?.scrollIntoView({ behavior: 'auto', block: 'start' });
     setCount(count + 1);
-    return () => {
-      setCount(0);
-    };
-  }, [messagesState]);
-
-  useEffect(() => {
-    if (count === 0) return;
-    bottomRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [messagesState]);
 
   const styleStatus = useMemo(() => {
