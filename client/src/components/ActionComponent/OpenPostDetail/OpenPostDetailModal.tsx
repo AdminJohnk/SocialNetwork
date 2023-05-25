@@ -33,7 +33,10 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const userInfo = useSelector((state: any) => state.userReducer.userInfo);
+
   const [commentContent, setCommentContent] = useState('');
+  const [cursor, setCursor] = useState(0);
 
   useEffect(() => {
     if (PostProps.postShare) {
@@ -47,10 +50,6 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const handleData = (data: any) => {
     setData(data);
-  };
-
-  const handleComment = (content: any) => {
-    setCommentContent(content);
   };
 
   const handleSubmitComment = () => {
@@ -129,14 +128,25 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
-        <Avatar className="mr-2" size={40} src={PostProps.userInfo?.userImage} />
+        <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
+            onKeyUp={(e) => {
+              // get cursor position
+              const cursorPosition = e.currentTarget.selectionStart;
+              setCursor(cursorPosition || 0);
+            }}
+            onClick={(e) => {
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
             onChange={(e) => {
-              handleComment(e.target.value);
+              setCommentContent(e.currentTarget.value);
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
             }}
             style={{
               borderColor: themeColorSet.colorText3,
@@ -152,7 +162,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -186,7 +196,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         </div>
       </div>
     ),
-    [commentContent],
+    [commentContent, cursor],
   );
 
   useLayoutEffect(() => {

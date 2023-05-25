@@ -75,12 +75,18 @@ const StyleTotal = styled.div`
     }
     .coverSection {
       .btnChangeCover {
+        background-color: ${commonColor.colorBlue2}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorBlue3}!important;
           transition: all 0.5s;
         }
       }
       .btnRemove {
+        background-color: ${commonColor.colorRed1}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorRed2}!important;
           transition: all 0.5s;
@@ -89,6 +95,9 @@ const StyleTotal = styled.div`
     }
     .avatar {
       .btnChange {
+        background-color: ${commonColor.colorBlue2}!important;
+        font-weight: 600;
+        border-radius: 20rem;
         :hover {
           background-color: ${commonColor.colorBlue3}!important;
           transition: all 0.5s;

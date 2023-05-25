@@ -1,5 +1,5 @@
-import { ConfigProvider, Space, Tag, Avatar, Tooltip } from 'antd';
-import React from 'react';
+import { ConfigProvider, Space, Tag, Avatar, Tooltip, Upload, Image, message } from 'antd';
+import React, { useCallback, useMemo } from 'react';
 import StyleTotal from './cssEditProfileForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -12,8 +12,10 @@ import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
 import descArray from '../../../util/constants/Description';
 import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
-import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
 import { icon } from '@fortawesome/fontawesome-svg-core';
+import { RcFile } from 'antd/es/upload';
+import { sha1 } from 'crypto-hash';
 
 // const link = [
 //   {
@@ -34,6 +36,8 @@ const EditProfileForm = () => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const userInfo = useSelector((state: any) => state.postReducer.ownerInfo);
 
   const [tags, setTags] = React.useState(userInfo?.tags);
@@ -45,6 +49,81 @@ const EditProfileForm = () => {
   const [firstname, setFirstName] = React.useState(userInfo?.firstname);
 
   const [lastname, setLastName] = React.useState(userInfo?.lastname);
+
+  const [alias, setAlias] = React.useState(userInfo?.alias || '');
+
+  const [location, setLocation] = React.useState(userInfo?.location || '');
+
+  const [avatar, setAvatar] = React.useState(userInfo?.userImage || '/images/TimeLinePage/avatar.jpg');
+  const [fileAvatar, setFileAvatar] = React.useState<any>(null);
+
+  const [cover, setCover] = React.useState(userInfo?.coverImage || '/images/ProfilePage/cover.jpg');
+  const [fileCover, setFileCover] = React.useState<any>(null);
+
+  const { loading } = useSelector((state: any) => state.drawerHOCReducer);
+
+  const initialAvatar = useMemo(() => {
+    return userInfo?.userImage || null;
+  }, [userInfo?.userImage]);
+
+  const initialCover = useMemo(() => {
+    return userInfo?.coverImage || null;
+  }, [userInfo?.coverImage]);
+
+  const handleChangeAvatar = useCallback((image: any) => {
+    setAvatar(URL.createObjectURL(image));
+    setFileAvatar(image);
+  }, []);
+
+  const handleChangeCover = useCallback((image: any) => {
+    setCover(URL.createObjectURL(image));
+    setFileCover(image);
+  }, []);
+
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
 
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer');
@@ -66,16 +145,40 @@ const EditProfileForm = () => {
     setLinks(links);
   };
 
-  const onSubmit = () => {
+  const handleChangeAlias = (e: any) => {
+    setAlias(e.target.value);
+  };
+
+  const handleChangeLocation = (e: any) => {
+    setLocation(e.target.value);
+  };
+
+  const onSubmit = async () => {
+    dispatch(setLoading(true));
+    const formData = new FormData();
+    if (fileAvatar) {
+      const res = await handleUploadImage(fileAvatar);
+      formData.append('userImage', res.url);
+      if (initialAvatar) await handleRemoveImage(initialAvatar);
+    }
+    if (fileCover) {
+      const res = await handleUploadImage(fileCover);
+      formData.append('coverImage', res.url);
+      if (initialCover) await handleRemoveImage(initialCover);
+    }
     dispatch(
       UPDATE_USER_SAGA({
         id: userInfo?.id,
         userUpdate: {
-          contacts: links,
-          tags: tags,
-          firstname: firstname,
           lastname: lastname,
+          firstname: firstname,
           username: lastname + ' ' + firstname,
+          alias: alias,
+          location: location,
+          userImage: fileAvatar ? formData.get('userImage') : undefined,
+          coverImage: fileCover ? formData.get('coverImage') : undefined,
+          tags: tags,
+          contacts: links,
         },
       }),
     );
@@ -83,7 +186,15 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location]);
+
+  const beforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 3;
+    if (!isLt2M) {
+      messageApi.error('Image must smaller than 3MB!');
+    }
+    return isLt2M;
+  };
 
   const componentNoInfo = (title: String, description: String, buttonContent: String) => {
     return (
@@ -92,7 +203,7 @@ const EditProfileForm = () => {
           {title}
         </div>
         <div className="tags" style={{ color: themeColorSet.colorText3 }}>
-          {tags}
+          {description}
         </div>
         <button
           className="btnContent mt-4 px-4 py-2"
@@ -115,6 +226,7 @@ const EditProfileForm = () => {
       }}
     >
       <StyleTotal theme={themeColorSet}>
+        {contextHolder}
         <div className="editProfileForm">
           <section className="coverSection">
             <div
@@ -127,27 +239,29 @@ const EditProfileForm = () => {
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 4MB)</div>
-            <div className="cover relative">
-              <div
-                className="coverImage w-full h-72 rounded-xl"
+            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 3MB)</div>
+            <div className="cover relative flex w-full h-72 mb-8 justify-center items-center bg-black rounded-lg">
+              <Image
+                className="coverImage rounded-xl"
+                src={cover}
                 style={{
-                  backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
+                  objectFit: 'cover',
+                  maxHeight: '18rem',
+                  width: '100%',
                 }}
-              ></div>
+              ></Image>
               <Space className="coverButton absolute bottom-8 right-5">
-                <button
+                <Upload
                   className="btnChangeCover px-4 py-2"
-                  style={{
-                    backgroundColor: commonColor.colorBlue2,
-                    fontWeight: 600,
-                  }}
+                  customRequest={() => {}}
+                  maxCount={1}
+                  accept="image/png, image/jpeg, image/jpg"
+                  onChange={(file) => handleChangeCover(file?.file?.originFileObj)}
+                  showUploadList={false}
+                  beforeUpload={beforeUpload}
                 >
                   Change Cover Image
-                </button>
+                </Upload>
                 <button
                   className="btnRemove px-4 py-2"
                   style={{
@@ -162,27 +276,29 @@ const EditProfileForm = () => {
           </section>
           <section className="avatar mt-3 flex items-center">
             <div className="avatarImage">
-              <img
-                src={userInfo?.userImage || '/images/TimeLinePage/avatar.jpg'}
+              <Image
+                src={avatar}
                 alt="avatar"
                 style={{
                   width: '7rem',
                   height: '7rem',
                   borderRadius: '50%',
+                  objectFit: 'cover',
                 }}
               />
             </div>
             <Space className="changeAvatar ml-3" direction="vertical">
               <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>Set profile photo</div>
-              <button
+              <Upload
+                accept="image/png, image/jpeg, image/jpg"
+                customRequest={() => {}}
+                maxCount={1}
+                onChange={(file) => handleChangeAvatar(file?.file?.originFileObj)}
+                showUploadList={false}
                 className="btnChange px-4 py-2"
-                style={{
-                  backgroundColor: commonColor.colorBlue2,
-                  fontWeight: 600,
-                }}
               >
-                Change photo
-              </button>
+                Change Avatar
+              </Upload>
             </Space>
           </section>
           <section className="addLinks mt-3">
@@ -190,7 +306,7 @@ const EditProfileForm = () => {
               switch (item.key) {
                 case '0':
                   return (
-                    <Tooltip title={item.tooltip}>
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                       <Avatar
                         onClick={() => {
                           openInNewTab(item.link);
@@ -202,7 +318,7 @@ const EditProfileForm = () => {
                   );
                 case '1':
                   return (
-                    <Tooltip title={item.tooltip}>
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                       <Avatar
                         onClick={() => {
                           openInNewTab(item.link);
@@ -214,7 +330,7 @@ const EditProfileForm = () => {
                   );
                 case '2':
                   return (
-                    <Tooltip title={item.tooltip}>
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                       <Avatar
                         onClick={() => {
                           openInNewTab(item.link);
@@ -226,7 +342,7 @@ const EditProfileForm = () => {
                   );
                 case '3':
                   return (
-                    <Tooltip title={item.tooltip}>
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                       <Avatar
                         onClick={() => {
                           openInNewTab(item.link);
@@ -238,7 +354,7 @@ const EditProfileForm = () => {
                   );
                 case '4':
                   return (
-                    <Tooltip title={item.tooltip}>
+                    <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                       <Avatar
                         onClick={() => {
                           openInNewTab(item.link);
@@ -284,24 +400,10 @@ const EditProfileForm = () => {
               Information
             </div>
             <div className="line1 flex justify-between items-center mb-5">
-              <div className="firstName form__group field" style={{ width: '48%' }}>
-                <input
-                  defaultValue={userInfo?.firstname}
-                  type="input"
-                  className="form__field"
-                  placeholder="First Name"
-                  name="firstname"
-                  id="firstname"
-                  required
-                  onChange={handleChangeFirstName}
-                />
-                <label htmlFor="name" className="form__label">
-                  First Name
-                </label>
-              </div>
               <div className="LastName form__group field" style={{ width: '48%' }}>
                 <input
                   defaultValue={userInfo?.lastname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
                   placeholder="Last Name"
@@ -309,36 +411,59 @@ const EditProfileForm = () => {
                   id="lastname"
                   required
                   onChange={handleChangeLastName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Last Name
                 </label>
               </div>
-            </div>
-            <div className="line2 flex justify-between items-center">
               <div className="firstName form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="@nguyenhoanghai"
+                  defaultValue={userInfo?.firstname}
+                  pattern="[A-Za-z ]*"
                   type="input"
                   className="form__field"
-                  placeholder="User ID"
-                  name="userID"
-                  id="userID"
+                  placeholder="First Name"
+                  name="firstname"
+                  id="firstname"
                   required
+                  onChange={handleChangeFirstName}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
-                  User ID
+                  First Name
                 </label>
               </div>
-              <div className="LastName form__group field" style={{ width: '48%' }}>
+            </div>
+            <div className="line2 flex justify-between items-center">
+              <div className="alias form__group field" style={{ width: '48%' }}>
                 <input
-                  defaultValue="Ninh Hòa- Khánh Hòa - Việt Nam"
+                  defaultValue={userInfo?.alias}
                   type="input"
                   className="form__field"
-                  placeholder="Location"
-                  name="name"
-                  id="name"
+                  placeholder="ex: johndoe"
+                  name="alias"
+                  id="alias"
                   required
+                  onChange={handleChangeAlias}
+                  autoComplete="off"
+                />
+                <label htmlFor="name" className="form__label">
+                  Alias
+                </label>
+              </div>
+              <div className="location form__group field" style={{ width: '48%' }}>
+                <input
+                  defaultValue={userInfo?.location}
+                  pattern="[A-Za-z ]*"
+                  type="input"
+                  className="form__field"
+                  placeholder="ex: Viet Nam"
+                  name="location"
+                  id="location"
+                  required
+                  onChange={handleChangeLocation}
+                  autoComplete="off"
                 />
                 <label htmlFor="name" className="form__label">
                   Location

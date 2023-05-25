@@ -1,6 +1,6 @@
 import { put, select, takeLatest } from 'redux-saga/effects';
 import { userService } from '../../services/UserService';
-import { STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
+import { DARK_THEME, STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
 import {
   FOLLOW_USER_SAGA,
   GET_FOLLOWERS_SAGA,
@@ -11,6 +11,9 @@ import {
 import { setUser } from '../Slice/UserSlice';
 import { setFollowers } from '../Slice/ActiveListSlice';
 import { setOwnerInfo } from '../Slice/PostSlice';
+import { closeDrawer, setLoading } from '../Slice/DrawerHOCSlice';
+import { setLogin } from '../Slice/AuthSlice';
+import { setTheme } from '../Slice/ThemeSlice';
 
 // registerUser Saga
 function* registerUserSaga({ payload }: any) {
@@ -18,6 +21,12 @@ function* registerUserSaga({ payload }: any) {
     const { data, status } = yield userService.registerUser(payload.userRegister);
     if (status === STATUS_CODE.CREATED) {
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
+      yield put(setLogin({ login: true }));
+      const { navigate } = yield select((state) => state.functionReducer);
+      // Lưu theme vào localStorage
+      yield put(setTheme({ theme: DARK_THEME }));
+
+      navigate('/');
     }
   } catch (err: any) {
     localStorage.removeItem(TOKEN);
@@ -35,6 +44,9 @@ function* updateUserSaga({ payload }: any) {
     const { data, status } = yield userService.updateUser(payload.id, payload.userUpdate);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(setOwnerInfo(data.content));
+      yield put(setUser(data.content));
+      yield put(setLoading(false));
+      yield put(closeDrawer({}));
     }
   } catch (err: any) {
     console.log(err.response.data);
@@ -96,4 +108,3 @@ function* followUserSaga({ payload }: any) {
 export function* theoDoiFollowUserSaga() {
   yield takeLatest(FOLLOW_USER_SAGA, followUserSaga);
 }
-
