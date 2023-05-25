@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import StyleTotal from './cssMyProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -98,10 +98,15 @@ const MyProfile = () => {
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden object-fill flex">
-                  <img
+                <div className="avatar rounded-full overflow-hidden object-cover flex">
+                  <Image
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </Col>
@@ -145,10 +150,10 @@ const MyProfile = () => {
                   </Col>
                 </Row>
                 <div className="id_address_join">
-                  <span className="id item mr-2">@tianrongliew</span>
+                  <span className="id item mr-2">@{ownerInfo.alias ? ownerInfo.alias : 'user'}</span>
                   <span className="address item mr-2">
                     <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
-                    Global
+                    {ownerInfo.location ? ownerInfo.location : 'Global'}
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
@@ -219,7 +224,7 @@ const MyProfile = () => {
                       switch (item.key) {
                         case '0':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -231,7 +236,7 @@ const MyProfile = () => {
                           );
                         case '1':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -243,7 +248,7 @@ const MyProfile = () => {
                           );
                         case '2':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -255,7 +260,7 @@ const MyProfile = () => {
                           );
                         case '3':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -267,7 +272,7 @@ const MyProfile = () => {
                           );
                         case '4':
                           return (
-                            <Tooltip title={item.tooltip}>
+                            <Tooltip title={item.tooltip} color={themeColorSet.colorBg3}>
                               <Avatar
                                 onClick={() => {
                                   openInNewTab(item.link);
@@ -308,7 +313,7 @@ const MyProfile = () => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <MyPostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <MyPost key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>

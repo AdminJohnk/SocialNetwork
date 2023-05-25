@@ -1,7 +1,7 @@
 import { Avatar, Button, ConfigProvider, Divider, Form, Input, message, Popover, Upload, UploadFile } from 'antd';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';
 import StyleTotal from './cssEditPostForm';
@@ -14,7 +14,9 @@ import { useFormik } from 'formik';
 import { TOKEN } from '../../../util/constants/SettingSystem';
 import { GET_ALL_POST_BY_USERID_SAGA, UPDATE_POST_SAGA } from '../../../redux/actionSaga/PostActionSaga';
 import { UploadOutlined } from '@ant-design/icons';
-import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
+import { callBackSubmitDrawer, setLoading } from '../../../redux/Slice/DrawerHOCSlice';
+import { RcFile } from 'antd/es/upload';
+import { sha1 } from 'crypto-hash';
 // import hljs from 'highlight.js/lib/core';
 // import javascript from 'highlight.js/lib/languages/javascript';
 // import 'highlight.js/styles/monokai-sublime.css';
@@ -52,6 +54,51 @@ const EditPostForm = (PostProps: PostProps) => {
   const { themeColor } = getTheme();
   const { themeColorSet } = getTheme();
 
+  const handleUploadImage = async (file: RcFile) => {
+    if (!file)
+      return {
+        url: null,
+        status: 'done',
+      };
+
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/upload?upload_preset=mysoslzj', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data.secure_url,
+      status: 'done',
+    };
+  };
+
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
+
   // Formik
   const formik = useFormik({
     initialValues: {
@@ -60,10 +107,19 @@ const EditPostForm = (PostProps: PostProps) => {
       linkImage: null,
     },
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (quill.root.innerHTML === '<p><br></p>') {
         error();
       } else {
+        dispatch(setLoading(true));
+        if (isChanged > 0) {
+          if (file) {
+            const result = await handleUploadImage(file);
+            values.linkImage = result.url;
+          }
+          if (PostProps.img) await handleRemoveImage(PostProps.img);
+        }
+        values.linkImage = values.linkImage ? values.linkImage : PostProps.img;
         dispatch(
           UPDATE_POST_SAGA({
             id: PostProps.id,
@@ -73,6 +129,14 @@ const EditPostForm = (PostProps: PostProps) => {
       }
     },
   });
+
+  const beforeUpload = (file: any) => {
+    const isLt2M = file.size / 1024 / 1024 < 3;
+    if (!isLt2M) {
+      messageApi.error('Image must smaller than 3MB!');
+    }
+    return isLt2M;
+  };
 
   // Quill Editor
   let [quill, setQuill] = useState<any>(null);
@@ -97,13 +161,15 @@ const EditPostForm = (PostProps: PostProps) => {
       event.preventDefault();
       const text = event.clipboardData.getData('text/plain');
 
-      const textToHTMLWithTabAndSpace = text.replace(/\n/g, '<br>').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;').replace(/ /g, '&nbsp;');
+      const textToHTMLWithTabAndSpace = text
+        .replace(/\n/g, '<br>')
+        .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+        .replace(/ /g, '&nbsp;');
 
       console.log(textToHTMLWithTabAndSpace);
 
       document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
     });
-
 
     setQuill(quill);
 
@@ -132,16 +198,29 @@ const EditPostForm = (PostProps: PostProps) => {
     });
   };
 
+  const [isChanged, setIsChanged] = useState(0);
+
+  const nameImage = useMemo(() => {
+    if (PostProps.img) {
+      const nameSplit = PostProps.img.split('/');
+      const duplicateName = nameSplit.pop();
+      const name = duplicateName.replace(/_[^_]*\./, '.');
+      return name;
+    }
+    return undefined;
+  }, [PostProps.img]);
+
   const [file, setFile]: any = useState([]);
   const handleUpload = (info: any) => {
-    setFile(info.fileList[0].originFileObj);
+    setIsChanged(isChanged + 1);
+    setFile(info?.file?.originFileObj);
     formik.setFieldValue('linkImage', info.fileList[0].originFileObj);
   };
 
   const fileList: UploadFile[] = [
     {
-      uid: '1',
-      name: 'image.png',
+      uid: '-1',
+      name: nameImage,
       status: 'done',
       url: PostProps.img,
     },
@@ -198,7 +277,18 @@ const EditPostForm = (PostProps: PostProps) => {
                 </span>
               </Popover>
               <span>
-                <Upload listType="picture" onChange={handleUpload} defaultFileList={[...fileList]} maxCount={1}>
+                <Upload
+                  name="linkImage"
+                  listType="picture"
+                  onChange={handleUpload}
+                  accept="image/png, image/jpeg, image/jpg"
+                  defaultFileList={PostProps.img ? [...fileList] : []}
+                  maxCount={1}
+                  customRequest={async ({ file, onSuccess, onError, onProgress }: any) => {
+                    onSuccess('ok');
+                  }}
+                  beforeUpload={beforeUpload}
+                >
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </span>
@@ -211,5 +301,3 @@ const EditPostForm = (PostProps: PostProps) => {
 };
 
 export default EditPostForm;
-
-

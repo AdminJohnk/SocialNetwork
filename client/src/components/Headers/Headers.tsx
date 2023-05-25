@@ -1,5 +1,18 @@
 import React, { useEffect, useMemo } from 'react';
-import { Avatar, Badge, Button, Col, ConfigProvider, Dropdown, Row, Space, Switch, notification, theme } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  ConfigProvider,
+  Dropdown,
+  Empty,
+  Row,
+  Space,
+  Switch,
+  notification,
+  theme,
+} from 'antd';
 import type { MenuProps } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +33,6 @@ import { pusherClient } from '../../util/functions/Pusher';
 import { format } from 'date-fns';
 import AvatarGroup from '../Avatar/AvatarGroup';
 import AvatarMessage from '../Avatar/Avatar';
-import soundNotiMessage from '../../../public/sounds/sound-noti-message.wav';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -85,6 +97,13 @@ const Headers = () => {
     },
   ];
 
+  const itemsNoti: MenuProps['items'] = [
+    {
+      key: '-1',
+      label: <Empty className="cursor-default px-40" image={Empty.PRESENTED_IMAGE_SIMPLE} />,
+    },
+  ];
+
   const [api, contextHolder] = notification.useNotification();
   const navigate = useNavigate();
 
@@ -123,7 +142,7 @@ const Headers = () => {
     return userInfo?.id;
   }, [userInfo]);
 
-  const playNotiMessage = new Audio(soundNotiMessage);
+  const playNotiMessage = new Audio('/sounds/sound-noti-message.wav');
 
   const popupNotification = (message: any, conversation: any) => {
     api.open({
@@ -236,13 +255,21 @@ const Headers = () => {
                         />
                       </Badge>
                     </NavLink>
-                    <Badge count={countNoti}>
-                      <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
-                    </Badge>
-                    <Dropdown menu={{ items }} trigger={['click']} placement="bottom">
+                    <Dropdown menu={{ items: itemsNoti }} trigger={['click']} placement="bottom">
+                      <Badge count={countNoti}>
+                        <Avatar className="notiButton cursor-pointer" icon={<BellOutlined className="text-xl" />} />
+                      </Badge>
+                    </Dropdown>
+                    <Dropdown
+                      menu={{ items }}
+                      trigger={['click']}
+                      placement="bottom"
+                      arrow
+                      destroyPopupOnHide
+                      overlayStyle={{ paddingTop: '0.5rem' }}
+                    >
                       <Avatar className="avatarButton cursor-pointer" icon={<UserOutlined />} size="default" />
                     </Dropdown>
-
                     {/* <Switch
                       checkedChildren="dark"
                       unCheckedChildren="light"

@@ -38,7 +38,7 @@ const PostDetail = (Props: PostProps) => {
         ) : (
           <Post key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
         )}
-        <div className="commentTotal px-3">
+        <div className="commentTotal px-3 ml-4">
           {Props.post?.comments?.map((item: any) => {
             return (
               <div key={item?._id}>

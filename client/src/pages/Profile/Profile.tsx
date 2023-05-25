@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Row, Space, Tabs, Tag, Tooltip } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
@@ -80,13 +80,6 @@ const Profile = (Props: Props) => {
     setIsFollowing(ownerInfo.isFollowing);
   }, [ownerInfo]);
 
-  const HandleOnClick = async (user: any) => {
-    if (!isFollowing) return;
-
-    const { data } = await messageService.createConversation({ users: [user, userInfo.id] });
-    navigate(`/message/${data.content.conversation._id}`);
-  };
-
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer');
   };
@@ -107,16 +100,21 @@ const Profile = (Props: Props) => {
                 <div
                   className="cover w-full h-80 rounded-br-lg rounded-bl-lg"
                   style={{
-                    backgroundImage: `url("${userInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
+                    backgroundImage: `url("${ownerInfo?.coverImage || `/images/ProfilePage/cover.jpg`}")`,
                     backgroundSize: 'cover',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                <div className="avatar rounded-full overflow-hidden object-fill flex">
-                  <img
+                <div className="avatar rounded-full overflow-hidden object-cover flex">
+                  <Image
                     src={ownerInfo?.userImage ? ownerInfo?.userImage : './images/DefaultAvatar/default_avatar.png'}
                     alt="avt"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
                   />
                 </div>
               </Col>
@@ -154,10 +152,10 @@ const Profile = (Props: Props) => {
                   </Col>
                 </Row>
                 <div className="id_address_join">
-                  <span className="id item mr-2">@tianrongliew</span>
+                  <span className="id item mr-2">@{ownerInfo.alias ? ownerInfo.alias : 'user'}</span>
                   <span className="address item mr-2">
                     <FontAwesomeIcon className="icon mr-2" icon={faLocationDot} />
-                    Global
+                    {ownerInfo.location ? ownerInfo.location : 'Global'}
                   </span>
                   <span className="join">
                     <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} />
@@ -314,7 +312,7 @@ const Profile = (Props: Props) => {
                         return (
                           <div className="w-8/12">
                             {item.PostShared && (
-                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.user} />
+                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
                             )}
                             {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>

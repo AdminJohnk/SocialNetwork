@@ -9,13 +9,13 @@ export const darkTheme = {
   controlItemBgActive: '#3b3a3a',
 };
 export const darkThemeSet = {
-  colorText1: '#FFFFFFD9',
-  colorText2: '#d4d4d4',
-  colorText3: '#FFFFFF73',
-  colorBg1: '#0a0a0a',
-  colorBg2: '#1D1D1D',
-  colorBg3: '#4B4B4B',
-  colorBg4: '#3b3a3a',
+  colorText1: "#FFFFFFD9",
+  colorText2: "#d4d4d4",
+  colorText3: "#FFFFFF73",
+  colorBg1: "#0a0a0a",
+  colorBg2: "#1D1D1D",
+  colorBg3: "#4B4B4B",
+  colorBg4: "#3b3a3a",
 };
 
 //--------------------------------------------
