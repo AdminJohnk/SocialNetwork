@@ -15,7 +15,6 @@ import { setTheme } from '../Slice/ThemeSlice';
 function* LoginSaga({ payload }: any) {
   try {
     const { data, status } = yield authService.login(payload.userLogin);
-    const { navigate } = yield select((state) => state.functionReducer);
     if (status === STATUS_CODE.SUCCESS) {
       // Lưu token vào localStorage
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
@@ -24,7 +23,7 @@ function* LoginSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      navigate('/');
+      window.location.href = '/';
     }
   } catch (err: any) {
     console.log(err);
@@ -47,8 +46,7 @@ function* LogoutSaga() {
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.removeItem(TOKEN);
       yield put(setLogin({ login: false }));
-      const { navigate } = yield select((state) => state.functionReducer);
-      navigate('/login');
+      window.location.href = '/login';
     }
   } catch (err: any) {
     console.log(err);
@@ -83,7 +81,6 @@ export function* theoDoiGetUserIDSaga() {
 function* LoginWithGoogleSaga({ payload }: any) {
   try {
     const { data, status } = yield authService.loginWithGoogle(payload);
-    const { navigate } = yield select((state) => state.functionReducer);
     if (status === STATUS_CODE.SUCCESS) {
       // Lưu token vào localStorage
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
@@ -92,7 +89,7 @@ function* LoginWithGoogleSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      navigate('/');
+      window.location.href = '/';
     }
   } catch (err: any) {
     console.log(err);

@@ -6,14 +6,15 @@ import {} from '@fortawesome/free-solid-svg-icons';
 import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
 import { ConfigProvider, Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
-import { authService } from '../../../services/AuthService';
 import { useGoogleLogin } from '@react-oauth/google';
+import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignInWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -24,6 +25,39 @@ const LoginForm = () => {
       );
     },
   });
+
+  const openPopup = () => {
+    const width = 500; // Width of the pop-up window
+    const height = 800; // Height of the pop-up window
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
+
+    const popup = window.open(GetGitHubUrl(), 'GithubAuth', `width=${width},height=${height},left=${left},top=${top}`);
+
+    const handleMessage = (event: any) => {
+      if (event.origin === 'http://localhost:7000') {
+        // Check the origin of the message for security
+        // Handle the received data from the server
+        const userData = event.data;
+        if (userData) {
+          localStorage.setItem('access_token', userData.accessToken);
+          // go to home page
+          window.location.href = '/';
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    const pollOAuthStatus = setInterval(() => {
+      if (popup?.closed) {
+        clearInterval(pollOAuthStatus);
+        window.removeEventListener('message', handleMessage);
+        // Perform actions after authentication completes
+        console.log('Authentication completed!');
+      }
+    }, 500);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -99,14 +133,14 @@ const LoginForm = () => {
             </span>
             <hr />
           </div>
-          <div className="loginTool mt-10 w-full" onClick={() => handleSignInWithGoogle()}>
-            <div className="google h-10">
+          <div className="loginTool mt-10 w-full">
+            <div className="google h-10" onClick={() => handleSignInWithGoogle()}>
               <span className="icon mr-2">
                 <img src="./images/google.svg" alt="google" />
               </span>
               <span>Continue with Gmail</span>
             </div>
-            <div className="github mt-4 h-10">
+            <div className="github mt-4 h-10" onClick={() => openPopup()}>
               <span className="icon mr-2">
                 <img src="./images/github.svg" alt="github" />
               </span>
