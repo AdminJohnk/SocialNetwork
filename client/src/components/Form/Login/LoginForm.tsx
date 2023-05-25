@@ -53,8 +53,6 @@ const LoginForm = () => {
       if (popup?.closed) {
         clearInterval(pollOAuthStatus);
         window.removeEventListener('message', handleMessage);
-        // Perform actions after authentication completes
-        console.log('Authentication completed!');
       }
     }, 500);
   };
