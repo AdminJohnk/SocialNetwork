@@ -174,7 +174,7 @@ const MyProfile = () => {
                             }}
                           >
                             {item.svg} &nbsp;
-                            {item.title}
+                           <span style={{color: themeColorSet.colorText1}}>{item.title}</span>
                           </Tag>
                         );
                       }

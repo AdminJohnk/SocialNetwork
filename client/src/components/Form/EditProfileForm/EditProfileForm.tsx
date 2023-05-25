@@ -239,7 +239,7 @@ const EditProfileForm = () => {
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 3MB)</div>
+            <div className="subTitle mb-3" style={{color: themeColorSet.colorText2}}>Recommended dimensions 1500px x 400px (max. 3MB)</div>
             <div className="cover relative flex w-full h-72 mb-8 justify-center items-center bg-black rounded-lg">
               <Image
                 className="coverImage rounded-xl"

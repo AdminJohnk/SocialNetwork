@@ -9,20 +9,20 @@ export const darkTheme = {
   controlItemBgActive: '#3b3a3a',
 };
 export const darkThemeSet = {
-  colorText1: '#FFFFFFD9',
-  colorText2: '#d4d4d4',
-  colorText3: '#FFFFFF73',
-  colorBg1: '#0a0a0a',
-  colorBg2: '#1D1D1D',
-  colorBg3: '#4B4B4B',
-  colorBg4: '#3b3a3a',
+  colorText1: "#FFFFFFD9",
+  colorText2: "#d4d4d4",
+  colorText3: "#FFFFFF73",
+  colorBg1: "#0a0a0a",
+  colorBg2: "#1D1D1D",
+  colorBg3: "#4B4B4B",
+  colorBg4: "#3b3a3a",
 };
 
 //--------------------------------------------
 
 export const lightTheme = {
-  colorTextBase: '#101011',
-  colorBgBase: '#d4d4d4',
+  colorTextBase: '#1f1f23',
+  colorBgBase: '#FFFFFF',
 
   controlItemBgActive: '#4e4b4b',
 };
@@ -30,10 +30,10 @@ export const lightThemeSet = {
   colorText1: '#101011',
   colorText2: '#1f1f23',
   colorText3: '#27272c',
-  colorBg1: '#e8e8f1',
-  colorBg2: '#527575',
-  colorBg3: '#4785cd',
-  colorBg4: '#2fc2b3',
+  colorBg1: '#F0F2F5',
+  colorBg2: '#FFFFFF',
+  colorBg3: '#E4E5EB',
+  colorBg4: '#D8D9DF',
 };
 
 //--------------------------------------------
