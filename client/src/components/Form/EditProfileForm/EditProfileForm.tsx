@@ -15,17 +15,6 @@ import { UPDATE_USER_SAGA } from '../../../redux/actionSaga/UserActionSaga';
 import { callBackSubmitDrawer } from '../../../redux/Slice/DrawerHOCSlice';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 
-// const link = [
-//   {
-//     key: '0',
-//     link: 'https://www.facebook.com/',
-//   },
-//   {
-//     key: '1',
-//     link: 'https://www.github.com/',
-//   },
-// ];
-
 const EditProfileForm = () => {
   const dispatch = useDispatch();
 
@@ -127,7 +116,7 @@ const EditProfileForm = () => {
             >
               Update Profile Cover Image
             </div>
-            <div className="subTitle mb-3">Recommended dimensions 1500px x 400px (max. 4MB)</div>
+            <div className="subTitle mb-3" style={{color: themeColorSet.colorText2}}>Recommended dimensions 1500px x 400px (max. 4MB)</div>
             <div className="cover relative">
               <div
                 className="coverImage w-full h-72 rounded-xl"

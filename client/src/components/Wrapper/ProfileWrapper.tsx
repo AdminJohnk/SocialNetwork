@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import MyProfile from '../../pages/MyProfile/MyProfile';
 import Profile from '../../pages/Profile/Profile';
+import { LoadingProfileComponent } from '../GlobalSetting/LoadingProfileComponent/LoadingProfileComponent';
 
 const ProfileWrapper = () => {
   const { userID } = useParams();
@@ -22,7 +23,7 @@ const ProfileWrapper = () => {
   if (path === '/me') navigate(`/user/${userIDFromStore}`);
 
   if (!userIDFromStore) {
-    return <MyProfile />;
+    return <LoadingProfileComponent />;
   } else if (userID === 'me' || userID === userIDFromStore) {
     if (userID === 'me') navigate(`/user/${userIDFromStore}`);
     else return <MyProfile key={userID} />;

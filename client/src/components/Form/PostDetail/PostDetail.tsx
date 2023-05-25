@@ -29,7 +29,7 @@ const PostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          maxHeight: '78vh',
+          maxHeight: '70vh', 
           overflow: 'auto',
         }}
       >
@@ -38,7 +38,7 @@ const PostDetail = (Props: PostProps) => {
         ) : (
           <Post key={Props.post?._id} post={Props.post} userInfo={Props.userInfo} />
         )}
-        <div className="commentTotal">
+        <div className="commentTotal px-3">
           {Props.post?.comments?.map((item: any) => {
             return (
               <div key={item?._id}>

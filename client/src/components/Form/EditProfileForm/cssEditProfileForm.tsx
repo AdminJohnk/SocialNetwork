@@ -57,9 +57,6 @@ const StyleTotal = styled.div`
     }
     padding-bottom: 6px;
     border-width: 3px;
-    /* border-image: linear-gradient(to right, #11998e, #38ef7d); */
-    /* border-image: linear-gradient(to right, #111f99, #be38ef); */
-    /* border-image: linear-gradient(to right, #1f57b8, #1f57b8); */
     border-color: #1f57b8;
     border-image-slice: 1;
   }
