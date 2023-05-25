@@ -16,6 +16,9 @@ export const darkThemeSet = {
   colorBg2: "#1D1D1D",
   colorBg3: "#4B4B4B",
   colorBg4: "#3b3a3a",
+
+  colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorPicker: "dark"
 };
 
 //--------------------------------------------
@@ -24,7 +27,7 @@ export const lightTheme = {
   colorTextBase: '#1f1f23',
   colorBgBase: '#FFFFFF',
 
-  controlItemBgActive: '#4e4b4b',
+  controlItemBgActive: '#d7d7d7',
 };
 export const lightThemeSet = {
   colorText1: '#101011',
@@ -34,6 +37,9 @@ export const lightThemeSet = {
   colorBg2: '#FFFFFF',
   colorBg3: '#E4E5EB',
   colorBg4: '#D8D9DF',
+
+  colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorPicker: "light"
 };
 
 //--------------------------------------------
@@ -45,6 +51,8 @@ export const commonColor = {
   colorGreen1: '#00ae8c',
   colorRed1: '#c2032f',
   colorRed2: '#aa052c',
+  colorWhile1: '#FFFFFFD9',
+  colorWhile2: '#d4d4d4',
   colorWarning1: '#ff6b6b',
 };
 

@@ -13,6 +13,7 @@ const StyleTotal = styled.div`
 
   .btnCancel {
     background-color: red!important;
+    
     :hover {
       background-color: ${(props) => props.theme.colorBg4}!important;
     }
