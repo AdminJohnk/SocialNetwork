@@ -18,7 +18,6 @@ function* LoginSaga({ payload }: any) {
     if (status === STATUS_CODE.SUCCESS) {
       // Lưu token vào localStorage
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
-      yield put(setLogin({ login: true }));
 
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
@@ -45,7 +44,7 @@ function* LogoutSaga() {
     const { data, status } = yield authService.logout(userAuth);
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.removeItem(TOKEN);
-      yield put(setLogin({ login: false }));
+
       window.location.href = '/login';
     }
   } catch (err: any) {
@@ -84,7 +83,6 @@ function* LoginWithGoogleSaga({ payload }: any) {
     if (status === STATUS_CODE.SUCCESS) {
       // Lưu token vào localStorage
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
-      yield put(setLogin({ login: true }));
 
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));

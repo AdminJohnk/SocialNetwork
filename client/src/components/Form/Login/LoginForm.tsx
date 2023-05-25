@@ -6,7 +6,7 @@ import {} from '@fortawesome/free-solid-svg-icons';
 import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
 import { ConfigProvider, Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -14,7 +14,6 @@ import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSignInWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -127,7 +126,7 @@ const LoginForm = () => {
         <div className="anotherLogin mt-10">
           <div className="title relative">
             <span className="absolute" style={{ color: '#d4d4d4' }}>
-              or login with
+              Or
             </span>
             <hr />
           </div>
