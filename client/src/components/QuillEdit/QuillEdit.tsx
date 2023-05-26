@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +24,7 @@ interface QuillEditProps {
 
 const QuillEdit = (Props: QuillEditProps) => {
   const dispatch = useDispatch();
+  const searchRef = useRef<any>(null);
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -46,7 +47,12 @@ const QuillEdit = (Props: QuillEditProps) => {
       scrollingContainer: '#scrolling-container',
     });
     quill.on('text-change', function () {
-      handleQuillChange();
+      if (searchRef.current) {
+        clearTimeout(searchRef.current);
+      }
+      searchRef.current = setTimeout(() => {
+        handleQuillChange();
+      }, 300);
     });
 
     // Ngăn chặn paste text vào quill
@@ -60,8 +66,6 @@ const QuillEdit = (Props: QuillEditProps) => {
         .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
         .replace(/ /g, '&nbsp;');
 
-      console.log(textToHTMLWithTabAndSpace);
-
       document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
     });
 
@@ -74,15 +78,15 @@ const QuillEdit = (Props: QuillEditProps) => {
     setQuill(quill);
   }, [Props, quill]);
 
+  // Kiểm tra nội dung của value để set callback
   const handleQuillChangeValue = () => {
-    // Kiểm tra nếu không có nội dung set value = ''
     const HTML = new DOMParser().parseFromString(value, 'text/html').body.innerText;
     if (HTML === '') Props.callbackFuntion('');
     else Props.callbackFuntion(value);
   };
 
   useEffect(() => {
-    // Dispatch callback submit lên cho DrawerHOC
+    // Dispatch callback submit lên cho ModalHOC
     dispatch(setHandleSubmit(handleQuillChangeValue));
   }, [value]);
 

@@ -540,6 +540,7 @@ const EditProfileForm = () => {
             >
               About
               {about && (
+                // Nút Edit About
                 <span
                   onClick={() => {
                     dispatch(
@@ -568,6 +569,7 @@ const EditProfileForm = () => {
               )}
             </div>
             {about ? (
+              // About có nội dung
               <div className="content__text">
                 <ReactQuill
                   value={about as Value}
@@ -577,11 +579,9 @@ const EditProfileForm = () => {
                     syntax: true,
                   }}
                 />
-                {/* {PostProps.post?.content?.length > 250 && (
-                  <a onClick={toggleExpanded}>{expanded ? 'Read less' : 'Read more'}</a>
-                )} */}
               </div>
             ) : (
+              // About không có nội dung
               componentNoInfo(
                 'Share something about yourself',
                 'Use Markdown to share more about who you are with the developer community on Showwcase.',

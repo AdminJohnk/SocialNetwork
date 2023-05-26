@@ -6,6 +6,7 @@ const StyleTotal = styled.div`
   .ql-editor{
     font-size: 14px;
     color: ${(props) => props.theme.colorText1};
+    line-height: 2rem;
   }
 
   .form__group {

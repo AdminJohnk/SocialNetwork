@@ -49,7 +49,6 @@ type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 const MyPost = (PostProps: PostProps) => {
   const link = PostProps.post.link;
-
   const dispatch = useDispatch();
 
   // Lấy theme từ LocalStorage chuyển qua css
