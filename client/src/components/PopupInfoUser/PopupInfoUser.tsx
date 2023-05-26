@@ -29,7 +29,7 @@ const PopupInfoUser = ({ userInfo, isMe }: any) => {
           <NavLink to={`/user/${userInfo?.id}`}>
             <div className="popupInfoUser__avatar mr-5 mt-3">
               <Avatar size={70} src={userInfo?.userImage} />
-            </div>
+            </div>  
           </NavLink>
           <div className="popupInfoUser__content">
             <NavLink to={`/user/${userInfo?.id}`}>
