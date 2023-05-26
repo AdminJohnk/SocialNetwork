@@ -137,8 +137,8 @@ export function* updatePostSaga({ payload }: any) {
     const { data, status } = yield postService.updatePost(payload.id, payload.postUpdate);
     if (status === STATUS_CODE.SUCCESS) {
       yield put(
-        GET_ALL_POST_BY_USERID_SAGA({
-          userId: 'me',
+        GET_POST_BY_ID_SAGA({
+          id: payload.id,
         }),
       );
       yield put(setLoading(false));
@@ -280,8 +280,8 @@ export function* sharePostSaga({ payload }: any) {
 
     if (status === STATUS_CODE.SUCCESS) {
       yield put(
-        GET_POST_BY_ID_SAGA({
-          id: payload.id,
+        GET_ALL_POST_BY_USERID_SAGA({
+          userId: 'me',
         }),
       );
     }
