@@ -6,7 +6,6 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { ConfigProvider } from 'antd';
 import StyleTotal from './cssQuillEdit';
 import ImageCompress from 'quill-image-compress';
-import { message } from 'antd';
 import { setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
 
 Quill.register('modules/imageCompress', ImageCompress);
@@ -25,7 +24,6 @@ interface QuillEditProps {
 
 const QuillEdit = (Props: QuillEditProps) => {
   const dispatch = useDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -77,7 +75,10 @@ const QuillEdit = (Props: QuillEditProps) => {
   }, [Props, quill]);
 
   const handleQuillChangeValue = () => {
-    Props.callbackFuntion(value);
+    // Kiểm tra nếu không có nội dung set value = ''
+    const HTML = new DOMParser().parseFromString(value, 'text/html').body.innerText;
+    if (HTML === '') Props.callbackFuntion('');
+    else Props.callbackFuntion(value);
   };
 
   useEffect(() => {
@@ -88,14 +89,6 @@ const QuillEdit = (Props: QuillEditProps) => {
   const handleQuillChange = () => {
     const text = quill.root.innerHTML;
     setValue(text);
-  };
-
-  // Hàm hiển thị mesage
-  const error = () => {
-    messageApi.open({
-      type: 'error',
-      content: 'Please enter the content',
-    });
   };
 
   return (

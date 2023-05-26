@@ -2,24 +2,43 @@ import styled, { css } from 'styled-components';
 
 // --------------------------------------------
 
+// export const darkTheme = {
+//   colorTextBase: '#d4d4d4',
+//   colorBgBase: '#1D1D1D',
+
+//   controlItemBgActive: '#3b3a3a',
+// };
+// export const darkThemeSet = {
+//   colorText1: '#FFFFFFD9',
+//   colorText2: '#d4d4d4',
+//   colorText3: '#FFFFFF73',
+//   colorBg1: '#0a0a0a',
+//   colorBg2: '#1D1D1D',
+//   colorBg3: '#4B4B4B',
+//   colorBg4: '#3b3a3a',
+
+//   colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//   colorPicker: 'dark',
+// };
+
 export const darkTheme = {
-  colorTextBase: '#d4d4d4',
-  colorBgBase: '#1D1D1D',
-
-  controlItemBgActive: '#3b3a3a',
-};
-export const darkThemeSet = {
-  colorText1: "#FFFFFFD9",
-  colorText2: "#d4d4d4",
-  colorText3: "#FFFFFF73",
-  colorBg1: "#0a0a0a",
-  colorBg2: "#1D1D1D",
-  colorBg3: "#4B4B4B",
-  colorBg4: "#3b3a3a",
-
-  colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
-  colorPicker: "dark"
-};
+    colorTextBase: '#d4d4d4',
+    colorBgBase: '#1d1d1d7e',
+  
+    controlItemBgActive: '#3b3a3a79',
+  };
+  export const darkThemeSet = {
+    colorText1: '#FFFFFFD9',
+    colorText2: '#d4d4d4',
+    colorText3: '#FFFFFF73',
+    colorBg1: '#0a0a0a7a',
+    colorBg2: '#1d1d1d73',
+    colorBg3: '#4b4b4b72',
+    colorBg4: '#3b3a3a67',
+  
+    colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+    colorPicker: 'dark',
+  };
 
 //--------------------------------------------
 
@@ -41,6 +60,25 @@ export const lightThemeSet = {
   colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
   colorPicker: "light"
 };
+
+// export const lightTheme = {
+//   colorTextBase: '#1f1f23',
+//   colorBgBase: '#ffffff8e',
+
+//   controlItemBgActive: '#d7d7d799',
+// };
+// export const lightThemeSet = {
+//   colorText1: '#101011',
+//   colorText2: '#1f1f23',
+//   colorText3: '#27272c',
+//   colorBg1: '#f0f2f58d',
+//   colorBg2: '#ffffff90',
+//   colorBg3: '#e4e5eb5c',
+//   colorBg4: '#d8d9df76',
+
+//   colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//   colorPicker: "light"
+// };
 
 //--------------------------------------------
 

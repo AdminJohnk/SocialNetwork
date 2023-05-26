@@ -108,7 +108,7 @@ const CommentDetail = (Props: CommentProps) => {
                 },
               })}
         >
-          {Props.selectedCommentId === Props.comment._id ? 'Cancel' : 'Reply'}
+          <span style={{color: themeColorSet.colorText3}}>{Props.selectedCommentId === Props.comment._id ? 'Cancel' : 'Reply'}</span>
         </span>
       )),
     },
