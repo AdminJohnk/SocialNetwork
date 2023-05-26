@@ -29,7 +29,7 @@ const PostDetail = (Props: PostProps) => {
       <div
         className="postDetail"
         style={{
-          maxHeight: '70vh', 
+          maxHeight: '75vh', 
           overflow: 'auto',
         }}
       >
@@ -50,6 +50,7 @@ const PostDetail = (Props: PostProps) => {
                     userInfo={Props.userInfo}
                     selectedCommentId={selectedCommentId}
                     onSelectComment={handleSelectComment}
+                    postID={Props.post._id}
                   >
                     {item.listReply?.map((item: any) => {
                       return (
@@ -61,6 +62,7 @@ const PostDetail = (Props: PostProps) => {
                           selectedCommentId={selectedCommentId}
                           onSelectComment={handleSelectComment}
                           isReply={true}
+                          postID={Props.post._id}
                         />
                       );
                     })}

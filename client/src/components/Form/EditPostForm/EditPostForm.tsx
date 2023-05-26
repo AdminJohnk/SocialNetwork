@@ -155,7 +155,7 @@ const EditPostForm = (PostProps: PostProps) => {
         .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
         .replace(/ /g, '&nbsp;');
 
-      console.log(textToHTMLWithTabAndSpace);
+      // console.log(textToHTMLWithTabAndSpace);
 
       document.execCommand('insertHTML', false, textToHTMLWithTabAndSpace);
     });
