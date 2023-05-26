@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
-import React, { useMemo, useLayoutEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -27,7 +27,7 @@ interface PostProps {
 
 const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const dispatch = useDispatch();
-
+  const searchRef = useRef<any>(null);
   // Lấy theme từ LocalStorage chuyển qua css
   const { change } = useSelector((state: any) => state.themeReducer);
   const { themeColor } = getTheme();
@@ -38,13 +38,13 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
     } else {
       dispatch(GET_POST_BY_ID_SAGA({ id: PostProps.post._id }));
     }
-  }, [PostProps.post, PostProps.postShare]);
+  }, []);
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
@@ -133,10 +133,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
           <Input
             value={commentContent}
             placeholder="Add a Comment"
-            // allowClear
-
             onKeyUp={(e) => {
-              // get cursor position
               const cursorPosition = e.currentTarget.selectionStart;
               setCursor(cursorPosition || 0);
             }}
@@ -200,7 +197,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [commentContent, cursor],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(
       openModal({
         title: 'The post of ' + PostProps.userInfo?.username,
