@@ -6,7 +6,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { ConfigProvider } from 'antd';
 import StyleTotal from './cssQuillEdit';
 import ImageCompress from 'quill-image-compress';
-import { setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
+import { closeModal, setHandleSubmit } from '../../redux/Slice/ModalHOCSlice';
 
 Quill.register('modules/imageCompress', ImageCompress);
 var toolbarOptions = [
@@ -88,6 +88,7 @@ const QuillEdit = (Props: QuillEditProps) => {
   useEffect(() => {
     // Dispatch callback submit lên cho ModalHOC
     dispatch(setHandleSubmit(handleQuillChangeValue));
+    dispatch(closeModal());
   }, [value]);
 
   const handleQuillChange = () => {
