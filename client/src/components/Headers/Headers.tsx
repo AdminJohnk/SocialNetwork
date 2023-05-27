@@ -32,7 +32,7 @@ import { useConversationsData } from '../../util/functions/DataProvider';
 import { pusherClient } from '../../util/functions/Pusher';
 import { format } from 'date-fns';
 import AvatarGroup from '../Avatar/AvatarGroup';
-import AvatarMessage from '../Avatar/Avatar';
+import AvatarMessage from '../Avatar/AvatarMessage';
 
 const Headers = () => {
   // Lấy theme từ LocalStorage chuyển qua css
@@ -41,7 +41,7 @@ const Headers = () => {
   const { themeColorSet } = getTheme();
   const { algorithm } = getTheme();
 
-  const switchTheme = localStorage.getItem('theme') === 'dark';
+  const switchTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : true;
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
   // Switch theme
@@ -147,7 +147,7 @@ const Headers = () => {
   const popupNotification = (message: any, conversation: any) => {
     api.open({
       message: message.sender.username + ' ' + format(new Date(message.createdAt), 'p'),
-      description: message.body,
+      description: message.body ? message.body : 'Sent an image',
       duration: 5,
       icon: conversation.isGroup ? (
         <AvatarGroup key={conversation._id} users={conversation.users} />
@@ -191,7 +191,23 @@ const Headers = () => {
       );
     };
 
-    pusherClient.bind('conversation-update-header', updateHandler);
+    const updateHandlerSeen = (conversation: any) => {
+      setMessages((current: any) =>
+        current.map((currentConversation: any) => {
+          if (currentConversation._id === conversation.id) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+
+          return currentConversation;
+        }),
+      );
+    };
+
+    pusherClient.bind('conversation-update-seen', updateHandlerSeen);
+    pusherClient.bind('conversation-update-noti', updateHandler);
   }, [pusherKey]);
 
   return (
@@ -250,8 +266,7 @@ const Headers = () => {
                         <Avatar
                           className="messageButton cursor-pointer"
                           shape="circle"
-                          icon={<CommentOutlined className="text-xl" />
-                        }
+                          icon={<CommentOutlined className="text-xl" />}
                         />
                       </Badge>
                     </NavLink>

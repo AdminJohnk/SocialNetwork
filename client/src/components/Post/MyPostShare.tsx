@@ -346,7 +346,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{likeNumber} Like</span>
+                <span>
+                  {likeNumber}
+                  {likeNumber > 1 ? ' Likes' : ' Like'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -372,7 +375,10 @@ const MyPostShare = (PostProps: PostShareProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post?.comments?.length} Comment</span>
+                <span>
+                  {PostProps.post?.comments?.length}
+                  {PostProps.post?.comments?.length > 1 ? ' Comments' : ' Comment'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -384,7 +390,7 @@ const MyPostShare = (PostProps: PostShareProps) => {
               </Space>
               <Space className="like" direction="vertical" align="center">
                 <span>
-                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                  {PostProps.post.views} {PostProps.post.views > 1 ? 'Views' : 'View'}
                 </span>
                 <Space>
                   <Avatar

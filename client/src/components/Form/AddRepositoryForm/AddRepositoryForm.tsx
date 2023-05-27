@@ -38,8 +38,8 @@ const AddRepositoryForm = (Props: ReposProps) => {
       if (event.origin === 'http://localhost:7000') {
         userData = event.data;
         if (userData) {
-          localStorage.setItem(TOKEN_GITHUB, userData.accessToken);
-          setAccess_token_github(userData.accessToken);
+          localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
+          setAccess_token_github(userData.accessTokenGitHub);
         }
       }
     };
