@@ -22,6 +22,7 @@ import ReactQuill, { Value } from 'react-quill';
 import AddExperienceForm from '../ExperienceForm/AddExperienceForm';
 import dayjs from 'dayjs';
 import EditExperienceForm from '../ExperienceForm/EditExperienceForm';
+import AddRepositoryForm from '../AddRepositoryForm/AddRepositoryForm';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -765,7 +766,16 @@ const EditProfileForm = () => {
               'Highlight your top Repositories',
               'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
               'Feature Repositories',
-              () => {},
+              () => {
+                const linkGithub = links.find((item: any) => item.key === '1').link;
+                dispatch(
+                  openModal({
+                    title: 'Feature Repositories',
+                    component: <AddRepositoryForm key={Math.random()} linkRepos={linkGithub || ''} />,
+                    footer: true,
+                  }),
+                );
+              },
             )}
           </section>
           <section className="memberOf mt-7">
