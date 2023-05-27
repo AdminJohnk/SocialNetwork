@@ -37,6 +37,7 @@ import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
 import { format, isThisWeek, isThisYear, isToday } from 'date-fns';
+import { sha1 } from 'crypto-hash';
 
 interface PostProps {
   post: any;
@@ -66,7 +67,7 @@ const MyPost = (PostProps: PostProps) => {
 
   // Like color
   const [likeColor, setLikeColor] = useState(themeColorSet.colorText1);
-  
+
   useEffect(() => {
     PostProps.post?.isLiked ? setLikeColor('red') : setLikeColor(themeColorSet.colorText1);
   }, [PostProps.post?.isLiked, change]);
@@ -134,7 +135,33 @@ const MyPost = (PostProps: PostProps) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
+  const handleRemoveImage = async (imageURL: any) => {
+    const nameSplit = imageURL.split('/');
+    const duplicateName = nameSplit.pop();
+
+    // Remove .
+    const public_id = duplicateName?.split('.').slice(0, -1).join('.');
+
+    const formData = new FormData();
+    formData.append('api_key', '235531261932754');
+    formData.append('public_id', public_id);
+    const timestamp = String(Date.now());
+    formData.append('timestamp', timestamp);
+    const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}qb8OEaGwU1kucykT-Kb7M8fBVQk`);
+    formData.append('signature', signature);
+    const res = await fetch('https://api.cloudinary.com/v1_1/dp58kf8pw/image/destroy', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    return {
+      url: data,
+      status: 'done',
+    };
+  };
+
+  const handleOk = async () => {
+    if (PostProps.post?.url) await handleRemoveImage(PostProps.post?.url);
     dispatch(
       DELETE_POST_SAGA({
         id: PostProps.post?._id,
@@ -385,7 +412,10 @@ const MyPost = (PostProps: PostProps) => {
           <div className="postFooter flex justify-between items-center">
             <div className="like_share flex justify-between w-1/5">
               <Space className="like" direction="vertical" align="center">
-                <span>{likeNumber} Like</span>
+                <span>
+                  {likeNumber}
+                  {likeNumber > 1 ? ' Likes' : ' Like'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -409,7 +439,10 @@ const MyPost = (PostProps: PostProps) => {
                 />
               </Space>
               <Space className="like" direction="vertical" align="center">
-                <span>{shareNumber} Share</span>
+                <span>
+                  {shareNumber}
+                  {shareNumber > 1 ? ' Shares' : ' Share'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
@@ -435,11 +468,14 @@ const MyPost = (PostProps: PostProps) => {
             </div>
             <div className="comment_view flex justify-between w-1/3">
               <Space className="like" direction="vertical" align="center">
-                <span>{PostProps.post?.comments?.length} Comment</span>
+                <span>
+                  {PostProps.post?.comments?.length}
+                  {PostProps.post?.comments?.length > 1 ? ' Comments' : ' Comment'}
+                </span>
                 <Avatar
                   className="item"
                   style={{ backgroundColor: 'transparent' }}
-                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1}/>}
+                  icon={<FontAwesomeIcon icon={faComment} color={themeColorSet.colorText1} />}
                   onClick={() => {
                     setIsOpenPostDetail(true);
                   }}
@@ -447,7 +483,7 @@ const MyPost = (PostProps: PostProps) => {
               </Space>
               <Space className="like" direction="vertical" align="center">
                 <span>
-                  {PostProps.post.views} {PostProps.post.views > 0 ? 'Views' : 'View'}
+                  {PostProps.post.views} {PostProps.post.views > 1 ? 'Views' : 'View'}
                 </span>
                 <Space>
                   <Avatar
