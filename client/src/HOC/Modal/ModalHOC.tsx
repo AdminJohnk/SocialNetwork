@@ -58,19 +58,18 @@ const ModalHOC = () => {
                       backgroundColor: commonColor.colorBlue2,
                       color: themeColorSet.colorText1,
                     }}
-                    onClick={() => {
-                      handleSubmit();
-                      onClose();
+                    onClick={(e) => {
+                      handleSubmit(e);
                     }}
                   >
-                    <span style={{color: commonColor.colorWhile1}}>Update</span>
+                    <span style={{color: commonColor.colorWhile1}}>Save</span>
                   </button>
                 </>
               ) : (
                 footer
               )
             }
-            onOk={handleSubmit}
+            // onOk={handleSubmit}
           >
             {ComponentContentModal}
           </Modal>

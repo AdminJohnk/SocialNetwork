@@ -57,7 +57,6 @@ const CommunityNoMember = () => {
   const { themeColorSet } = getTheme();
 
   useEffect(() => {
-
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -91,10 +90,7 @@ const CommunityNoMember = () => {
                   }}
                 ></div>
                 <div className="avatar rounded-full overflow-hidden object-fill flex">
-                  <img
-                    src={community?.communityImage || '/images/DefaultAvatar/default_avatar.png'}
-                    alt="avt"
-                  />
+                  <img src={community?.communityImage || '/images/DefaultAvatar/default_avatar.png'} alt="avt" />
                 </div>
               </Col>
               <Col offset={3} span={18}>

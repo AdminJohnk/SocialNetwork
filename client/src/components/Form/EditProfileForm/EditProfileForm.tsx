@@ -6,7 +6,7 @@ import { getTheme } from '../../../util/functions/ThemeFunction';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faDeleteLeft, faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
@@ -19,6 +19,10 @@ import { sha1 } from 'crypto-hash';
 import QuillEdit from '../../QuillEdit/QuillEdit';
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill, { Value } from 'react-quill';
+import AddExperienceForm from '../ExperienceForm/AddExperienceForm';
+import dayjs from 'dayjs';
+import EditExperienceForm from '../ExperienceForm/EditExperienceForm';
+import AddRepositoryForm from '../AddRepositoryForm/AddRepositoryForm';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -53,6 +57,8 @@ const EditProfileForm = () => {
   const [fileCover, setFileCover] = useState<any>(null);
 
   const [about, setAbout] = useState<String>(userInfo?.about || '');
+
+  const [experiences, setExperiences] = useState<any>(userInfo?.experiences || []);
 
   const { loading } = useSelector((state: any) => state.drawerHOCReducer);
 
@@ -168,16 +174,17 @@ const EditProfileForm = () => {
       UPDATE_USER_SAGA({
         id: userInfo?.id,
         userUpdate: {
-          lastname: lastname,
-          firstname: firstname,
+          lastname,
+          firstname,
           username: lastname + ' ' + firstname,
-          alias: alias,
-          location: location,
+          alias,
+          location,
           userImage: fileAvatar ? formData.get('userImage') : undefined,
           coverImage: fileCover ? formData.get('coverImage') : undefined,
-          tags: tags,
+          tags,
           contacts: links,
-          about: about,
+          about,
+          experiences,
         },
       }),
     );
@@ -220,6 +227,63 @@ const EditProfileForm = () => {
         >
           {buttonContent}
         </button>
+      </div>
+    );
+  };
+
+  const dateFormat = 'MM/YYYY';
+
+  const renderExperience = (item: any, index: any) => {
+    return (
+      <div className="item mt-2 flex">
+        <div>
+          <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} style={{ color: commonColor.colorBlue1 }} />
+          <span className="company mr-2 font-semibold">{item.companyName}</span>
+          <span className="position mr-2">{item.positionName} |</span>
+          <span className="date">
+            {item.startDate} ~ {item.endDate}
+          </span>
+        </div>
+        <div className="ml-2">
+          <span
+            onClick={() => {
+              dispatch(
+                openModal({
+                  title: 'Add Experiences',
+                  component: (
+                    <EditExperienceForm
+                      key={Math.random()}
+                      experiences={experiences}
+                      setExperiences={setExperiences}
+                      itemCurrent={item}
+                      indexCurrent={index}
+                    />
+                  ),
+                  footer: true,
+                }),
+              );
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faEdit}
+              className="ml-2 cursor-pointer"
+              size="sm"
+              style={{ color: themeColorSet.colorText3 }}
+            />
+          </span>
+          <span
+            onClick={() => {
+              setExperiences(experiences.filter((item: any, indexFilter: any) => indexFilter !== index));
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faTrash}
+              className="ml-2 cursor-pointer"
+              size="sm"
+              style={{ color: themeColorSet.colorText3 }}
+            />
+          </span>
+        </div>
       </div>
     );
   };
@@ -615,12 +679,58 @@ const EditProfileForm = () => {
               }}
             >
               Experiences
+              {/* Hiển thị nút thêm nếu như có từ 1 experience trở lên */}
+              {experiences.length > 0 && (
+                <span
+                  onClick={() => {
+                    dispatch(
+                      openModal({
+                        title: 'Add About',
+                        component: (
+                          <AddExperienceForm
+                            key={Math.random()}
+                            experiences={experiences}
+                            setExperiences={setExperiences}
+                          />
+                        ),
+                        footer: true,
+                      }),
+                    );
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlus} className="ml-2 cursor-pointer buttonAddExperience" size="xs" />
+                </span>
+              )}
             </div>
-            {componentNoInfo(
-              'Share a timeline of your Positions',
-              'Add your professional history so others know you’ve put your skills to good use.',
-              'Add Positions',
-              () => {},
+            {experiences.length === 0 ? (
+              // Nếu không có experience nào
+              componentNoInfo(
+                'Share a timeline of your Positions',
+                'Add your professional history so others know you’ve put your skills to good use.',
+                'Add Positions',
+                () => {
+                  dispatch(
+                    openModal({
+                      title: 'Add Experiences',
+                      component: (
+                        <AddExperienceForm
+                          key={Math.random()}
+                          experiences={experiences}
+                          setExperiences={setExperiences}
+                        />
+                      ),
+                      footer: true,
+                    }),
+                  );
+                },
+              )
+            ) : (
+              // Nếu có experience
+              <div className="mt-5 ml-3">
+                {experiences.map((item: any, index: any) => {
+                  return renderExperience(item, index);
+                })}
+              </div>
             )}
           </section>
           <section className="techStack mt-7">
@@ -656,7 +766,16 @@ const EditProfileForm = () => {
               'Highlight your top Repositories',
               'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
               'Feature Repositories',
-              () => {},
+              () => {
+                const linkGithub = links.find((item: any) => item.key === '1').link;
+                dispatch(
+                  openModal({
+                    title: 'Feature Repositories',
+                    component: <AddRepositoryForm key={Math.random()} linkRepos={linkGithub || ''} />,
+                    footer: true,
+                  }),
+                );
+              },
             )}
           </section>
           <section className="memberOf mt-7">

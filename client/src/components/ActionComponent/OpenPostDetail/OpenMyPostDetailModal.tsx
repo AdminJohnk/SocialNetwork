@@ -1,5 +1,5 @@
 import { Avatar, ConfigProvider, Input, Popover, Button } from 'antd';
-import React, { useMemo, useLayoutEffect, useState, useRef } from 'react';
+import React, { useMemo, useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import { getTheme } from '../../../util/functions/ThemeFunction';
@@ -34,12 +34,11 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
-  const [subCommentContent, setSubCommentContent] = useState('');
   const [cursor, setCursor] = useState(0);
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
     } else {
@@ -126,15 +125,13 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [PostProps.post, PostProps.userInfo, data],
   );
 
-  console.log(subCommentContent);
-
   const memoizedInputComment = useMemo(
     () => (
       <div className="commentInput text-right flex items-center">
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
-            value={subCommentContent}
+            value={commentContent}
             placeholder="Add a Comment"
             onKeyUp={(e) => {
               const cursorPosition = e.currentTarget.selectionStart;
@@ -145,7 +142,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
               setCursor(cursor || 0);
             }}
             onChange={(e) => {
-              setSubCommentContent(e.currentTarget.value);
+              setCommentContent(e.currentTarget.value);
               const cursor = e.currentTarget.selectionStart;
               setCursor(cursor || 0);
             }}
@@ -163,7 +160,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      // setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -200,7 +197,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     [commentContent, cursor],
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(
       openModal({
         title: 'The post of ' + PostProps.userInfo?.username,

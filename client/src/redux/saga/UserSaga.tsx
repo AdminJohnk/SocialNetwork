@@ -4,11 +4,12 @@ import { DARK_THEME, STATUS_CODE, TOKEN } from '../../util/constants/SettingSyst
 import {
   FOLLOW_USER_SAGA,
   GET_FOLLOWERS_SAGA,
+  GET_REPOSITORY_SAGA,
   GET_USER_INFO_SAGA,
   REGIS_USER_SAGA,
   UPDATE_USER_SAGA,
 } from '../actionSaga/UserActionSaga';
-import { setUser } from '../Slice/UserSlice';
+import { setRepos, setUser } from '../Slice/UserSlice';
 import { setFollowers } from '../Slice/ActiveListSlice';
 import { setOwnerInfo } from '../Slice/PostSlice';
 import { closeDrawer, setLoading } from '../Slice/DrawerHOCSlice';
@@ -106,4 +107,21 @@ function* followUserSaga({ payload }: any) {
 
 export function* theoDoiFollowUserSaga() {
   yield takeLatest(FOLLOW_USER_SAGA, followUserSaga);
+}
+
+// get Repository Github Saga
+function* getRepositoryGithubSaga({ payload }: any) {
+  try {
+    const link = payload;
+    const { data, status } = yield userService.getRepositoryGithub();
+    if (status === STATUS_CODE.SUCCESS) {
+     yield put(setRepos(data.content))
+    }
+  } catch (err: any) {
+    console.log(err.response.data);
+  }
+}
+
+export function* theoDoiGetRepositoryGithubSaga() {
+  yield takeLatest(GET_REPOSITORY_SAGA, getRepositoryGithubSaga);
 }
