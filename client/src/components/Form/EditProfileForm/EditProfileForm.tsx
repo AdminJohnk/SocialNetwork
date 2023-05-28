@@ -480,7 +480,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeLastName}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="lastname" className="form__label">
                   Last Name
                 </label>
               </div>
@@ -497,7 +497,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeFirstName}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="firstname" className="form__label">
                   First Name
                 </label>
               </div>
@@ -515,7 +515,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeAlias}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="alias" className="form__label">
                   Alias
                 </label>
               </div>
@@ -532,7 +532,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeLocation}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="location" className="form__label">
                   Location
                 </label>
               </div>

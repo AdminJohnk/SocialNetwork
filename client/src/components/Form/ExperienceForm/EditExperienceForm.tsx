@@ -107,7 +107,7 @@ const EditExperienceForm = (Props: EditProps) => {
                 }}
                 autoComplete="off"
               />
-              <label htmlFor="name" className="form__label">
+              <label htmlFor="positionName" className="form__label">
                 Position Name
               </label>
             </div>
@@ -131,7 +131,7 @@ const EditExperienceForm = (Props: EditProps) => {
                 }}
                 autoComplete="off"
               />
-              <label htmlFor="name" className="form__label">
+              <label htmlFor="companyName" className="form__label">
                 Company Name
               </label>
             </div>
