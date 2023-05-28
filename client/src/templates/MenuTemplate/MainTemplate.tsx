@@ -25,6 +25,8 @@ const MainTemplate = (props: any) => {
     return <LoadingLogo />;
   }
 
+  document.title = 'DevHub';
+
   const { Component } = props;
 
   return (

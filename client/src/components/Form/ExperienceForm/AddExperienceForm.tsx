@@ -70,8 +70,6 @@ const AddExperienceForm = (Props: EditProps) => {
     experience.startDate = startDate;
     experience.endDate = endDate;
 
-    
-
     dispatch(setHandleSubmit(handleSetExperience));
   }, [positionName, companyName, startDate, endDate]);
 
@@ -105,7 +103,7 @@ const AddExperienceForm = (Props: EditProps) => {
                 }}
                 autoComplete="off"
               />
-              <label htmlFor="name" className="form__label">
+              <label htmlFor="positionName" className="form__label">
                 Position Name
               </label>
             </div>
@@ -129,7 +127,7 @@ const AddExperienceForm = (Props: EditProps) => {
                 }}
                 autoComplete="off"
               />
-              <label htmlFor="name" className="form__label">
+              <label htmlFor="companyName" className="form__label">
                 Company Name
               </label>
             </div>
@@ -139,6 +137,9 @@ const AddExperienceForm = (Props: EditProps) => {
               picker="month"
               format={dateFormat}
               disabled={disablePicker}
+              disabledDate={(current) => {
+                return current && current > dayjs().endOf('day');
+              }}
               size="large"
               onChange={(value, dateString) => {
                 setStartDate(dateString[0]);

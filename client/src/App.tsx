@@ -15,7 +15,6 @@ import ProfileWrapper from './components/Wrapper/ProfileWrapper';
 import PostWrapper from './components/Wrapper/PostWrapper';
 import PostShareWrapper from './components/Wrapper/PostShareWrapper';
 import NewFeed from './pages/NewsFeed/Newsfeed';
-import CommunityMember from './pages/Community/CommunityMember';
 import React from 'react';
 import ActiveStatus from './components/ActionComponent/ActiveStatus/ActiveStatus';
 const LazyLoadingAuth = React.lazy(() => import('./components/ActionComponent/Authentication/Auth'));
@@ -68,7 +67,7 @@ const App = () => {
           <Route path="/post/:postID" element={<MainTemplate Component={PostWrapper} />} />
           <Route path="/postshare/:postID" element={<MainTemplate Component={PostShareWrapper} />} />
           <Route path="/community/:communityID" element={<MainTemplate Component={CommunityWrapper} />} />
-          <Route path="*" element={<NotFound404 login={true}/>} />
+          <Route path="*" element={<NotFound404 />} />
         </Route>
       </Routes>
     </>

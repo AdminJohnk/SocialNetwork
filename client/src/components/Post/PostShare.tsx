@@ -90,14 +90,6 @@ const PostShare = (PostProps: PostShareProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   const [expanded, setExpanded] = useState(false);
 
   const displayContent =
@@ -135,15 +127,15 @@ const PostShare = (PostProps: PostShareProps) => {
         token: themeColor,
       }}
     >
-      {isOpenPostDetail ? (
-        <OpenPostDetailModal
-          key={PostProps.post?._id}
-          postShare={true}
-          post={PostProps.post}
-          userInfo={PostProps.userInfo}
-          owner={PostProps.owner}
-        />
-      ) : null}
+      <OpenPostDetailModal
+        key={PostProps.post?._id}
+        postShare={true}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        owner={PostProps.owner}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

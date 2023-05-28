@@ -43,7 +43,7 @@ const LoginForm = () => {
           localStorage.setItem(TOKEN, userData.accessToken);
           localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
           // go to home page
-          window.location.href = '/';
+          window.location.replace('/');
         }
       }
     };

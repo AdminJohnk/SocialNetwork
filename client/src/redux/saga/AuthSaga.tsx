@@ -22,7 +22,7 @@ function* LoginSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      window.location.href = '/';
+      window.location.replace('/');
     }
   } catch (err: any) {
     console.log(err);
@@ -45,7 +45,7 @@ function* LogoutSaga() {
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.removeItem(TOKEN);
 
-      window.location.href = '/login';
+      window.location.replace('/login');
     }
   } catch (err: any) {
     console.log(err);
@@ -87,7 +87,7 @@ function* LoginWithGoogleSaga({ payload }: any) {
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      window.location.href = '/';
+      window.location.replace('/');
     }
   } catch (err: any) {
     console.log(err);

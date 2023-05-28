@@ -49,8 +49,6 @@ const EditProfileForm = () => {
 
   const [links, setLinks] = useState<any>(userInfo?.contacts || []);
 
-  const isHaveCover = true;
-
   const [firstname, setFirstName] = useState(userInfo?.firstname);
 
   const [lastname, setLastName] = useState(userInfo?.lastname);
@@ -202,7 +200,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about, experiences]);
 
   const beforeUpload = (file: any) => {
     const isLt2M = file.size / 1024 / 1024 < 3;
@@ -548,7 +546,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeLastName}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="lastname" className="form__label">
                   Last Name
                 </label>
               </div>
@@ -565,7 +563,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeFirstName}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="firstname" className="form__label">
                   First Name
                 </label>
               </div>
@@ -583,7 +581,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeAlias}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="alias" className="form__label">
                   Alias
                 </label>
               </div>
@@ -600,7 +598,7 @@ const EditProfileForm = () => {
                   onChange={handleChangeLocation}
                   autoComplete="off"
                 />
-                <label htmlFor="name" className="form__label">
+                <label htmlFor="location" className="form__label">
                   Location
                 </label>
               </div>
@@ -681,7 +679,7 @@ const EditProfileForm = () => {
                             key={Math.random()}
                             placeholder="Write something about yourself..."
                             content={about as string}
-                            callbackFuntion={handleChangeAbout}
+                            callbackFunction={handleChangeAbout}
                           />
                         ),
                         footer: true,
@@ -725,7 +723,7 @@ const EditProfileForm = () => {
                           key={Math.random()}
                           placeholder="Write something about yourself..."
                           content=""
-                          callbackFuntion={handleChangeAbout}
+                          callbackFunction={handleChangeAbout}
                         />
                       ),
                       footer: true,
