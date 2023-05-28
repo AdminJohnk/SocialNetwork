@@ -129,8 +129,8 @@ const Profile = (Props: Props) => {
                     <div className="position mt-2">
                       <FontAwesomeIcon className="icon" icon={faSnowflake} />
                       <span style={{ color: themeColorSet.colorText3 }} className="ml-2">
-                        {ownerInfo?.experiences.length > 0
-                          ? ownerInfo?.experiences.length > 1
+                        {ownerInfo?.experiences?.length > 0
+                          ? ownerInfo?.experiences?.length > 1
                             ? ownerInfo?.experiences[0].positionName + ' & ' + ownerInfo?.experiences[1].positionName
                             : ownerInfo?.experiences[0].positionName
                           : 'No job position'}
