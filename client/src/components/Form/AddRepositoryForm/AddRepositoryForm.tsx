@@ -78,7 +78,7 @@ const AddRepositoryForm = (Props: ReposProps) => {
   const { repos } = useSelector((state: any) => state.userReducer);
 
   const renderItemRepos = (item: any, index: number) => {
-    const colorLanguage = GithubColors.get(item.languages).color;
+    const colorLanguage = GithubColors.get(item.languages)?.color;
     return (
       <div
         className="repositoriesItem px-3 py-4 flex justify-between items-center"

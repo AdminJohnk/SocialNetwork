@@ -6,15 +6,7 @@ import { getTheme } from '../../../util/functions/ThemeFunction';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBriefcase,
-  faCodeFork,
-  faDeleteLeft,
-  faEdit,
-  faPlus,
-  faStar,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCodeFork, faEdit, faPlus, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
@@ -200,7 +192,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about, experiences]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about, experiences, repositories]);
 
   const beforeUpload = (file: any) => {
     const isLt2M = file.size / 1024 / 1024 < 3;
