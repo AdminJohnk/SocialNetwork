@@ -19,7 +19,7 @@ var toolbarOptions = [
 interface QuillEditProps {
   placeholder: string;
   content: string;
-  callbackFuntion: (value: String) => void;
+  callbackFunction: (value: String) => void;
 }
 
 const QuillEdit = (Props: QuillEditProps) => {
@@ -81,8 +81,8 @@ const QuillEdit = (Props: QuillEditProps) => {
   // Kiểm tra nội dung của value để set callback
   const handleQuillChangeValue = () => {
     const HTML = new DOMParser().parseFromString(value, 'text/html').body.innerText;
-    if (HTML === '') Props.callbackFuntion('');
-    else Props.callbackFuntion(value);
+    if (HTML === '') Props.callbackFunction('');
+    else Props.callbackFunction(value);
   };
 
   useEffect(() => {

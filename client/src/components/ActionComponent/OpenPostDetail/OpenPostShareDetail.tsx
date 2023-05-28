@@ -129,6 +129,7 @@ const OpenPostShareDetail = (Props: Props) => {
             onChange={(e) => {
               handleComment(e.target.value);
             }}
+            onPressEnter={handleSubmitComment}
             style={{
               borderColor: themeColorSet.colorText3,
             }}
@@ -187,7 +188,7 @@ const OpenPostShareDetail = (Props: Props) => {
     >
       <StyleTotal theme={themeColorSet}>
         <Row className="py-10">
-        <Col offset={3} span={18}>
+          <Col offset={3} span={18}>
             <div
               style={{
                 backgroundColor: themeColorSet.colorBg2,

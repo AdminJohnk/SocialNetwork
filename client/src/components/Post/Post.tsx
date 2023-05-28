@@ -26,8 +26,6 @@ import OpenPostDetailModal from '../ActionComponent/OpenPostDetail/OpenPostDetai
 import 'react-quill/dist/quill.bubble.css';
 import ReactQuill from 'react-quill';
 import useIntersectionObserver from '../../util/functions/useIntersectionObserver';
-import hljs from 'highlight.js/lib/core';
-import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
 import PopupInfoUser from '../PopupInfoUser/PopupInfoUser';
 import { GET_USER_ID } from '../../redux/actionSaga/AuthActionSaga';
@@ -138,14 +136,6 @@ const Post = (PostProps: PostProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   // Read more, read less
 
   function removeCode(htmlString: any): any {
@@ -192,9 +182,13 @@ const Post = (PostProps: PostProps) => {
         token: themeColor,
       }}
     >
-      {isOpenPostDetail ? (
-        <OpenPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
-      ) : null}
+      <OpenPostDetailModal
+        key={PostProps.post?._id}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

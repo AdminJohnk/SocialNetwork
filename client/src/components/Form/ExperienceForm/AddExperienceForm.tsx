@@ -70,8 +70,6 @@ const AddExperienceForm = (Props: EditProps) => {
     experience.startDate = startDate;
     experience.endDate = endDate;
 
-    
-
     dispatch(setHandleSubmit(handleSetExperience));
   }, [positionName, companyName, startDate, endDate]);
 
@@ -139,6 +137,9 @@ const AddExperienceForm = (Props: EditProps) => {
               picker="month"
               format={dateFormat}
               disabled={disablePicker}
+              disabledDate={(current) => {
+                return current && current > dayjs().endOf('day');
+              }}
               size="large"
               onChange={(value, dateString) => {
                 setStartDate(dateString[0]);

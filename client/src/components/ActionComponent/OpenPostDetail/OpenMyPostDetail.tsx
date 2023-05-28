@@ -130,6 +130,7 @@ const OpenMyPostDetail = (Props: Props) => {
             onChange={(e) => {
               handleComment(e.target.value);
             }}
+            onPressEnter={handleSubmitComment}
             style={{
               borderColor: themeColorSet.colorText3,
             }}

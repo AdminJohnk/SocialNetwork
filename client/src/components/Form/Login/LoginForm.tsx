@@ -41,7 +41,7 @@ const LoginForm = () => {
         if (userData) {
           localStorage.setItem('access_token', userData.accessToken);
           // go to home page
-          window.location.href = '/';
+          window.location.replace('/');
         }
       }
     };

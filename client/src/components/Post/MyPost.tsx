@@ -15,7 +15,7 @@ import { Avatar, ConfigProvider, Divider, Dropdown, Space, Modal, notification, 
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { getTheme } from '../../util/functions/ThemeFunction';
 import StyleTotal from './cssPost';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -240,14 +240,6 @@ const MyPost = (PostProps: PostProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   function removeCode(htmlString: any): any {
     const doc = new DOMParser().parseFromString(htmlString, 'text/html');
     const elements = doc.getElementsByClassName('ql-syntax');
@@ -321,9 +313,13 @@ const MyPost = (PostProps: PostProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? (
-        <OpenMyPostDetailModal key={PostProps.post?._id} post={PostProps.post} userInfo={PostProps.userInfo} />
-      ) : null}
+      <OpenMyPostDetailModal
+        key={PostProps.post?._id}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

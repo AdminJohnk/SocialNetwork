@@ -40,8 +40,6 @@ const EditProfileForm = () => {
 
   const [links, setLinks] = useState<any>(userInfo?.contacts || []);
 
-  const isHaveCover = true;
-
   const [firstname, setFirstName] = useState(userInfo?.firstname);
 
   const [lastname, setLastName] = useState(userInfo?.lastname);
@@ -192,7 +190,7 @@ const EditProfileForm = () => {
 
   React.useEffect(() => {
     dispatch(callBackSubmitDrawer(onSubmit));
-  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about]);
+  }, [tags, firstname, lastname, links, fileAvatar, fileCover, alias, location, about, experiences]);
 
   const beforeUpload = (file: any) => {
     const isLt2M = file.size / 1024 / 1024 < 3;
@@ -615,7 +613,7 @@ const EditProfileForm = () => {
                             key={Math.random()}
                             placeholder="Write something about yourself..."
                             content={about as string}
-                            callbackFuntion={handleChangeAbout}
+                            callbackFunction={handleChangeAbout}
                           />
                         ),
                         footer: true,
@@ -659,7 +657,7 @@ const EditProfileForm = () => {
                           key={Math.random()}
                           placeholder="Write something about yourself..."
                           content=""
-                          callbackFuntion={handleChangeAbout}
+                          callbackFunction={handleChangeAbout}
                         />
                       ),
                       footer: true,

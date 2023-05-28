@@ -144,14 +144,6 @@ const MyPostShare = (PostProps: PostShareProps) => {
   // Open PostDetailModal
   const [isOpenPostDetail, setIsOpenPostDetail] = useState(false);
 
-  const { visible } = useSelector((state: any) => state.modalHOCReducer);
-
-  useEffect(() => {
-    if (!visible && isOpenPostDetail) {
-      setIsOpenPostDetail(!isOpenPostDetail);
-    }
-  }, [visible]);
-
   // Read more
   const [expanded, setExpanded] = useState(false);
 
@@ -219,15 +211,15 @@ const MyPostShare = (PostProps: PostShareProps) => {
       >
         <p>You will not be able to recover files after deletion!</p>
       </Modal>
-      {isOpenPostDetail ? (
-        <OpenMyPostDetailModal
-          key={PostProps.post?._id}
-          postShare={true}
-          post={PostProps.post}
-          userInfo={PostProps.userInfo}
-          owner={PostProps.owner}
-        />
-      ) : null}
+      <OpenMyPostDetailModal
+        key={PostProps.post?._id}
+        postShare={true}
+        post={PostProps.post}
+        userInfo={PostProps.userInfo}
+        owner={PostProps.owner}
+        visible={isOpenPostDetail}
+        setVisible={setIsOpenPostDetail}
+      />
       <StyleTotal theme={themeColorSet} className={'rounded-lg mb-4'}>
         <div ref={postShareRef} className="post px-4 py-3">
           <div className="postHeader flex justify-between items-center">

@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import StyleTotal from './cssProfile';
 import { getTheme } from '../../util/functions/ThemeFunction';
-import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag, Tooltip } from 'antd';
+import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSnowflake, faFileLines, faComments, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import TabPane from 'antd/es/tabs/TabPane';
@@ -17,7 +17,6 @@ import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingP
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
-import { messageService } from '../../services/MessageService';
 
 interface Props {
   userID: any;
@@ -25,7 +24,6 @@ interface Props {
 
 const Profile = (Props: Props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const { userID } = Props;
 
@@ -60,17 +58,17 @@ const Profile = (Props: Props) => {
 
   const [isNotAlreadyChanged, setIsNotAlreadyChanged] = React.useState(true);
 
-  const ownerInfoRef = React.useRef(ownerInfo);
+  const postArrayRef = React.useRef(postArray);
 
   useEffect(() => {
     if (!isNotAlreadyChanged) return;
 
-    setIsNotAlreadyChanged(ownerInfoRef.current === ownerInfo);
+    setIsNotAlreadyChanged(postArrayRef.current === postArray);
 
     if (!isNotAlreadyChanged) {
-      ownerInfoRef.current = ownerInfo;
+      postArrayRef.current = postArray;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, ownerInfoRef, postArraySlice]);
+  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData(userID);
 
@@ -83,6 +81,10 @@ const Profile = (Props: Props) => {
   const openInNewTab = (url: any) => {
     window.open(url, '_blank', 'noreferrer');
   };
+
+  useEffect(() => {
+    document.title = isNotAlreadyChanged ? 'DevHub' : `${ownerInfo?.username} | DevHub`;
+  }, [isNotAlreadyChanged]);
 
   return (
     <ConfigProvider
@@ -127,7 +129,11 @@ const Profile = (Props: Props) => {
                     <div className="position mt-2">
                       <FontAwesomeIcon className="icon" icon={faSnowflake} />
                       <span style={{ color: themeColorSet.colorText3 }} className="ml-2">
-                        User Interface Architect & Senior Manager UX
+                        {ownerInfo?.experiences.length > 0
+                          ? ownerInfo?.experiences.length > 1
+                            ? ownerInfo?.experiences[0].positionName + ' & ' + ownerInfo?.experiences[1].positionName
+                            : ownerInfo?.experiences[0].positionName
+                          : 'No job position'}
                       </span>
                     </div>
                     <div className="viewResume mt-2">
@@ -199,26 +205,20 @@ const Profile = (Props: Props) => {
                   </span>
                 </div>
                 <div className="experience mt-5">
-                  <div className="item mt-2">
-                    <FontAwesomeIcon
-                      className="icon mr-2"
-                      icon={faBriefcase}
-                      style={{ color: commonColor.colorBlue1 }}
-                    />
-                    <span className="company mr-2">Rabiloo</span>
-                    <span className="position mr-2">Java Developer |</span>
-                    <span className="date">2019.10 ~ 2022.10</span>
-                  </div>
-                  <div className="item mt-2">
-                    <FontAwesomeIcon
-                      className="icon mr-2"
-                      icon={faBriefcase}
-                      style={{ color: commonColor.colorBlue1 }}
-                    />
-                    <span className="company mr-2">Pan United</span>
-                    <span className="position mr-2">Software Engineer |</span>
-                    <span className="date">~ 2022.10</span>
-                  </div>
+                  {ownerInfo?.experiences?.map((item: any) => (
+                    <div className="item mt-2">
+                      <FontAwesomeIcon
+                        className="icon mr-2"
+                        icon={faBriefcase}
+                        style={{ color: commonColor.colorBlue1 }}
+                      />
+                      <span className="company mr-2">{item.companyName}</span>
+                      <span className="position mr-2">{item.positionName} |</span>
+                      <span className="date">
+                        {item.startDate} ~ {item.endDate}
+                      </span>
+                    </div>
+                  ))}
                 </div>
                 <div className="contact mt-5">
                   <Space>

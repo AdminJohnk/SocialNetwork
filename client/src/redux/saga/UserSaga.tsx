@@ -22,11 +22,11 @@ function* registerUserSaga({ payload }: any) {
     const { data, status } = yield userService.registerUser(payload.userRegister);
     if (status === STATUS_CODE.CREATED) {
       localStorage.setItem(TOKEN, JSON.stringify(data.content?.accessToken));
-      
+
       // Lưu theme vào localStorage
       yield put(setTheme({ theme: DARK_THEME }));
 
-      window.location.href = '/';
+      window.location.replace('/');
     }
   } catch (err: any) {
     localStorage.removeItem(TOKEN);
@@ -112,10 +112,9 @@ export function* theoDoiFollowUserSaga() {
 // get Repository Github Saga
 function* getRepositoryGithubSaga({ payload }: any) {
   try {
-    const link = payload;
     const { data, status } = yield userService.getRepositoryGithub();
     if (status === STATUS_CODE.SUCCESS) {
-     yield put(setRepos(data.content))
+      yield put(setRepos(data.content));
     }
   } catch (err: any) {
     console.log(err.response.data);
