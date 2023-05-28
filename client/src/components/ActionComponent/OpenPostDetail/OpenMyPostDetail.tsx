@@ -34,15 +34,12 @@ const OpenMyPostDetail = (Props: Props) => {
   const { themeColorSet } = getTheme();
 
   const [commentContent, setCommentContent] = useState('');
+  const [cursor, setCursor] = useState(0);
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
   const handleData = (data: any) => {
     setData(data);
-  };
-
-  const handleComment = (content: any) => {
-    setCommentContent(content);
   };
 
   const handleSubmitComment = () => {
@@ -127,8 +124,18 @@ const OpenMyPostDetail = (Props: Props) => {
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
+            onKeyUp={(e) => {
+              const cursorPosition = e.currentTarget.selectionStart;
+              setCursor(cursorPosition || 0);
+            }}
+            onClick={(e) => {
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
+            }}
             onChange={(e) => {
-              handleComment(e.target.value);
+              setCommentContent(e.currentTarget.value);
+              const cursor = e.currentTarget.selectionStart;
+              setCursor(cursor || 0);
             }}
             onPressEnter={handleSubmitComment}
             style={{
@@ -144,7 +151,8 @@ const OpenMyPostDetail = (Props: Props) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
-                      handleComment(commentContent + emoji.native);
+                      setCursor(cursor + emoji.native.length);
+                      setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
                 }
@@ -178,7 +186,7 @@ const OpenMyPostDetail = (Props: Props) => {
         </div>
       </div>
     ),
-    [commentContent],
+    [commentContent, cursor],
   );
 
   return (

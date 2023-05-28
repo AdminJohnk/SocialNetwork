@@ -52,6 +52,10 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
     setData(data);
   };
 
+  useEffect(() => {
+    if (!PostProps.visible) setCommentContent('');
+  }, [PostProps.visible]);
+
   const handleSubmitComment = () => {
     const { postShare, post } = PostProps;
     const { isReply, idComment } = data;
@@ -142,6 +146,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
                   <Picker
                     data={dataEmoji}
                     onEmojiSelect={(emoji: any) => {
+                      setCursor(cursor + emoji.native.length);
                       setCommentContent(commentContent.slice(0, cursor) + emoji.native + commentContent.slice(cursor));
                     }}
                   />
