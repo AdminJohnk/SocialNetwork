@@ -1,6 +1,6 @@
-import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 import { authService } from '../../services/AuthService';
-import { DARK_THEME, LIGHT_THEME, STATUS_CODE, TOKEN } from '../../util/constants/SettingSystem';
+import { DARK_THEME, STATUS_CODE, TOKEN, TOKEN_GITHUB } from '../../util/constants/SettingSystem';
 import {
   CHECK_LOGIN_SAGA,
   GET_USER_ID,
@@ -44,6 +44,7 @@ function* LogoutSaga() {
     const { data, status } = yield authService.logout(userAuth);
     if (status === STATUS_CODE.SUCCESS) {
       localStorage.removeItem(TOKEN);
+      localStorage.removeItem(TOKEN_GITHUB);
 
       window.location.replace('/login');
     }
