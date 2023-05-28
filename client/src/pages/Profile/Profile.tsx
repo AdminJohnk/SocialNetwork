@@ -9,7 +9,6 @@ import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fort
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
 import { icon } from '@fortawesome/fontawesome-svg-core';
-import TabPane from 'antd/es/tabs/TabPane';
 import Post from '../../components/Post/Post';
 import { GET_ALL_POST_BY_USERID_SAGA } from '../../redux/actionSaga/PostActionSaga';
 import PostShare from '../../components/Post/PostShare';
@@ -17,6 +16,7 @@ import { LoadingProfileComponent } from '../../components/GlobalSetting/LoadingP
 import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import { FOLLOW_USER_SAGA } from '../../redux/actionSaga/UserActionSaga';
+import ReactQuill from 'react-quill';
 
 interface Props {
   userID: any;
@@ -287,43 +287,82 @@ const Profile = (Props: Props) => {
                 </div>
                 <div className="mainContain mt-5">
                   <Tabs
-                    defaultActiveKey="2.2"
-                    // onChange={onChange}
-                  >
-                    <TabPane tab="Introduce" key="1.1" className="mt-10">
-                      Introduce
-                    </TabPane>
-                    <TabPane tab="Post" key="2.2" className="mt-10">
-                      {postArray.length === 0 && (
-                        <div className="w-8/12">
-                          <Empty
-                            className="mt-10 mb-20"
-                            image={Empty.PRESENTED_IMAGE_DEFAULT}
-                            description={<span>No post</span>}
-                          />
-                        </div>
-                      )}
-                      {postArray.map((item: any, index: number) => {
-                        return (
-                          <div className="w-8/12">
-                            {item.PostShared && (
-                              <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
+                    defaultActiveKey="2"
+                    items={[
+                      {
+                        key: '1',
+                        label: 'Introduction',
+                        children: (
+                          <div className="mt-10 mb-20">
+                            {ownerInfo?.about ? (
+                              <div className="w-8/12">
+                                <ReactQuill
+                                  value={ownerInfo?.about}
+                                  readOnly={true}
+                                  theme="bubble"
+                                  modules={{
+                                    syntax: true,
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-8/12 mb-10">
+                                <Empty
+                                  image={Empty.PRESENTED_IMAGE_DEFAULT}
+                                  description={<span>No introduction</span>}
+                                />
+                              </div>
                             )}
-                            {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
                           </div>
-                        );
-                      })}
-                    </TabPane>
-                    <TabPane tab="Show" key="3.3" className="mt-10">
-                      Show
-                    </TabPane>
-                    <TabPane tab="Seri" key="4.4" className="mt-10">
-                      Seri
-                    </TabPane>
-                    <TabPane tab="Guest book" key="5.5" className="mt-10">
-                      Guest book
-                    </TabPane>
-                  </Tabs>
+                        ),
+                      },
+                      {
+                        key: '2',
+                        label: 'Posts',
+                        children: (
+                          <div className="mt-5">
+                            {postArray.length === 0 && (
+                              <div className="w-8/12">
+                                <Empty
+                                  className="mt-10 mb-20"
+                                  image={Empty.PRESENTED_IMAGE_DEFAULT}
+                                  description={<span>No post</span>}
+                                />
+                              </div>
+                            )}
+                            {postArray.map((item: any, index: number) => {
+                              return (
+                                <div className="w-8/12">
+                                  {item.PostShared && (
+                                    <PostShare key={item._id} post={item} userInfo={ownerInfo} owner={item.owner} />
+                                  )}
+                                  {!item.PostShared && <Post key={item._id} post={item} userInfo={ownerInfo} />}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ),
+                      },
+                      {
+                        key: '3',
+                        label: 'Show',
+                        children: <div>Show</div>,
+                        disabled: true,
+                      },
+                      {
+                        key: '4',
+                        label: 'Seri',
+                        children: <div>Seri</div>,
+                        disabled: true,
+                      },
+                      {
+                        key: '5',
+                        label: 'Guestbook',
+                        children: <div>Guestbook</div>,
+                        disabled: true,
+                      },
+                    ]}
+                  />
                 </div>
               </Col>
             </Row>

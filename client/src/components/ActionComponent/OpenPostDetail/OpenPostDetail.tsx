@@ -37,6 +37,12 @@ const OpenPostDetail = (Props: Props) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
+  const inputRef = React.useRef<any>(null);
+
+  useEffect(() => {
+    if (data.isReply) inputRef.current.focus();
+  }, [data]);
+
   const handleData = (data: any) => {
     setData(data);
   };
@@ -129,6 +135,7 @@ const OpenPostDetail = (Props: Props) => {
           <Avatar className="mr-2" size={40} src={Props.userInfo?.userImage} />
           <div className="input w-full">
             <Input
+              ref={inputRef}
               value={commentContent}
               placeholder="Add a Comment"
               // allowClear

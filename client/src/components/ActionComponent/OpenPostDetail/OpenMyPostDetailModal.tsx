@@ -38,6 +38,8 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
 
   const userInfo = useSelector((state: any) => state.userReducer.userInfo);
 
+  const inputRef = React.useRef<any>(null);
+
   useEffect(() => {
     if (PostProps.postShare) {
       dispatch(GET_POSTSHARE_BY_ID_SAGA({ id: PostProps.post._id }));
@@ -51,6 +53,10 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
   const handleData = (data: any) => {
     setData(data);
   };
+
+  useEffect(() => {
+    if (data.isReply) inputRef.current.focus();
+  }, [data]);
 
   useEffect(() => {
     if (!PostProps.visible) setCommentContent('');
@@ -117,6 +123,7 @@ const OpenMyPostDetailModal = (PostProps: PostProps) => {
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
+            ref={inputRef}
             value={commentContent}
             placeholder="Add a Comment"
             onKeyUp={(e) => {

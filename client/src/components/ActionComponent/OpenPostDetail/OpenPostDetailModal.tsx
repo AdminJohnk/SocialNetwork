@@ -49,9 +49,15 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
 
   const [data, setData] = useState<any>({ isReply: false, idComment: null });
 
+  const inputRef = React.useRef<any>(null);
+
   const handleData = (data: any) => {
     setData(data);
   };
+
+  useEffect(() => {
+    if (data.isReply) inputRef.current.focus();
+  }, [data]);
 
   useEffect(() => {
     if (!PostProps.visible) setCommentContent('');
@@ -118,6 +124,7 @@ const OpenPostDetailModal = (PostProps: PostProps) => {
         <Avatar className="mr-2" size={40} src={userInfo?.userImage} />
         <div className="input w-full">
           <Input
+          ref={inputRef}
             value={commentContent}
             placeholder="Add a Comment"
             // allowClear
