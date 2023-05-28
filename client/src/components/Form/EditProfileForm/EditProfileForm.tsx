@@ -6,7 +6,15 @@ import { getTheme } from '../../../util/functions/ThemeFunction';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { commonColor } from '../../../util/cssVariable/cssVariable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase, faDeleteLeft, faEdit, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBriefcase,
+  faCodeFork,
+  faDeleteLeft,
+  faEdit,
+  faPlus,
+  faStar,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { openModal } from '../../../redux/Slice/ModalHOCSlice';
 import AddTagComponent from '../../AddTagComponent/AddTagComponent';
 import AddLinkComponent from '../../AddLinkComponent/AddLinkComponent';
@@ -23,6 +31,7 @@ import AddExperienceForm from '../ExperienceForm/AddExperienceForm';
 import dayjs from 'dayjs';
 import EditExperienceForm from '../ExperienceForm/EditExperienceForm';
 import AddRepositoryForm from '../AddRepositoryForm/AddRepositoryForm';
+import GithubColors from 'github-colors';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -60,7 +69,7 @@ const EditProfileForm = () => {
 
   const [experiences, setExperiences] = useState<any>(userInfo?.experiences || []);
 
-  const { loading } = useSelector((state: any) => state.drawerHOCReducer);
+  const [repositories, setRepositories] = useState<any>(userInfo?.repositories || []);
 
   const initialAvatar = useMemo(() => {
     return userInfo?.userImage || null;
@@ -185,6 +194,7 @@ const EditProfileForm = () => {
           contacts: links,
           about,
           experiences,
+          repositories,
         },
       }),
     );
@@ -230,8 +240,6 @@ const EditProfileForm = () => {
       </div>
     );
   };
-
-  const dateFormat = 'MM/YYYY';
 
   const renderExperience = (item: any, index: any) => {
     return (
@@ -285,6 +293,64 @@ const EditProfileForm = () => {
           </span>
         </div>
       </div>
+    );
+  };
+
+  const renderRepositoryIem = (item: any, index: any) => {
+    const colorLanguage = GithubColors.get(item.languages)?.color;
+    return (
+      <a
+        className="renderRepositoryIem mb-5"
+        style={{
+          borderBottom: `1px solid ${themeColorSet.colorBg4}`,
+          width: '48%',
+        }}
+        href={item.url}
+        target="_blank"
+      >
+        <div className="top">
+          <span>
+            <img className="iconRepos inline" style={{ color: 'red' }} src="/images/Common/repos.svg" />
+          </span>
+          <span
+            className="name ml-2"
+            style={{
+              color: commonColor.colorBlue3,
+              fontWeight: 600,
+              fontSize: '1.1rem',
+            }}
+          >
+            {item.name}
+          </span>
+          <span
+            className="rounded-lg ml-3"
+            style={{
+              color: themeColorSet.colorText3,
+              border: `1px solid ${themeColorSet.colorBg4}`,
+              fontSize: '0.8rem',
+              padding: '0.1rem 0.5rem',
+            }}
+          >
+            {item.private ? 'Private' : 'Public'}
+          </span>
+        </div>
+        <div className="bottom mt-3 flex items-center" style={{ color: themeColorSet.colorText2 }}>
+          <div className="language mr-4 flex items-center">
+            <span className="mr-2 pb-2 text-4xl" style={{ color: colorLanguage }}>
+              •
+            </span>
+            <span>{item.languages}</span>
+          </div>
+          <span className="star mr-3" style={{ color: themeColorSet.colorText3 }}>
+            <FontAwesomeIcon size="xs" icon={faStar} />
+            <span className="ml-1">{item.stargazersCount}</span>
+          </span>
+          <span className="fork" style={{ color: themeColorSet.colorText3 }}>
+            <FontAwesomeIcon size="xs" icon={faCodeFork} />
+            <span className="ml-1">{item.forksCount}</span>
+          </span>
+        </div>
+      </a>
     );
   };
 
@@ -761,21 +827,65 @@ const EditProfileForm = () => {
               }}
             >
               Repositories
+              {
+                // Nút Edit Repositories
+                repositories.length !== 0 && (
+                  <span
+                    onClick={() => {
+                      dispatch(
+                        openModal({
+                          title: 'Feature Repositories',
+                          component: (
+                            <AddRepositoryForm
+                              key={Math.random()}
+                              repositories={repositories}
+                              setRepositories={setRepositories}
+                            />
+                          ),
+                          footer: true,
+                        }),
+                      );
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faEdit}
+                      className="ml-2 cursor-pointer"
+                      size="xs"
+                      style={{ color: themeColorSet.colorText3 }}
+                    />
+                  </span>
+                )
+              }
             </div>
-            {componentNoInfo(
-              'Highlight your top Repositories',
-              'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
-              'Feature Repositories',
-              () => {
-                const linkGithub = links.find((item: any) => item.key === '1').link;
-                dispatch(
-                  openModal({
-                    title: 'Feature Repositories',
-                    component: <AddRepositoryForm key={Math.random()} linkRepos={linkGithub || ''} />,
-                    footer: true,
-                  }),
-                );
-              },
+            {/* Nếu không có repository nào */}
+            {repositories.length === 0 ? (
+              componentNoInfo(
+                'Highlight your top Repositories',
+                'Showwcase integrates with Github to help you pull your top repositories right into your profile. If you’ve got something to show, get it in!',
+                'Feature Repositories',
+                () => {
+                  dispatch(
+                    openModal({
+                      title: 'Feature Repositories',
+                      component: (
+                        <AddRepositoryForm
+                          key={Math.random()}
+                          repositories={repositories}
+                          setRepositories={setRepositories}
+                        />
+                      ),
+                      footer: true,
+                    }),
+                  );
+                },
+              )
+            ) : (
+              // Nếu có repository
+              <div className="flex flex-wrap justify-between mt-5">
+                {repositories.map((item: any, index: any) => {
+                  return renderRepositoryIem(item, index);
+                })}
+              </div>
             )}
           </section>
           <section className="memberOf mt-7">

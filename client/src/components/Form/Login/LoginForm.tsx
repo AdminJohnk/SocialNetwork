@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 import { useGoogleLogin } from '@react-oauth/google';
 import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
+import { TOKEN, TOKEN_GITHUB } from '../../../util/constants/SettingSystem';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,8 @@ const LoginForm = () => {
         // Handle the received data from the server
         const userData = event.data;
         if (userData) {
-          localStorage.setItem('access_token', userData.accessToken);
+          localStorage.setItem(TOKEN, userData.accessToken);
+          localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
           // go to home page
           window.location.href = '/';
         }

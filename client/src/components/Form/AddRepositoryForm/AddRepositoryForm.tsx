@@ -5,14 +5,15 @@ import { Checkbox, ConfigProvider, Space } from 'antd';
 import StyleTotal from './cssAddRepositoryForm';
 import { GetGitHubUrl } from '../../../util/functions/GetGithubUrl';
 import { GET_REPOSITORY_SAGA } from '../../../redux/actionSaga/UserActionSaga';
-import { Value } from 'react-quill';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCodeFork, faStar } from '@fortawesome/free-solid-svg-icons';
 import { TOKEN_GITHUB } from '../../../util/constants/SettingSystem';
-import { closeModal } from '../../../redux/Slice/ModalHOCSlice';
+import { closeModal, setHandleSubmit } from '../../../redux/Slice/ModalHOCSlice';
+import GithubColors from 'github-colors';
 
 interface ReposProps {
-  linkRepos: String;
+  repositories: any;
+  setRepositories: any;
 }
 
 const AddRepositoryForm = (Props: ReposProps) => {
@@ -32,7 +33,7 @@ const AddRepositoryForm = (Props: ReposProps) => {
 
     const popup = window.open(GetGitHubUrl(), 'GithubAuth', `width=${width},height=${height},left=${left},top=${top}`);
 
-    let userData:any = undefined;
+    let userData: any = undefined;
 
     const handleMessage = (event: any) => {
       if (event.origin === 'http://localhost:7000') {
@@ -55,9 +56,20 @@ const AddRepositoryForm = (Props: ReposProps) => {
     }, 300);
   };
 
+  const newRepositories = [...Props.repositories];
+
+  const handleChangeRepositories = (e: any) => {
+    Props.setRepositories(newRepositories);
+    dispatch(closeModal());
+  };
+
   useEffect(() => {
-    if (Props.linkRepos && access_token_github) {
-      dispatch(GET_REPOSITORY_SAGA(Props.linkRepos));
+    dispatch(setHandleSubmit(handleChangeRepositories));
+  }, [newRepositories]);
+
+  useEffect(() => {
+    if (access_token_github) {
+      dispatch(GET_REPOSITORY_SAGA());
     } else {
       openPopup();
     }
@@ -66,9 +78,10 @@ const AddRepositoryForm = (Props: ReposProps) => {
   const { repos } = useSelector((state: any) => state.userReducer);
 
   const renderItemRepos = (item: any, index: number) => {
+    const colorLanguage = GithubColors.get(item.languages).color;
     return (
       <div
-        className="repositoriesItem px-3 py-4"
+        className="repositoriesItem px-3 py-4 flex justify-between items-center"
         key={index}
         style={{
           border: `1px solid ${themeColorSet.colorBg4}`,
@@ -77,23 +90,64 @@ const AddRepositoryForm = (Props: ReposProps) => {
         }}
       >
         <Space className="left" direction="vertical">
-          <span className="name" style={{ fontSize: '1rem', color: themeColorSet.colorText1, fontWeight: '600' }}>
-            {item.name}
-          </span>
+          <div className="top">
+            <span className="name" style={{ fontSize: '1rem', color: themeColorSet.colorText1, fontWeight: '600' }}>
+              {item.name}
+            </span>
+            <span
+              className="rounded-lg ml-3"
+              style={{
+                color: themeColorSet.colorText3,
+                border: `1px solid ${themeColorSet.colorBg4}`,
+                fontSize: '0.8rem',
+                padding: '0.1rem 0.5rem',
+              }}
+            >
+              {item.private ? 'Private' : 'Public'}
+            </span>
+          </div>
           <div className="bottom items-center">
-            <span className="mr-2">
-              <span className="mr-2 text-xl">•</span>
-              {item.language}
+            <span className="mr-3">
+              <span className="mr-2 text-2xl" style={{ color: colorLanguage }}>
+                •
+              </span>
+              {item.languages}
             </span>
-            <span className="mr-1">
-              {' '}
+            <span className="star mr-3">
               <FontAwesomeIcon size="xs" icon={faStar} />
+              <span className="ml-1">{item.watchersCount}</span>
             </span>
-            <span>{item.watchers_count}</span>
+            <span className="fork">
+              <FontAwesomeIcon size="xs" icon={faCodeFork} />
+              <span className="ml-1">{item.forksCount}</span>
+            </span>
           </div>
         </Space>
         <div className="right">
-          <Checkbox onChange={() => {}}></Checkbox>
+          <ConfigProvider
+            theme={{
+              token: {
+                controlHeight: 40,
+                colorBorder: themeColorSet.colorText3,
+              },
+            }}
+          >
+            <Checkbox
+              defaultChecked={newRepositories.some((repo: any) => {
+                return repo?.id == item?.id;
+              })}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  newRepositories.push(item);
+                } else {
+                  newRepositories.splice(
+                    newRepositories.findIndex((repo: any) => repo?.id == item.id),
+                    1,
+                  );
+                }
+              }}
+            ></Checkbox>
+          </ConfigProvider>
         </div>
       </div>
     );
@@ -107,38 +161,21 @@ const AddRepositoryForm = (Props: ReposProps) => {
     >
       <StyleTotal theme={themeColorSet}>
         <div className="addRepositories">
-          {!Props.linkRepos || !access_token_github ? (
-            <div className="flex justify-between items-center mb-10">
-              <div className="Linkgithub form__group field" style={{ width: '70%' }}>
-                <input
-                  //   defaultValue={companyName}
-                  pattern="[A-Za-z ]*"
-                  type="input"
-                  className="form__field"
-                  placeholder="Link Github"
-                  name="linkgithub"
-                  id="linkgithub"
-                  required
-                  onChange={(e) => {}}
-                  autoComplete="off"
-                />
-                <label htmlFor="name" className="form__label">
-                  Link Github
-                </label>
-              </div>
-              <div style={{ width: '20%' }}>
-                <button className="connectButton mt-10 px-4 rounded-xl py-2" onClick={() => {}}>
-                  Connect
-                </button>
-              </div>
-            </div>
+          {!access_token_github ? (
+            <></>
           ) : (
-            // Nếu có link github thì hiển thị danh sách repos
+            // Nếu có access_token_github
             <div>
               <div className="title mt-5" style={{ fontSize: '1.1rem', color: themeColorSet.colorText1 }}>
                 Select the repositories you want to feature
               </div>
-              <div className="repositories mt-5 px-2 py-2">
+              <div
+                className="repositories mt-5 mb-6 px-2"
+                style={{
+                  maxHeight: '402px',
+                  overflow: 'auto',
+                }}
+              >
                 {repos.map((item: any, index: number) => {
                   return renderItemRepos(item, index);
                 })}

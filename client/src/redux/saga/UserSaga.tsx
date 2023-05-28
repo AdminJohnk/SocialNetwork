@@ -110,9 +110,8 @@ export function* theoDoiFollowUserSaga() {
 }
 
 // get Repository Github Saga
-function* getRepositoryGithubSaga({ payload }: any) {
+function* getRepositoryGithubSaga() {
   try {
-    const link = payload;
     const { data, status } = yield userService.getRepositoryGithub();
     if (status === STATUS_CODE.SUCCESS) {
      yield put(setRepos(data.content))

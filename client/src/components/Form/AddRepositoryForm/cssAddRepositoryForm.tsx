@@ -63,14 +63,10 @@ const StyleTotal = styled.div`
 
 
   .addRepositories{
-    .connectButton{
-        background-color: ${commonColor.colorBlue2};
-        color: ${commonColor.colorWhile1};
-        :hover{
-            background-color: ${commonColor.colorBlue3};
-            transition: all .5s;
+    .repositories{
+        &::-webkit-scrollbar {
+          display: none;
         }
-
     }
   }
 `;

@@ -133,12 +133,29 @@ const StyleTotal = styled.div`
         }
       }
     }
-    .experiences{
-      .buttonAddExperience{
+    .experiences {
+      .buttonAddExperience {
         color: ${(props) => props.theme.colorText3};
         :hover {
           color: ${(props) => props.theme.colorText2};
           transition: all 0.5s;
+        }
+      }
+    }
+    .repositories {
+      .renderRepositoryIem {
+        cursor: pointer;
+        :hover {
+          .top {
+            .name {
+              text-decoration: underline;
+            }
+          }
+        }
+        .top {
+          .iconRepos {
+            filter: ${(props) => props.theme.colorSVG};
+          }
         }
       }
     }

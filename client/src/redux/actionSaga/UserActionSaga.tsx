@@ -16,6 +16,4 @@ export const FOLLOW_USER_SAGA = createAction('FOLLOW_USER_SAGA', (data) => ({
   payload: data,
 }));
 
-export const GET_REPOSITORY_SAGA = createAction('GET_REPOSITORY_SAGA', (data) => ({
-  payload: data,
-}));
+export const GET_REPOSITORY_SAGA = createAction('GET_REPOSITORY_SAGA');

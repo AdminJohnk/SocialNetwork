@@ -6,7 +6,7 @@ const StyleTotal = styled.div`
   .ql-toolbar {
     border: none;
     svg {
-      filter: ${(props) => props.theme.colorEditor};
+      filter: ${(props) => props.theme.colorSVG};
     }
   }
   .ql-editor {

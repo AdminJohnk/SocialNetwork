@@ -17,7 +17,7 @@ export const darkThemeSet = {
   colorBg3: '#4B4B4B',
   colorBg4: '#3b3a3a',
 
-  colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorSVG: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
   colorPicker: 'dark',
 };
 
@@ -36,7 +36,7 @@ export const darkThemeSet = {
 //     colorBg3: '#4b4b4b72',
 //     colorBg4: '#3b3a3a67',
   
-//     colorEditor: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//     colorSVG: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
 //     colorPicker: 'dark',
 //   };
 
@@ -57,7 +57,7 @@ export const lightThemeSet = {
   colorBg3: '#E4E5EB',
   colorBg4: '#D8D9DF',
 
-  colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+  colorSVG: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
   colorPicker: "light"
 };
 
@@ -76,7 +76,7 @@ export const lightThemeSet = {
 //   colorBg3: '#e4e5eb5c',
 //   colorBg4: '#d8d9df76',
 
-//   colorEditor: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
+//   colorSVG: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
 //   colorPicker: "light"
 // };
 
