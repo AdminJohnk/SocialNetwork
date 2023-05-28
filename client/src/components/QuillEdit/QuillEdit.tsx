@@ -83,12 +83,12 @@ const QuillEdit = (Props: QuillEditProps) => {
     const HTML = new DOMParser().parseFromString(value, 'text/html').body.innerText;
     if (HTML === '') Props.callbackFunction('');
     else Props.callbackFunction(value);
+    dispatch(closeModal());
   };
 
   useEffect(() => {
     // Dispatch callback submit lên cho ModalHOC
     dispatch(setHandleSubmit(handleQuillChangeValue));
-    dispatch(closeModal());
   }, [value]);
 
   const handleQuillChange = () => {
