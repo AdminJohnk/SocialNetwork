@@ -1,4 +1,4 @@
-import { Avatar, ConfigProvider, Input, Popover, Button, Row, Col } from 'antd';
+import { Avatar, ConfigProvider, Input, Popover, Row, Col } from 'antd';
 import React, { useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTheme } from '../../../util/functions/ThemeFunction';

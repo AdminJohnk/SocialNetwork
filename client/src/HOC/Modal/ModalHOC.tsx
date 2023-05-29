@@ -6,6 +6,7 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { Button, Modal, Space } from 'antd';
 import { closeModal } from '../../redux/Slice/ModalHOCSlice';
 import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover, ButtonCancelHover } from '../../components/MiniComponent/MiniComponent';
 
 const ModalHOC = () => {
   const dispatch = useDispatch();
@@ -39,32 +40,27 @@ const ModalHOC = () => {
             open={visible}
             footer={
               footer === true ? (
-                <>
-                  <button
-                    className="btnCancel px-4 py-2 mr-2 rounded-2xl"
-                    style={{
-                      border: '1px solid',
-                      borderColor: themeColorSet.colorText2,
-                    }}
-                    onClick={() => {
-                      onClose();
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="btnAccept px-4 py-2 rounded-2xl"
-                    style={{
-                      backgroundColor: commonColor.colorBlue2,
-                      color: themeColorSet.colorText1,
-                    }}
-                    onClick={(e) => {
+                <div className="flex justify-end">
+                  <span className="mr-4">
+                    {' '}
+                    <ButtonCancelHover
+                      onClick={() => {
+                        onClose();
+                      }}
+                    >
+                      Cancel
+                    </ButtonCancelHover>
+                  </span>
+
+                  <ButtonActiveHover
+                    onClick={(e: any) => {
                       handleSubmit(e);
                     }}
+                    rounded
                   >
-                    <span style={{color: commonColor.colorWhile1}}>Save</span>
-                  </button>
-                </>
+                    Save
+                  </ButtonActiveHover>
+                </div>
               ) : (
                 footer
               )

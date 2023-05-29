@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import EditExperienceForm from '../ExperienceForm/EditExperienceForm';
 import AddRepositoryForm from '../AddRepositoryForm/AddRepositoryForm';
 import GithubColors from 'github-colors';
+import { ButtonActiveHover } from '../../MiniComponent/MiniComponent';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -216,17 +217,9 @@ const EditProfileForm = () => {
         <div className="tags" style={{ color: themeColorSet.colorText3 }}>
           {description}
         </div>
-        <button
-          className="btnContent mt-4 px-4 py-2"
-          style={{
-            color: commonColor.colorWhile1,
-            fontWeight: 600,
-            backgroundColor: commonColor.colorBlue2,
-          }}
-          onClick={callBackFunction}
-        >
-          {buttonContent}
-        </button>
+        <div className="mt-4">
+          <ButtonActiveHover onClick={callBackFunction}> {buttonContent}</ButtonActiveHover>
+        </div>
       </div>
     );
   };
@@ -234,7 +227,7 @@ const EditProfileForm = () => {
   const renderExperience = (item: any, index: any) => {
     return (
       <div className="item mt-2 flex">
-        <div>
+        <div style={{ color: themeColorSet.colorText1 }}>
           <FontAwesomeIcon className="icon mr-2" icon={faBriefcase} style={{ color: commonColor.colorBlue1 }} />
           <span className="company mr-2 font-semibold">{item.companyName}</span>
           <span className="position mr-2">{item.positionName} |</span>
@@ -789,7 +782,7 @@ const EditProfileForm = () => {
               </div>
             )}
           </section>
-          <section className="techStack mt-7">
+          {/* <section className="techStack mt-7">
             <div
               className="title mb-2"
               style={{
@@ -806,7 +799,7 @@ const EditProfileForm = () => {
               'Add Tech Stack',
               () => {},
             )}
-          </section>
+          </section> */}
           <section className="repositories mt-7">
             <div
               className="title mb-2"
@@ -878,7 +871,7 @@ const EditProfileForm = () => {
               </div>
             )}
           </section>
-          <section className="memberOf mt-7">
+          {/* <section className="memberOf mt-7">
             <div
               className="title mb-2"
               style={{
@@ -895,7 +888,7 @@ const EditProfileForm = () => {
               'Feature Communities',
               () => {},
             )}
-          </section>
+          </section> */}
         </div>
       </StyleTotal>
     </ConfigProvider>

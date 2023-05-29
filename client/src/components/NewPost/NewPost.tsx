@@ -20,6 +20,7 @@ import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 import 'highlight.js/styles/monokai-sublime.css';
 import { commonColor } from '../../util/cssVariable/cssVariable';
+import { ButtonActiveHover } from '../MiniComponent/MiniComponent';
 
 Quill.register('modules/imageCompress', ImageCompress);
 
@@ -255,17 +256,15 @@ const NewPost = (Props: Props) => {
               </span>
             </div>
             <div className="newPostFooter__right">
-              <Button
-                type="primary"
-                className="createButton w-full font-bold px-6 py-2 rounded-3xl h-auto"
-                style={{ color: themeColorSet.colorText1 }}
+              <ButtonActiveHover
+                rounded
                 onClick={() => {
                   formik.handleSubmit();
                 }}
                 loading={loading}
               >
                 <span style={{ color: commonColor.colorWhile1 }}>{loading ? 'Creating..' : 'Create'}</span>
-              </Button>
+              </ButtonActiveHover>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+
 // --------------------------------------------
 
 export const darkTheme = {
@@ -24,7 +25,7 @@ export const darkThemeSet = {
 // export const darkTheme = {
 //     colorTextBase: '#d4d4d4',
 //     colorBgBase: '#1d1d1d7e',
-  
+
 //     controlItemBgActive: '#3b3a3a79',
 //   };
 //   export const darkThemeSet = {
@@ -35,7 +36,7 @@ export const darkThemeSet = {
 //     colorBg2: '#1d1d1d73',
 //     colorBg3: '#4b4b4b72',
 //     colorBg4: '#3b3a3a67',
-  
+
 //     colorSVG: `invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
 //     colorPicker: 'dark',
 //   };
@@ -58,7 +59,7 @@ export const lightThemeSet = {
   colorBg4: '#D8D9DF',
 
   colorSVG: `invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)`,
-  colorPicker: "light"
+  colorPicker: 'light',
 };
 
 // export const lightTheme = {
@@ -107,4 +108,13 @@ export const flex_center_row = css`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`;
+export const change_color_autoFill = css`
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px ${(props) => props.theme.colorBg2} inset !important;
+    -webkit-text-fill-color: ${(props) => props.theme.colorText1} !important;
+  }
 `;

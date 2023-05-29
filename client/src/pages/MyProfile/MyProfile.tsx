@@ -4,7 +4,14 @@ import { getTheme } from '../../util/functions/ThemeFunction';
 import { Avatar, Col, ConfigProvider, Empty, Image, Row, Space, Tabs, Tag } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSnowflake, faFileLines, faLocationDot, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSnowflake,
+  faFileLines,
+  faLocationDot,
+  faBriefcase,
+  faStar,
+  faCodeFork,
+} from '@fortawesome/free-solid-svg-icons';
 import { faFacebookF, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { NavLink } from 'react-router-dom';
 import { commonColor } from '../../util/cssVariable/cssVariable';
@@ -21,6 +28,7 @@ import descArray from '../../util/constants/Description';
 import { setIsInProfile } from '../../redux/Slice/PostSlice';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
+import GithubColors from 'github-colors';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -79,6 +87,64 @@ const MyProfile = () => {
   }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
+
+  const renderRepositoryIem = (item: any, index: any) => {
+    const colorLanguage = GithubColors.get(item.languages)?.color;
+    return (
+      <a
+        className="renderRepositoryIem mb-5"
+        style={{
+          borderBottom: `1px solid ${themeColorSet.colorBg4}`,
+          width: '48%',
+        }}
+        href={item.url}
+        target="_blank"
+      >
+        <div className="top">
+          <span>
+            <img className="iconRepos inline" style={{ color: 'red' }} src="/images/Common/repos.svg" />
+          </span>
+          <span
+            className="name ml-2"
+            style={{
+              color: commonColor.colorBlue3,
+              fontWeight: 600,
+              fontSize: '1.1rem',
+            }}
+          >
+            {item.name}
+          </span>
+          <span
+            className="rounded-lg ml-3"
+            style={{
+              color: themeColorSet.colorText3,
+              border: `1px solid ${themeColorSet.colorBg4}`,
+              fontSize: '0.8rem',
+              padding: '0.1rem 0.5rem',
+            }}
+          >
+            {item.private ? 'Private' : 'Public'}
+          </span>
+        </div>
+        <div className="bottom mt-3 flex items-center" style={{ color: themeColorSet.colorText2 }}>
+          <div className="language mr-4 flex items-center">
+            <span className="mr-2 pb-2 text-4xl" style={{ color: colorLanguage }}>
+              •
+            </span>
+            <span>{item.languages}</span>
+          </div>
+          <span className="star mr-3" style={{ color: themeColorSet.colorText3 }}>
+            <FontAwesomeIcon size="xs" icon={faStar} />
+            <span className="ml-1">{item.stargazersCount}</span>
+          </span>
+          <span className="fork" style={{ color: themeColorSet.colorText3 }}>
+            <FontAwesomeIcon size="xs" icon={faCodeFork} />
+            <span className="ml-1">{item.forksCount}</span>
+          </span>
+        </div>
+      </a>
+    );
+  };
 
   return (
     <ConfigProvider
@@ -294,8 +360,25 @@ const MyProfile = () => {
                         label: 'Introduction',
                         children: (
                           <div className="mt-10 mb-20">
-                            {ownerInfo?.about ? (
+                            {!ownerInfo?.about && ownerInfo?.repositories.length === 0 && (
+                              <div className="w-8/12 mb-10">
+                                <Empty
+                                  image={Empty.PRESENTED_IMAGE_DEFAULT}
+                                  description={<span>No introduction</span>}
+                                />
+                              </div>
+                            )}
+                            {ownerInfo?.about && (
                               <div className="w-8/12">
+                                <div
+                                  style={{
+                                    color: themeColorSet.colorText1,
+                                    fontWeight: 600,
+                                    fontSize: '1.2rem',
+                                  }}
+                                >
+                                  About
+                                </div>
                                 <ReactQuill
                                   value={ownerInfo?.about}
                                   readOnly={true}
@@ -305,12 +388,23 @@ const MyProfile = () => {
                                   }}
                                 />
                               </div>
-                            ) : (
-                              <div className="w-8/12 mb-10">
-                                <Empty
-                                  image={Empty.PRESENTED_IMAGE_DEFAULT}
-                                  description={<span>No introduction</span>}
-                                />
+                            )}
+                            {ownerInfo?.repositories.length !== 0 && (
+                              <div className="w-8/12 mt-5">
+                                <div
+                                  style={{
+                                    color: themeColorSet.colorText1,
+                                    fontWeight: 600,
+                                    fontSize: '1.2rem',
+                                  }}
+                                >
+                                  Repositories
+                                </div>
+                                <div className="flex flex-wrap justify-between mt-5">
+                                  {ownerInfo?.repositories.map((item: any, index: any) => {
+                                    return renderRepositoryIem(item, index);
+                                  })}
+                                </div>
                               </div>
                             )}
                           </div>
