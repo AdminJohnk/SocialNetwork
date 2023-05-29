@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { commonColor } from '../../../util/cssVariable/cssVariable';
+import { commonColor, change_color_autoFill } from '../../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
+  ${change_color_autoFill}
   .form__group {
     position: relative;
     padding: 15px 0 0;
@@ -61,15 +62,23 @@ const StyleTotal = styled.div`
     color: ${(props) => props.theme.colorText3};
   }
 
-  .editPositionForm{
-    .untilButton{
-        background-color:${(props) => props.theme.colorBg3};
+  .editPositionForm {
+    .untilButton {
+      background-color: ${(props) => props.theme.colorBg3};
     }
-    .untilActive{
-        background-color: ${commonColor.colorBlue2};
-        color: ${commonColor.colorWhile1};
+    .untilActive {
+      background-color: ${commonColor.colorBlue2};
+      color: ${commonColor.colorWhile1};
     }
   }
+
+  /* input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px ${(props) => props.theme.colorBg2} inset !important;
+    -webkit-text-fill-color: ${(props) => props.theme.colorText1} !important;
+  } */
 `;
 
 export default StyleTotal;

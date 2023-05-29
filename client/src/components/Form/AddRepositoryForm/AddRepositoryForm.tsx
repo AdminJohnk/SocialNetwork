@@ -10,6 +10,7 @@ import { faCodeFork, faStar } from '@fortawesome/free-solid-svg-icons';
 import { TOKEN_GITHUB } from '../../../util/constants/SettingSystem';
 import { closeModal, setHandleSubmit } from '../../../redux/Slice/ModalHOCSlice';
 import GithubColors from 'github-colors';
+import LoadingComponent from '../../GlobalSetting/LoadingComponent/LoadingComponent';
 
 interface ReposProps {
   repositories: any;
@@ -161,8 +162,11 @@ const AddRepositoryForm = (Props: ReposProps) => {
     >
       <StyleTotal theme={themeColorSet}>
         <div className="addRepositories">
-          {!access_token_github ? (
-            <></>
+          {access_token_github ? (
+           <> <LoadingComponent />
+           <></>
+           </>
+            
           ) : (
             // Nếu có access_token_github
             <div>

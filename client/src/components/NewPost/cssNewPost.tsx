@@ -46,15 +46,6 @@ const StyleTotal = styled.div`
         }
       }
     }
-    .newPostFooter__right {
-      .createButton {
-        background-color: ${commonColor.colorBlue1};
-        :hover {
-          background-color: ${commonColor.colorBlue3};
-          transition: all 0.5s;
-        }
-      }
-    }
   }
 `;
 
