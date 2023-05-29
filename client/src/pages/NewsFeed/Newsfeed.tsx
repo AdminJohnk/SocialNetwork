@@ -129,21 +129,23 @@ const NewFeed = () => {
   const postArrayRef = React.useRef(postArr);
 
   useEffect(() => {
+    if (!isNotAlreadyChanged) return;
+
     setIsNotAlreadyChanged(postArrayRef.current === postArr);
+  }, [isNotAlreadyChanged, postArr]);
+
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postArrayRef.current = postArr;
     }
-  }, [userInfoSlice, postArrSlice, isNotAlreadyChanged, postArrayRef]);
+  }, [isNotAlreadyChanged, postArr]);
 
   // const { isLoading, allPost, userInfo, isFetching } = useAllPostsData();
 
-  let popular = [];
-
-  // if (!isLoading) {
-  popular = [...postArr]
+  const popular = [...postArr]
     ?.filter((item: any) => item.PostShared !== true)
-    ?.sort((a: any, b: any) => b?.views - a?.views);
-  // }
+    ?.sort((a: any, b: any) => b?.views - a?.views)
+    ?.slice(0, 3);
 
   const handleClickButton = (value: any) => {
     setSelect(value);
@@ -193,75 +195,6 @@ const NewFeed = () => {
                   </div>
 
                   <div className="show">
-                    {/* <div
-                      className="select-show w-full rounded-lg mb-4"
-                      style={{ backgroundColor: themeColorSet.colorBg2 }}
-                    >
-                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                        <FontAwesomeIcon icon={faStar} style={{ paddingRight: 8 }} />
-                        For you
-                      </Button>
-
-                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 1)}>
-                        <FontAwesomeIcon icon={faThumbsUp} style={{ paddingRight: 8 }} />
-                        Best
-                      </Button>
-
-                      {select === 1 ? (
-                        <Dropdown
-                          className={select ? 'btn-show' : ' btn-show hidden'}
-                          menu={{
-                            items,
-                            onClick: handleMenuClick,
-                          }}
-                          onOpenChange={handleOpenChange}
-                          open={open}
-                        >
-                          <a onClick={(e) => e.preventDefault()}>
-                            <Button className="btn-show" size="large">
-                              {value}
-                              <DownOutlined />
-                            </Button>
-                          </a>
-                        </Dropdown>
-                      ) : null}
-
-                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                        <FontAwesomeIcon icon={faSun} style={{ paddingRight: 8 }} />
-                        New
-                      </Button>
-
-                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, 2)}>
-                        <FontAwesomeIcon icon={faComment} style={{ paddingRight: 8 }} />
-                        Comment
-                      </Button>
-
-                      {select === 2 ? (
-                        <Dropdown
-                          className={select ? 'btn-show' : ' btn-show hidden'}
-                          menu={{
-                            items,
-                            onClick: handleMenuClick,
-                          }}
-                          onOpenChange={handleOpenChange}
-                          open={open}
-                        >
-                          <a onClick={(e) => e.preventDefault()}>
-                            <Button className="btn-show" size="large">
-                              {value}
-                              <DownOutlined />
-                            </Button>
-                          </a>
-                        </Dropdown>
-                      ) : null}
-
-                      <Button className="btn-show" size="large" onClick={handleClickButton.bind(null, null)}>
-                        <div className="flex justify-center">
-                          <RiseOutlined style={{ marginRight: 8 }} />
-                          Hot
-                        </div>
-                      </Button>
-                    </div> */}
                     {postArr.map((item: any, index: number) => {
                       return (
                         <div key={index}>
@@ -338,75 +271,69 @@ const NewFeed = () => {
                     }}
                   >
                     {popular.map((item: any, index: any) => {
-                      if (index > 2) {
-                        return '';
-                      } else {
-                        return (
-                          <div key={index}>
-                            <NavLink to={`/post/${item._id}`}>
-                              <div
-                                className="popular-post-item flex items-center pt-3 pb-3"
+                      return (
+                        <div key={index}>
+                          <NavLink to={`/post/${item._id}`}>
+                            <div
+                              className="popular-post-item flex items-center pt-3 pb-3"
+                              style={{
+                                borderBottom: '1px solid',
+                                borderColor: themeColorSet.colorBg4,
+                              }}
+                            >
+                              <img
                                 style={{
-                                  borderBottom: '1px solid',
-                                  borderColor: themeColorSet.colorBg4,
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: 50,
+                                  marginLeft: 10,
+                                  objectFit: 'cover',
                                 }}
-                              >
-                                <img
+                                className="popular-post-item-image"
+                                src={`${item?.user?.userImage}`}
+                                alt=""
+                              />
+                              <div className="content ml-4  ">
+                                <div
+                                  className="name"
                                   style={{
-                                    width: 50,
-                                    height: 50,
-                                    borderRadius: 50,
-                                    marginLeft: 10,
-                                    objectFit: 'cover',
+                                    color: themeColorSet.colorText1,
+                                    fontWeight: 600,
                                   }}
-                                  className="popular-post-item-image"
-                                  src={`${item?.user?.userImage}`}
-                                  alt=""
-                                />
-                                <div className="content ml-4  ">
-                                  <div
-                                    className="name"
+                                >
+                                  <span>{item?.user?.username}</span>
+                                </div>
+                                <div
+                                  className="popular-post-item-desc mt-1"
+                                  style={{
+                                    color: themeColorSet.colorText2,
+                                    fontSize: '0.9rem',
+                                  }}
+                                >
+                                  <span>{item.title?.length > 28 ? item.title?.slice(0, 28) + '...' : item.title}</span>
+                                </div>
+                                <div className="popular-post-item-view mt-1">
+                                  <FontAwesomeIcon
+                                    icon={faFileLines}
                                     style={{
-                                      color: themeColorSet.colorText1,
-                                      fontWeight: 600,
-                                    }}
-                                  >
-                                    <span>{item?.user?.username}</span>
-                                  </div>
-                                  <div
-                                    className="popular-post-item-desc mt-1"
-                                    style={{
-                                      color: themeColorSet.colorText2,
+                                      color: themeColorSet.colorText3,
                                       fontSize: '0.9rem',
                                     }}
+                                  />
+                                  <span
+                                    style={{
+                                      marginLeft: 5,
+                                      color: themeColorSet.colorText3,
+                                    }}
                                   >
-                                    <span>
-                                      {item.title?.length > 28 ? item.title?.slice(0, 28) + '...' : item.title}
-                                    </span>
-                                  </div>
-                                  <div className="popular-post-item-view mt-1">
-                                    <FontAwesomeIcon
-                                      icon={faFileLines}
-                                      style={{
-                                        color: themeColorSet.colorText3,
-                                        fontSize: '0.9rem',
-                                      }}
-                                    />
-                                    <span
-                                      style={{
-                                        marginLeft: 5,
-                                        color: themeColorSet.colorText3,
-                                      }}
-                                    >
-                                      {item.views} {item.views > 0 ? 'Views' : 'View'}
-                                    </span>
-                                  </div>
+                                    {item.views} {item.views > 0 ? 'Views' : 'View'}
+                                  </span>
                                 </div>
                               </div>
-                            </NavLink>
-                          </div>
-                        );
-                      }
+                            </div>
+                          </NavLink>
+                        </div>
+                      );
                     })}
                   </div>
                   <div

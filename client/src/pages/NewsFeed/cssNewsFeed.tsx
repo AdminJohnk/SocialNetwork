@@ -1,8 +1,9 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
+import {} from '../../util/cssVariable/cssVariable';
 
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
-  min-height: 80vh;
+  min-height: calc(100vh - 5rem);
   height: fit-content;
   color: ${(props) => props.theme.colorText1};
   .btn-show {
