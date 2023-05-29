@@ -4,6 +4,7 @@ import { commonColor } from '../../../util/cssVariable/cssVariable';
 const StyleTotal = styled.div`
   background-color: ${(props) => props.theme.colorBg1};
   color: ${(props) => props.theme.colorText1};
+  min-height: calc(100vh - 5rem);
 
   .input {
     display: flex;
@@ -16,8 +17,8 @@ const StyleTotal = styled.div`
     left: -5.5rem;
     z-index: 1;
   }
-  .commentInput{
-    input{
+  .commentInput {
+    input {
       box-shadow: none;
     }
   }
