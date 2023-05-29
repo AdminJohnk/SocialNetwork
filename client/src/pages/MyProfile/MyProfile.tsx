@@ -80,11 +80,13 @@ const MyProfile = () => {
     if (!isNotAlreadyChanged) return;
 
     setIsNotAlreadyChanged(postArrayRef.current === postArray);
+  }, [isNotAlreadyChanged, postArray]);
 
+  useEffect(() => {
     if (!isNotAlreadyChanged) {
       postArrayRef.current = postArray;
     }
-  }, [userInfoSlice, ownerInfoSlice, isNotAlreadyChanged, postArrayRef, postArraySlice]);
+  }, [isNotAlreadyChanged, postArray]);
 
   // const { isLoading, isError, postArray, userInfo, ownerInfo, isFetching } = usePostsData('me');
 
@@ -189,8 +191,8 @@ const MyProfile = () => {
                     <div className="position mt-2">
                       <FontAwesomeIcon className="icon" icon={faSnowflake} />
                       <span style={{ color: themeColorSet.colorText3 }} className="ml-2">
-                        {ownerInfo?.experiences.length > 0
-                          ? ownerInfo?.experiences.length > 1
+                        {ownerInfo?.experiences?.length > 0
+                          ? ownerInfo?.experiences?.length > 1
                             ? ownerInfo?.experiences[0].positionName + ' & ' + ownerInfo?.experiences[1].positionName
                             : ownerInfo?.experiences[0].positionName
                           : 'No job position'}
