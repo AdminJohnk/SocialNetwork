@@ -128,7 +128,7 @@ const Post = (PostProps: PostProps) => {
         </div>
       ),
       onClick: () => {
-        window.open(`http://localhost:3000/post/${PostProps.post?._id}`, '_blank')?.focus();
+        window.open(`/post/${PostProps.post?._id}`, '_blank')?.focus();
       },
     },
   ];
