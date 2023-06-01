@@ -10,7 +10,6 @@ import { faCodeFork, faStar } from '@fortawesome/free-solid-svg-icons';
 import { TOKEN_GITHUB } from '../../../util/constants/SettingSystem';
 import { closeModal, setHandleSubmit } from '../../../redux/Slice/ModalHOCSlice';
 import GithubColors from 'github-colors';
-import LoadingComponent from '../../GlobalSetting/LoadingComponent/LoadingComponent';
 
 interface ReposProps {
   repositories: any;
@@ -37,7 +36,7 @@ const AddRepositoryForm = (Props: ReposProps) => {
     let userData: any = undefined;
 
     const handleMessage = (event: any) => {
-      if (event.origin === 'http://localhost:7000') {
+      if (event.origin === import.meta.env.VITE_SERVER_ENDPOINT) {
         userData = event.data;
         if (userData) {
           localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import StyleTotal from './cssLoginForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,7 @@ import {} from '@fortawesome/free-solid-svg-icons';
 import { faSnowflake } from '@fortawesome/free-regular-svg-icons';
 import { ConfigProvider, Form, Input } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LOGIN_SAGA, LOGIN_WITH_GOOGLE_SAGA } from '../../../redux/actionSaga/AuthActionSaga';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -16,6 +16,8 @@ import { darkThemeSet } from '../../../util/cssVariable/cssVariable';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
 
   const handleSignInWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -43,8 +45,12 @@ const LoginForm = () => {
         if (userData) {
           localStorage.setItem(TOKEN, userData.accessToken);
           localStorage.setItem(TOKEN_GITHUB, userData.accessTokenGitHub);
-          // go to home page
-          window.location.replace('/');
+
+          // go to home page or redirect to previous page
+          const state = location.state as { from: Location };
+          const from = state?.from?.pathname || '/';
+
+          window.location.replace(from);
         }
       }
     };
@@ -124,8 +130,10 @@ const LoginForm = () => {
             <button type="submit" className="btn btn-primary w-full h-9 mb-4 mt-3 font-bold">
               Login
             </button>
+            <NavLink to="/forgot">
+              <span className="forgot flex justify-center align-middle">Forgot your password?</span>
+            </NavLink>
           </Form>
-
           <div className="anotherLogin mt-10">
             <div className="title relative">
               <span className="absolute" style={{ color: darkThemeSet.colorText2 }}>
